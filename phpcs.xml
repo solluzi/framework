@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+    <description>PHPCS configuration file</description>
+    
+    <rule ref="PSR1" />
+    <rule ref="PSR12" />
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="150" />
+        </properties>
+    </rule>
+    <file>src</file>
+
+    <arg name="encoding" value="utf-8"/>
+</ruleset>

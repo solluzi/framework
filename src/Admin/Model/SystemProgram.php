@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @version     1.0.0
+ * @category    Model
+ * @package     App
+ * @subpackage  Group
+ * @author      Mauro Joaquim Miranda
+ * @copyright   Copyright (c) 2020 Solluzi Tecnologia da Informação LTDA-ME. (https://mauromiranda.dev)
+ * @license     https://mauromiranda.dev/framework-license
+ *
+ * Programa
+ *  Connects to controlador Table
+ */
+
+declare(strict_types=1);
+
+namespace Admin\Model;
+
+use Model\Model;
+
+class SystemProgram extends Model
+{
+    public $table      = "system_program";
+    public $primaryKey = "id";
+    public $idPolicy   = "uuid";         //{max,serial,auto,uuid}
+    public $fields     = [
+        'id',
+        'secao',
+        'icone',
+        'url',
+        'programa',
+        'nome',
+        'privado',
+        'descricao',
+        'created_by',
+        'updated_by',
+        'created_at',
+        'updated_at'
+    ];
+
+    public function adicionarProgramaAoGrupo($grupos, $controlador)
+    {
+        $this->excluirProgramaDoGrupo($controlador);
+
+        if ($grupos) {
+            foreach ($grupos as $grupo) {
+                $info = ['grupo' => $grupo, 'programa' => $controlador];
+                $programaGrupoModel = new SystemGroupProgram();
+                $programaGrupoModel->start('system')
+                    ->insert($info)
+                    ->execute();
+            }
+        }
+    }
+
+
+    public function excluirProgramaDoGrupo($controlador)
+    {
+
+        $programaGrupoModel = new SystemGroupProgram();
+        $programaGrupoModel->start('system')
+            ->delete()
+            ->where('programa', $controlador)
+            ->execute();
+    }
+}

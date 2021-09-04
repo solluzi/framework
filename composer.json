@@ -1,0 +1,66 @@
+{
+    "name": "solluzi/freelancer",
+    "description": "Este projeto \u00e9 de responsabilidade da Solluzi, este projeto se destina ao desenvolvimento de sistemas",
+    "authors": [
+        {
+            "email": "mauro.miranda@solluzi.com.br",
+            "homepage": "http://solluzi.com.br",
+            "name": "Mauro Miranda",
+            "role": "Administrator"
+        }
+    ],
+    "require-dev": {
+        "codeception/codeception"      : "^4.1",
+        "codeception/module-rest"      : "^1.2",
+        "codeception/module-phpbrowser": "^1.0",
+        "codeception/c3"               : "2.*",
+        "codeception/module-asserts"   : "^1.0.0",
+        "squizlabs/php_codesniffer"    : "3.*"
+    },
+    "require": {
+        "firebase/php-jwt"             : "^5.0",
+        "phpmailer/phpmailer"          : "~6.0",
+        "fpdf/fpdf"                    : "^1.81",
+        "robmorgan/phinx"              : "^0.12.4",
+        "psr/http-server-middleware"   : "^1.0",
+        "brainfoolong/cryptojs-aes-php": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Admin\\": "src/Admin"
+        },
+        "classmap": [
+            "application",
+            "console"
+        ]
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "migrate-admin:dev": "vendor/bin/phinx migrate -c db/database/system-admin.php -e dev",
+        "migrate-admin:qa" : "vendor/bin/phinx migrate -c db/database/system-admin.php -e qa",
+        "migrate-admin:hom": "vendor/bin/phinx migrate -c db/database/system-admin.php -e homolog",
+        "migrate-log:dev"  : "vendor/bin/phinx migrate -c db/database/system-log.php -e dev",
+        "migrate-log:qa"   : "vendor/bin/phinx migrate -c db/database/system-log.php -e qa",
+        "migrate-log:hom"  : "vendor/bin/phinx migrate -c db/database/system-log.php -e homolog",
+        "migrate:prod"     : "vendor/bin/phinx migrate -c db/database/default.php -e production",
+        "seed-admin:dev"   : "vendor/bin/phinx seed:run -s MainSeeder -c db/database/system-admin.php -e dev",
+        "seed-admin:qa"    : "vendor/bin/phinx migrate -s MainSeeder -c db/database/system-admin.php -e qa",
+        "seed-admin:hom"   : "vendor/bin/phinx migrate -s MainSeeder -c db/database/system-admin.php -e homolog",
+        "seed:prod"        : "vendor/bin/phinx migrate -s MainSeeder -c db/database/default.php -e production",
+        "autoload"         : "composer dump-autoload -o",
+        "cs-check"         : "phpcs",
+        "cs-fix"           : "phpcbf",
+        "unit-test"        : "",
+        "api-test"         : "vendor/bin/codecept run api",
+        "api-test-steps"   : "vendor/bin/codecept run api --steps",
+        "test-coverage"    : ""
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "tests"
+        }
+    }
+}
