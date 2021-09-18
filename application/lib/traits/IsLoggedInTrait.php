@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Traits;
 
-use Administracao\Model\AccessLog;
-use Administracao\Model\Grupo;
-use Administracao\Model\Usuario;
-use Administracao\Model\UsuarioGrupo;
+use Admin\Model\SystemAccessLog;
+use Admin\Model\SystemUser;
+use Admin\Model\SystemUserGroup;
 use Controller\HttpStatusCode;
 use DateTime;
 use Session\JWTWrapper;
@@ -32,36 +31,36 @@ trait IsLoggedinTrait
             $decriptToken = (!empty(JWTWrapper::decode($this->jwt))) ? JWTWrapper::decode($this->jwt) : false;
             $tokenTime    = new DateTime();
             $agora        = new DateTime('now');
-
+            
              // Pesquisa a sessão salva no banco de dados
              $uid = ($decriptToken->data->uid) ?? ' ';
-             $accessLogQuery    = new AccessLog();
+             $accessLogQuery    = new SystemAccessLog();
              $accessSelect      = $accessLogQuery->start('log');
              $resultLogDeAcesso = $accessSelect
-                ->select('', ['login'])
-                ->where('sessao', $this->jwt)
-                ->whereNull('saiu')
-                ->where('chave', $uid)
+                ->select('"AL"', ['"AL"."LOGIN"'])
+                ->where('"AL"."SESSION"', $this->jwt)
+                ->whereNull('"AL"."LOGGED_OUT"')
+                ->where('"AL"."KEY"', $uid)
                 ->get();
 
             // Pesquisa o is do usuário para a sessão
-            $usuario       = $resultLogDeAcesso->login ?? ' ';
-            $usuarioQuery  = new Usuario;
+            $usuario       = $resultLogDeAcesso->LOGIN ?? ' ';
+            $usuarioQuery  = new SystemUser;
             $usuarioSelect = $usuarioQuery->start('system');
             $usuarioResult = $usuarioSelect
-                ->select('', ['login', 'id'])
-                ->where('login', $usuario)
+                ->select('"SU"', ['"SU"."LOGIN"', '"SU"."ID"'])
+                ->where('"SU"."LOGIN"', $usuario)
                 ->get();
-
+                
             // Pesquisa o grupo do usuário
-            $userId = ($usuarioResult->id) ?? ' ';
-            $usuarioGrupoQuery  = new UsuarioGrupo;
+            $userId = ($usuarioResult->ID) ?? ' ';
+            $usuarioGrupoQuery  = new SystemUserGroup;
             $usuarioGrupoSelect = $usuarioGrupoQuery->start('system');
             $usuarioGrupoResult = $usuarioGrupoSelect
-                ->select('', ['grupo'])
-                ->where('usuario', $userId)
+                ->select('"SUG"', ['"SUG"."GROUP_ID"'])
+                ->where('"SUG"."USER_ID"', $userId)
                 ->get();
-
+                
             if (
                 ($decriptToken->iss) 
                 && ($decriptToken->aud) 
@@ -72,8 +71,8 @@ trait IsLoggedinTrait
             ) 
             {
                 
-                Session::setValue('user',  $usuarioResult->id);
-                Session::setValue('grupo', $usuarioGrupoResult->grupo);
+                Session::setValue('user',  $usuarioResult->ID);
+                Session::setValue('grupo', $usuarioGrupoResult->GROUP_ID);
                 
                 return HttpStatusCode::HTTP_CONTINUE;                    
             } else {

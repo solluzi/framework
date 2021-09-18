@@ -1,12 +1,12 @@
-CREATE OR REPLACE VIEW view_menu AS
+CREATE OR REPLACE VIEW "VW_MENU" AS
     SELECT 
-        sp.name AS program, 
-        sg.id AS group, 
-        su.id AS login, 
-        sps.name AS section 
-    FROM system_program sp 
-    INNER JOIN system_group_program sgp     ON gp.program_id= sp.id 
-    INNER JOIN system_group sg              ON sg.id        = sgp.group_id 
-    INNER JOIN system_user_group sug        ON sug.group_id = g.id 
-    INNER JOIN system_user su               ON su.id        = sug.user_id
-    INNER JOIN system_program_section sps   ON sps.id       = sp.section ;
+        "SP"."NAME"  AS "PROGRAM", 
+        "SG"."ID"    AS "GROUP", 
+        "SU"."ID"    AS "LOGIN", 
+        "SPS"."NAME" AS "SECTION" 
+    FROM "SYSTEM_PROGRAM" "SP" 
+    JOIN "SYSTEM_GROUP_PROGRAM" "SGP"     ON "SGP"."PROGRAM_ID"= "SP"."ID" 
+    JOIN "SYSTEM_GROUP" "SG"              ON "SG"."ID"         = "SGP"."GROUP_ID"
+    JOIN "SYSTEM_USER_GROUP" "SUG"        ON "SUG"."GROUP_ID"  = "SG"."ID" 
+    JOIN "SYSTEM_USER" "SU"               ON "SU"."ID"         = "SUG"."USER_ID"
+    JOIN "SYSTEM_PROGRAM_SECTION" "SPS"   ON "SPS"."ID"        = "SP"."SECTION" ;

@@ -9,18 +9,18 @@ final class SystemAccessLog extends AbstractMigration
     public function change(): void
     {
         
-        $table = $this->table('system_access_log', ['id' => false]);
+        $table = $this->table('SYSTEM_ACCESS_LOG', ['id' => false]);
         $table 
-            ->addColumn('id', 'uuid', [
+            ->addColumn('ID', 'uuid', [
                 'default' => Literal::from('uuid_generate_v4()'), 'null' => false
             ])
-            ->addColumn('session'   , 'text')
-            ->addColumn('key'       , 'string', ['limit' => 100])
-            ->addColumn('login'     , 'text')
-            ->addColumn('logged_in' , 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('logged_out', 'timestamp', ['null' => true])
-            ->changePrimaryKey(['id'])
-            ->addIndex(['login', 'logged_in'])
+            ->addColumn('SESSION'   , 'text')
+            ->addColumn('KEY'       , 'string', ['limit' => 100])
+            ->addColumn('LOGIN'     , 'text')
+            ->addColumn('LOGGED_IN' , 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('LOGGED_OUT', 'timestamp', ['null' => true])
+            ->changePrimaryKey(['ID'])
+            ->addIndex(['LOGIN', 'LOGGED_IN'])
             ->create();
         
     }

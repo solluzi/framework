@@ -6,87 +6,79 @@ return [
     |                                                        ADMINISTRACTION SECTION OF THE ROUTE
     |---------------------------------------------------------------------------------------------------------------------------------------------------------
     */ 
-    'principal' => [
+    'main' => [
         ['GET'      , '/status'                                 , Admin\Controllers\SystemPublic\Status::class                  , 'status'                  ],
         ['POST'     , '/login'                                  , Admin\Controllers\SystemPublic\Login::class                   , 'login'                   ],
-        ['GET'      , '/logout/'                                , Admin\Controllers\SystemPublic\Logout::class                  , 'sair'                    ],
-        ['GET'      , '/inicio'                                 , Admin\Controllers\SystemPublic\Home::class                    , 'inicio'                  ], 
-        ['POST'     , '/resetar-senha'                          , Admin\Controllers\SystemPublic\SolicitarMudancaSenha::class   , 'solicitar.mudanca.senha' ], 
-        ['POST'     , '/alterar-senha/[*:token]'                , Admin\Controllers\SystemPublic\AlterarSenha::class            , 'alterar.senha'           ],
-        ['GET'      , '/acl/[*:controller]/'                    , Admin\Controllers\SystemPublic\Acl::class                     , 'acl'                     ],
+        ['GET'      , '/logout/'                                , Admin\Controllers\SystemPublic\Logout::class                  , 'logout'                  ],
+        ['GET'      , '/home'                                   , Admin\Controllers\SystemPublic\Home::class                    , 'home'                    ], 
+        ['POST'     , '/password/reset'                         , Admin\Controllers\SystemPublic\ChangePasswordRequest::class   , 'change.password.request' ], 
+        ['POST'     , '/password/[*:token]/change'              , Admin\Controllers\SystemPublic\ChangePassword::class          , 'change.password'         ],
+        ['GET'      , '/acl/[a:controller]/'                    , Admin\Controllers\SystemPublic\Acl::class                     , 'acl'                     ],
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                           ROUTE FOR THE LOGS
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['POST'     , '/log-acesso/[i:page]/[i:by_page]'        , Admin\Controllers\SystemLog\AccessLog::class                  , 'log.acesso'              ], 
-        ['POST'     , '/auditoria/[i:page]/[i:by_page]'         , Admin\Controllers\SystemLog\SqlLog::class                     , 'auditoria'               ], 
+        ['POST'     , '/access-log/[i:page]/[i:by_page]'        , Admin\Controllers\SystemLog\AccessLog::class                  , 'access.log'              ], 
+        ['POST'     , '/audit/[i:page]/[i:by_page]'             , Admin\Controllers\SystemLog\SqlLog::class                     , 'audit'                   ], 
         
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                           ROUTE FOR THE USER
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['POST'     , '/usuario'                                , Admin\Controllers\SystemUser\Create::class                    , 'cadastrar.usuario'       ],
-        ['POST'     , '/usuario/[i:page]/[i:by_page]'           , Admin\Controllers\SystemUser\Read::class                      , 'listar.usuario'          ],
-        ['GET'      , '/usuario/[*:id]'                         , Admin\Controllers\SystemUser\Edit::class                      , 'editar.usuario'          ],
-        ['PUT'      , '/usuario/[*:id]'                         , Admin\Controllers\SystemUser\Update::class                    , 'atualizar.usuario'       ],
-        ['DELETE'   , '/usuario/[*:id]'                         , Admin\Controllers\SystemUser\Delete::class                    , 'excluir.usuario'         ],
-        ['GET'      , '/usuario/status/[*:id]/'                 , Admin\Controllers\SystemUser\ChangeStatus::class              , 'alterar.status.usuario'  ],
+        ['POST'     , '/user'                                   , Admin\Controllers\SystemUser\Create::class                    , 'user.create'             ],
+        ['POST'     , '/user/[i:page]/[i:by_page]'              , Admin\Controllers\SystemUser\Read::class                      , 'user.list'               ],
+        ['GET'      , '/user/[h:id]/edit'                       , Admin\Controllers\SystemUser\Edit::class                      , 'edit.user'               ],
+        ['PUT'      , '/user/[h:id]/update'                     , Admin\Controllers\SystemUser\Update::class                    , 'user.update'             ],
+        ['DELETE'   , '/user/[h:id]/delete'                     , Admin\Controllers\SystemUser\Delete::class                    , 'user.delete'             ],
+        ['GET'      , '/user/[h:id]/status'                     , Admin\Controllers\SystemUser\ChangeStatus::class              , 'user.status.change'      ],
 
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                        ROUTE FOR USER PROFILE
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['GET'      , '/perfil/'                                , Admin\Controllers\Perfil\Edit::class                          , 'editar.perfil'           ],
-        ['POST'     , '/perfil'                                 , Admin\Controllers\Perfil\Update::class                        , 'atualizar.perfil'        ],
+        ['GET'      , '/profile/'                                , Admin\Controllers\UserProfile\Edit::class                    , 'edit.profile'            ],
+        ['POST'     , '/profile'                                 , Admin\Controllers\UserProfile\Update::class                  , 'update.profile'          ],
         
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                       ROUTE FOR THE USER GROUPS
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['POST'     , '/grupo'                                  , Admin\Controllers\SystemGroup\Create::class                   , 'cadastrar.grupo'         ],
-        ['POST'     , '/grupo/[i:page]/[i:by_page]'             , Admin\Controllers\SystemGroup\Read::class                     , 'listar.grupo'            ],
-        ['GET'      , '/grupo/[*:id]'                           , Admin\Controllers\SystemGroup\Edit::class                     , 'editar.grupo'            ],
-        ['PUT'      , '/grupo/[*:id]'                           , Admin\Controllers\SystemGroup\Update::class                   , 'atualizar.grupo'         ],
-        ['DELETE'   , '/grupo/[*:id]'                           , Admin\Controllers\SystemGroup\Delete::class                   , 'excluir.grupo'           ],
-        ['POST'     , '/grupo/programa'                         , Admin\Controllers\SystemGroup\GrupoEPrograma::class           , 'grupo.e.permissao'       ],
+        ['POST'     , '/group'                                  , Admin\Controllers\SystemGroup\Create::class                   , 'group.create'            ],
+        ['POST'     , '/group/[i:page]/[i:by_page]'             , Admin\Controllers\SystemGroup\Read::class                     , 'group.list'              ],
+        ['GET'      , '/group/[h:id]/edit'                      , Admin\Controllers\SystemGroup\Edit::class                     , 'group.edit'              ],
+        ['PUT'      , '/group/[h:id]/update'                    , Admin\Controllers\SystemGroup\Update::class                   , 'group.update'            ],
+        ['DELETE'   , '/group/[h:id]/delete'                    , Admin\Controllers\SystemGroup\Delete::class                   , 'group.delete'            ],
+        ['POST'     , '/group/programa'                         , Admin\Controllers\SystemGroup\GrupoEPrograma::class           , 'group.program'           ],
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                     ROUTE FOR THE PROGRAM SECTION
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['POST'     , '/secao'                                  , Admin\Controllers\SystemSection\Create::class                 , 'cadastrar.secao'         ],
-        ['POST'     , '/secao/[i:page]/[i:by_page]'             , Admin\Controllers\SystemSection\Read::class                   , 'listar.secao'            ],
-        ['POST'     , '/secao/editar'                           , Admin\Controllers\SystemSection\Edit::class                   , 'editar.secao'            ],
-        ['PUT'      , '/secao/[*:id]'                           , Admin\Controllers\SystemSection\Update::class                 , 'atualizar.secao'         ],
-        ['DELETE'   , '/secao/[*:id]'                           , Admin\Controllers\SystemSection\Delete::class                 , 'excluir.secao'           ],
+        ['POST'     , '/section'                                , Admin\Controllers\SystemSection\Create::class                 , 'section.create'          ],
+        ['POST'     , '/section/[i:page]/[i:by_page]'           , Admin\Controllers\SystemSection\Read::class                   , 'section.list'            ],
+        ['POST'     , '/section/[h:id]/edit'                    , Admin\Controllers\SystemSection\Edit::class                   , 'section.edit'            ],
+        ['PUT'      , '/section/[h:id]/update'                  , Admin\Controllers\SystemSection\Update::class                 , 'section.update'          ],
+        ['DELETE'   , '/section/[h:id]/delete'                  , Admin\Controllers\SystemSection\Delete::class                 , 'section.delete'          ],
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                      ROUTE FOR THE SYSTEM PROGRAM
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['POST'     , '/programa'                               , Admin\Controllers\SystemProgram\Create::class                 , 'cadastrar.programa'      ],
-        ['POST'     , '/programa/[i:page]/[i:by_page]'          , Admin\Controllers\SystemProgram\Read::class                   , 'listar.programa'         ],
-        ['POST'     , '/programa/editar'                        , Admin\Controllers\SystemProgram\Edit::class                   , 'editar.programa'         ],
-        ['PUT'      , '/programa/[*:id]'                        , Admin\Controllers\SystemProgram\Update::class                 , 'atualizar.programa'      ],
-        ['DELETE'   , '/programa/[*:id]'                        , Admin\Controllers\SystemProgram\Delete::class                 , 'excluir.programa'        ],
-        ['GET'      , '/programa'                               , Admin\Controllers\SystemProgram\ProgramaAgrupado::class       , 'programa.agrupado'       ],
-        ['GET'      , '/programa/menu'                          , Admin\Controllers\SystemProgram\MenuAcl::class                , 'programa.acl'            ],
+        ['POST'     , '/program'                                , Admin\Controllers\SystemProgram\Create::class                 , 'program.create'          ],
+        ['POST'     , '/program/[i:page]/[i:by_page]'           , Admin\Controllers\SystemProgram\Read::class                   , 'program.list'            ],
+        ['POST'     , '/program/[h:id]/update'                  , Admin\Controllers\SystemProgram\Edit::class                   , 'program.edit'            ],
+        ['PUT'      , '/program/[h:id]/update'                  , Admin\Controllers\SystemProgram\Update::class                 , 'program.update'          ],
+        ['DELETE'   , '/program/[h:id]/delete'                  , Admin\Controllers\SystemProgram\Delete::class                 , 'program.delete'          ],
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                    ROUTE FOR THE SYSTEM CONFIGURATIONS
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['POST'     , '/configuracao'                           , Admin\Controllers\SystemConfiguration\CreateOrUpdate::class   , 'criar.configuracao'      ],
-        ['GET'      , '/configuracao/[*:chave]/'                , Admin\Controllers\SystemConfiguration\Read::class             , 'exibir.configuracao'     ],
-        /*
-        |-----------------------------------------------------------------------------------------------------------------------------------------------------
-        |                                                            ROUTE FOR THE ACL
-        |-----------------------------------------------------------------------------------------------------------------------------------------------------
-        */
-        ['GET'      , '/secao/acl/'                             , Admin\Controllers\Secao\SecaoAcl::class                       , 'secao.acl'               ],
+        ['POST'     , '/configuration'                           , Admin\Controllers\SystemConfiguration\CreateOrUpdate::class   , 'config.create.update'   ],
+        ['GET'      , '/configuration/[h:chave]/read'            , Admin\Controllers\SystemConfiguration\Read::class             , 'config.list'            ],
     ]    
 ];

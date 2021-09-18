@@ -21,7 +21,7 @@ use Model\Model;
 
 class SystemAccessLog extends Model
 {
-    protected $table      = "log_acesso";
-    protected $primaryKey = 'id';
+    protected $table      = '"SYSTEM_ACCESS_LOG"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; //{auto,serial,uuid}
 }

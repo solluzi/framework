@@ -9,25 +9,25 @@ final class SystemProgram extends AbstractMigration
     public function change(): void
     {
         
-        $table = $this->table('system_program', ['id' => false]);
+        $table = $this->table('SYSTEM_PROGRAM', ['id' => false]);
         $table
-            ->addColumn('id'            , 'uuid'    , [
+            ->addColumn('ID'            , 'uuid'    , [
                 'default' => Literal::from('uuid_generate_v4()'), 'null' => false
             ])
-            ->addColumn('section'       , 'uuid') // Criar uma tabela só para seção
-            ->addColumn('program'       , 'string'  , ['limit'  => 200  ])
-            ->addColumn('name'          , 'string'  , ['limit'  => 100  ])
-            ->addColumn('private'       , 'boolean' , ['default'=> false, 'comment' => '1 - Privado, 2 - Publico'  ])
-            ->addColumn('description'   , 'text'    , ['null'   => false])
-            ->addColumn('created_by'    , 'uuid'    , ['null'   => true])
-            ->addColumn('updated_by'    , 'uuid'    , ['null'   => true])
-            ->addTimestamps()
-            ->addIndex(['section', 'program'])
-            ->addIndex(['name'], ['unique' => true])
-            ->changePrimaryKey(['id'])
-            ->addForeignKey('created_by', 'system_user'             , 'id', ["delete" => "RESTRICT", "update" => "NO_ACTION"])
-            ->addForeignKey('updated_by', 'system_user'             , 'id', ["delete" => "SET_NULL", "update" => "NO_ACTION"])
-            ->addForeignKey('section'   , 'system_program_section'  , 'id', ["delete" => "SET_NULL", "update" => "NO_ACTION"])
+            ->addColumn('SECTION'       , 'uuid') // Criar uma tabela só para seção
+            ->addColumn('PROGRAM'       , 'string'  , ['limit'  => 200  ])
+            ->addColumn('NAME'          , 'string'  , ['limit'  => 100  ])
+            ->addColumn('PRIVATE'       , 'boolean' , ['default'=> false, 'comment' => '1 - Privado, 2 - Publico'  ])
+            ->addColumn('DESCRIPTION'   , 'text'    , ['null'   => false])
+            ->addColumn('CREATED_BY'    , 'uuid'    , ['null'   => true])
+            ->addColumn('UPDATED_BY'    , 'uuid'    , ['null'   => true])
+            ->addTimestamps('CREATED_AT', 'UPDATED_AT')
+            ->addIndex(['SECTION', 'PROGRAM'])
+            ->addIndex(['NAME'], ['unique' => true])
+            ->changePrimaryKey(['ID'])
+            ->addForeignKey('CREATED_BY', 'SYSTEM_USER'             , 'ID', ["delete" => "RESTRICT", "update" => "NO_ACTION"])
+            ->addForeignKey('UPDATED_BY', 'SYSTEM_USER'             , 'ID', ["delete" => "RESTRICT", "update" => "NO_ACTION"])
+            ->addForeignKey('SECTION'   , 'SYSTEM_PROGRAM_SECTION'  , 'ID', ["delete" => "RESTRICT", "update" => "NO_ACTION"])
             ->create();
         
     }

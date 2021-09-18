@@ -33,35 +33,100 @@ class Read implements Middleware
     public function process(Request $request)
     {
         try {
-            // parametros recebidos da url
+            /*
+            |--------------------------------------------------------------------------
+            |                                query params
+            |--------------------------------------------------------------------------
+            |
+            | get all parameters in the setted in the url
+            |
+            */
+            
             $uriParams = $request->getQueryParams();
 
-            // Model
+            /*
+            |--------------------------------------------------------------------------
+            |                           System Configuration Model
+            |--------------------------------------------------------------------------
+            |
+            | call the specified table or function
+            |
+            */
+            
             $configuracaoModel = new SystemConfiguration();
 
-            // Campo para filtro
+            /*
+            |--------------------------------------------------------------------------
+            |                                    Filter
+            |--------------------------------------------------------------------------
+            |
+            | we build a filter for our select statement 
+            |
+            */
+            
             $chave = (isset($uriParams['chave']) && !empty($uriParams['chave'])) ? $uriParams['chave'] : null;
 
-            #######################################################
-            ################## FIM PAGINAÇÃO ######################
-            #######################################################
-
-            // Lista os registros
+            /*
+            |--------------------------------------------------------------------------
+            |                                  start
+            |--------------------------------------------------------------------------
+            |
+            | make connection to access the table and executes the select statement and
+            | limits it in one result
+            |
+            */
+            
             $resultados  = $configuracaoModel->start('system')
                 ->select('', ['valor'])
                 ->where('chave', $chave)
                 ->limit(1)
                 ->get();
 
-            // Fomatação de registros
+           /*
+           |--------------------------------------------------------------------------
+           |                                  response
+           |--------------------------------------------------------------------------
+           |
+           | formats the data to be returned in the frontend
+           |
+           */
+           
             $resposta['data'] = [
                 'registros' => $resultados,
             ];
 
+            /*
+            |--------------------------------------------------------------------------
+            |                                  encrypt
+            |--------------------------------------------------------------------------
+            |
+            | gets the resonse data and encripts it to make it safe for the frontend
+            | and others requests
+            |
+            */
+            
             $payload = $this->encrypt($resposta);
 
+            /*
+            |--------------------------------------------------------------------------
+            |                                  return
+            |--------------------------------------------------------------------------
+            |
+            | returns the data with encrypted payload and and http status code
+            |
+            */
+            
             return Response::json(['data' => $payload], HttpStatusCode::OK);
         } catch (\Exception $e) {
+            /*
+            |--------------------------------------------------------------------------
+            |                                  exception
+            |--------------------------------------------------------------------------
+            |
+            | returns the error raised in the database exception
+            |
+            */
+            
             return Response::json([], HttpStatusCode::BAD_REQUEST);
         }
     }

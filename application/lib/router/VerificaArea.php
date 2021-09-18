@@ -21,8 +21,8 @@ trait VerificaArea
             is_array($this->match)
             && is_callable($this->match['target'], true)
             && ($this->class === $this->match['target'])
-            && (isset($this->controladorSelect->privado))
-            && ($this->controladorSelect->privado == true)
+            && (isset($this->controladorSelect->PRIVATE))
+            && ($this->controladorSelect->PRIVATE == true)
             && ($this->verifyAccess() === 100)
         ) 
         {
@@ -32,8 +32,8 @@ trait VerificaArea
         if (is_array($this->match)
             && is_callable($this->match['target'], true) 
             && ($this->class == $this->match['target'])
-            && (isset($this->controladorSelect->privado) 
-            && ($this->controladorSelect->privado === false))            
+            && (isset($this->controladorSelect->PRIVATE) 
+            && ($this->controladorSelect->PRIVATE == false))            
         ) 
         { 
             return '2';

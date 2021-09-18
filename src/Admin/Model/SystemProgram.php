@@ -21,23 +21,10 @@ use Model\Model;
 
 class SystemProgram extends Model
 {
-    public $table      = "system_program";
-    public $primaryKey = "id";
+    public $table      = '"SYSTEM_PROGRAM"';
+    public $primaryKey = '"ID"';
     public $idPolicy   = "uuid";         //{max,serial,auto,uuid}
-    public $fields     = [
-        'id',
-        'secao',
-        'icone',
-        'url',
-        'programa',
-        'nome',
-        'privado',
-        'descricao',
-        'created_by',
-        'updated_by',
-        'created_at',
-        'updated_at'
-    ];
+    
 
     public function adicionarProgramaAoGrupo($grupos, $controlador)
     {

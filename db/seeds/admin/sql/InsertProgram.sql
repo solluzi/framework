@@ -1,364 +1,364 @@
 /* status */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Geral\Status::class',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' LIMIT 1), 
+        'Admin\Controllers\SystemPublic\Status::class',
         'status',
         'false',
         'Status do sistema',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' LIMIT 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'status');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'status');
 /* login */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Geral\Login::class',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemPublic\Login::class',
         'login',
         'false',
         'Acesso ao sistema',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'login');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'login');
 /* sair */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Geral\Logout::class',
-        'sair',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemPublic\Logout::class',
+        'logout',
         'true',
         'Sair do Sistema',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'sair');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'logout');
 
 /* inicio */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Geral\Inicio::class',
-        'inicio',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemPublic\Home::class',
+        'home',
         'false',
         'Inicio',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'inicio');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'home');
 /* solicitar.mudanca.senha */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Geral\SolicitarMudancaSenha::class',
-        'solicitar.mudanca.senha',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemPublic\ChangePasswordRequest::class',
+        'change.password.request',
         'false',
         'Solicitar Alteração de senha',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'solicitar.mudanca.senha');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'change.password.request');
 /* alterar.senha */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Geral\AlterarSenha::class',
-        'alterar.senha',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemPublic\ChangePassword::class',
+        'change.password',
         'false',
         'Alterar Senha',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'alterar.senha');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'change.password');
 /* cadastrar.usuario */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Usuario\Cadastrar::class',
-        'cadastrar.usuario',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemUser\Create::class',
+        'create.user',
         'true',
         'Cadastrar usuário',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'cadastrar.usuario');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'create.user');
 /* listar.usuario */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Usuario\Listar::class',
-        'listar.usuario',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemUser\Read::class',
+        'user.list',
         'true',
         'Listar usuários',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'listar.usuario');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'user.list');
 /* editar.usuario */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Usuario\Editar::class',
-        'editar.usuario',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemUser\Edit::class',
+        'user.edit',
         'true',
         'Editar informações de usuários',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'editar.usuario');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'user.edit');
 /* atualizar.usuario */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Usuario\Atualizar::class',
-        'atualizar.usuario',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemUser\Update::class',
+        'user.update',
         'true',
         'Atualizar Informações de usuário',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'atualizar.usuario');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'user.update');
 /* excluir.usuario */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Usuario\Excluir::class',
-        'excluir.usuario',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemUser\Delete::class',
+        'user.delete',
         'true',
         'Excluir informação de usuário',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'excluir.usuario');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'user.delete');
 /* alterar.status.usuario */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Usuario\AlterarStatus::class',
-        'alterar.status.usuario',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemUser\ChangeStatus::class',
+        'user.status.change',
         'true',
         'Alterar status do usuário',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'alterar.status.usuario');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'user.status.change');
 /* cadastrar.grupo */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Grupo\Cadastrar::class',
-        'cadastrar.grupo',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemGroup\Create::class',
+        'group.create',
         'true',
         'Cadastrar grupo de usuários',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'cadastrar.grupo');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'group.create');
 /* listar.grupo */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Grupo\Listar::class',
-        'listar.grupo',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemGroup\Read::class',
+        'group.list',
         'true',
         'Listar Grupo de usuários',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'listar.grupo');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'group.list');
 /* editar.grupo */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Grupo\Editar::class',
-        'editar.grupo',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemGroup\Edit::class',
+        'group.edit',
         'true',
         'Editar grupo',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'editar.grupo');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'group.edit');
 /* atualizar.grupo */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Grupo\Atualizar::class',
-        'atualizar.grupo',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemGroup\Update::class',
+        'group.update',
         'true',
         'Atualizar grupo',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'atualizar.grupo');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'group.update');
 /* excluir.grupo */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Grupo\Excluir::class',
-        'excluir.grupo',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemGroup\Delete::class',
+        'group.delete',
         'true',
         'Excluir grupo',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'excluir.grupo');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'group.delete');
 /* cadastrar.secao */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Secao\Cadastrar::class',
-        'cadastrar.secao',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemSection\Create::class',
+        'section.create',
         'true',
         'Cadastrar seão',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'cadastrar.secao');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'section.create');
 /* listar.secao */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Secao\Listar::class',
-        'listar.secao',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemSection\Read::class',
+        'section.list',
         'true',
         'Listar seção',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'listar.secao');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'section.list');
 /* editar.secao */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Secao\Editar::class',
-        'editar.secao',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemSection\Edit::class',
+        'section.edit',
         'true',
         'Editar seçao',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'editar.secao');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'section.edit');
 /* atualizar.secao */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Secao\Atualizar::class',
-        'atualizar.secao',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemSection\Update::class',
+        'section.update',
         'true',
         'Atualizar seção',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'atualizar.secao');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'section.update');
 /* excluir.secao */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Secao\Excluir::class',
-        'excluir.secao',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemSection\Delete::class',
+        'section.delete',
         'true',
         'Excluir secao',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'excluir.secao');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'section.delete');
 /* cadastrar.programa */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Programa\Cadastrar::class',
-        'cadastrar.programa',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemProgram\Create::class',
+        'program.create',
         'true',
         'Cadastrar programa',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'cadastrar.programa');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'program.create');
 /* listar.programa */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Programa\Listar::class',
-        'listar.programa',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemProgram\Read::class',
+        'program.list',
         'true',
         'Listar programa',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'listar.programa');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'program.list');
 /* editar.programa */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Programa\Editar::class',
-        'editar.programa',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemProgram\Edit::class',
+        'program.edit',
         'true',
         'Editar programa',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'editar.programa');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'program.edit');
 /* atualizar.programa */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Programa\Atualizar::class',
-        'atualizar.programa',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemProgram\Update::class',
+        'program.update',
         'true',
         'Atualizar programa',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'atualizar.programa');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'program.update');
 /* excluir.programa */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Programa\Excluir::class',
-        'excluir.programa',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemProgram\Delete::class',
+        'program.delete',
         'true',
         'Excluir programa',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'excluir.programa');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'program.delete');
 /* criar.configuracao */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Configuracao\Cadastrar::class',
-        'criar.configuracao',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemConfiguration\CreateOrUpdate::class',
+        'configuration.create.or.update',
         'true',
         'Criar configuracao',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'criar.configuracao');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'configuration.create.or.update');
 /* exibir.configuracao */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Configuracao\Listar::class',
-        'exibir.configuracao',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemConfiguration\Read::class',
+        'configuration.list',
         'true',
         'Exibir configuração',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'exibir.configuracao');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'configuration.list');
 /* ACL */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Administração' limit 1), 
-        'Administracao\Controllers\Geral\Acl::class',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Administração' limit 1), 
+        'Admin\Controllers\SystemPublic\Acl::class',
         'acl',
         'false',
         'Permissões de acesso',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'acl');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'acl');
 /* log.acesso */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Logs' limit 1), 
-        'Administracao\Controllers\Log\LogAcesso::class',
-        'log.acesso',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Logs' limit 1), 
+        'Admin\Controllers\SystemLog\AccessLog::class',
+        'access.log',
         'true',
         'Listar acessos de usuários',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'log.acesso');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'access.log');
 /* auditoria */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Logs' limit 1), 
-        'Administracao\Controllers\Log\Auditoria::class',
-        'auditoria',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Logs' limit 1), 
+        'Admin\Controllers\SystemLog\SqlLog::class',
+        'audit',
         'true',
         'Auditar ações dentro do sistema',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'auditoria');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'audit');
 /* secao.acl */
-INSERT INTO system_program (section,program,name,private,description,created_by)
+INSERT INTO "SYSTEM_PROGRAM" ("SECTION","PROGRAM","NAME","PRIVATE","DESCRIPTION","CREATED_BY")
     SELECT 
-        (SELECT id FROM system_program_section where name = 'Logs' limit 1), 
-        'Administracao\Controllers\Secao\SecaoAcl::class',
-        'secao.acl',
+        (SELECT "ID" FROM "SYSTEM_PROGRAM_SECTION" where "NAME" = 'Logs' limit 1), 
+        'Admin\Controllers\Section\Acl::class',
+        'section.acl',
         'true',
         'Controle de acesso Para Menu',
-        (SELECT id FROM system_user where login = 'mauro.miranda' limit 1)
+        (SELECT "ID" FROM "SYSTEM_USER" where "LOGIN" = 'mauro.miranda' limit 1)
     WHERE
-        NOT EXISTS (SELECT name FROM system_program WHERE name = 'secao.acl');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM" WHERE "NAME" = 'section.acl');

@@ -12,11 +12,6 @@
  * SystemPreferenceRead
  *  Gets system configuration info from the table
  *
- * @OA\SecurityScheme(
- *     securityScheme="bearerAuth",
- *     type="http",
- *     scheme="bearer"
- * )
  */
 
 declare(strict_types=1);
@@ -48,16 +43,64 @@ class CreateOrUpdate implements Middleware
         try {
             $formData = $request->getBody();
 
-            // Excluir informações antigas se existir
-            $configuracaoModelDelete = new SystemConfiguration();
-            $configuracaoQueryDelete = $configuracaoModelDelete->start('system');
-            $configuracaoQueryDelete
+            /*
+            |--------------------------------------------------------------------------
+            |                          Configuration Model
+            |--------------------------------------------------------------------------
+            |
+            | This value is the way we call a table model. This value is used when we 
+            | want to call a table in from te database
+            |
+            */
+            
+            $configurationModel = new SystemConfiguration();
+
+            /*
+            |--------------------------------------------------------------------------
+            |                        Configuration Model Start
+            |--------------------------------------------------------------------------
+            |
+            | This way you make a connection to the table, chosing the wright 
+            | credentials for that
+            |
+            */
+            
+            $configurationQueryDelete = $configurationModel->start('system');
+
+            /*
+            |--------------------------------------------------------------------------
+            |                         Delete Query Statment    
+            |--------------------------------------------------------------------------
+            |
+            | It builds a query that runs delete instruction with given parameters
+            |
+            */
+            
+            $configurationQueryDelete
                 ->delete()
                 ->where('chave', $formData['chave'])
                 ->execute();
 
+            /*
+            |--------------------------------------------------------------------------
+            |                              Form Data
+            |--------------------------------------------------------------------------
+            |
+            | This variable has all inputs data, then we verify if there is some data
+            | to be inserted in the table
+            |
+            */
+            
             if (count((array)$formData['data']) > 0) {
-                // Valida formulário enviado
+                /*
+                |--------------------------------------------------------------------------
+                |                                  validate
+                |--------------------------------------------------------------------------
+                |
+                | validates the required input from the frontend or request
+                |
+                */
+                
                 $this->form->validate(
                     [
                         'chave'  => ['required' => true],
@@ -65,24 +108,59 @@ class CreateOrUpdate implements Middleware
                     ]
                 );
 
-                // Informações a serem inseridas
-                $ativo = $formData['ativo'] ? 'S' : 'N';
+                /*
+                |--------------------------------------------------------------------------
+                |                               Data Array
+                |--------------------------------------------------------------------------
+                |
+                | Here we format all informations to be inserted e the table
+                |
+                */
+                
+                $active = $formData['ativo'] ? 'S' : 'N';
                 $data  = [
                     'chave'      => $formData['chave'],
                     'valor'      => json_encode($formData['data']),
                     'tipo'       => $formData['tipo'],
-                    'ativo'      => $ativo,
+                    'ativo'      => $active,
                     'created_by' => Session::getValue('user'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
 
-                // Faz o cadastro das informações
-                $configuracaoModelInsert = new SystemConfiguration();
-                $configuracaoQueryInsert = $configuracaoModelInsert->start('system');
-                $configuracaoQueryInsert
+                /*
+                |--------------------------------------------------------------------------
+                |                                  start
+                |--------------------------------------------------------------------------
+                |
+                | We start the table connection into the database
+                |
+                */
+                
+                $configurationModelInsert = $configurationModel->start('system');
+
+                /*
+                |--------------------------------------------------------------------------
+                |                                  Insert
+                |--------------------------------------------------------------------------
+                |
+                | Insert all formated information into the configuration table
+                |
+                */
+                
+                $configurationModelInsert
                     ->insert($data)
                     ->execute();
-                $id = $configuracaoQueryInsert->getId();
+
+                /*
+                |--------------------------------------------------------------------------
+                |                                  id
+                |--------------------------------------------------------------------------
+                |
+                | After the information been inserted, the query retuns te inserted id
+                |
+                */
+                
+                $id = $configurationModelInsert->getId();
             }
             $result['id'] = $id;
             $payload = $this->encrypt($result);

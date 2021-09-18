@@ -1,11 +1,11 @@
-INSERT INTO system_user_group (user_id, group_id)
+INSERT INTO "SYSTEM_USER_GROUP" ("USER_ID", "GROUP_ID")
     SELECT 
-        (SELECT id FROM system_user WHERE login = 'mauro.miranda' LIMIT 1),
-        (SELECT id FROM system_group WHERE name = 'Webmaster' LIMIT 1)
+        (SELECT "ID" FROM "SYSTEM_USER" WHERE "LOGIN" = 'mauro.miranda' LIMIT 1),
+        (SELECT "ID" FROM "SYSTEM_GROUP" WHERE "NAME" = 'Webmaster' LIMIT 1)
     WHERE
         NOT EXISTS (SELECT 
                         * 
-                    FROM system_user_group 
-                    WHERE user_id = (SELECT id FROM system_user  WHERE login = 'mauro.miranda' LIMIT 1)
-                    AND group_id  = (SELECT id FROM system_group WHERE name  = 'Webmaster' LIMIT 1)
+                    FROM  "SYSTEM_USER_GROUP"
+                    WHERE "USER_ID"   = (SELECT "ID" FROM "SYSTEM_USER"  WHERE "LOGIN" = 'mauro.miranda' LIMIT 1)
+                    AND   "GROUP_ID"  = (SELECT "ID" FROM "SYSTEM_GROUP" WHERE "NAME"  = 'Webmaster'     LIMIT 1)
                 );

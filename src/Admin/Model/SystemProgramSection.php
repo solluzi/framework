@@ -21,7 +21,7 @@ use Model\Model;
 
 class SystemProgramSection extends Model
 {
-    public $table      = "system_program_section";
-    public $primaryKey = "id";
+    public $table      = '"SYSTEM_PROGRAM_SECTION"';
+    public $primaryKey = '"ID"';
     public $idPolicy   = "uuid";         //{max,serial,auto,uuid}
 }

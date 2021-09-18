@@ -1,8 +1,9 @@
-INSERT INTO system_user (login, password, active, program_id)
+INSERT INTO "SYSTEM_USER" ("NAME","LOGIN", "PASSWORD", "ACTIVE", "PROGRAM_ID")
     SELECT 
+        'MAURO MIRANDA',
         'mauro.miranda',
         crypt('12345678', gen_salt('bf')),
         'true',
-        (SELECT id FROM system_program sp WHERE sp.name = 'listar.usuario' LIMIT 1)
+        (SELECT "ID" FROM "SYSTEM_PROGRAM" "SP" WHERE "SP"."NAME" = 'listar.usuario' LIMIT 1)
     WHERE
-        NOT EXISTS (SELECT login FROM system_user su WHERE su.login = 'mauro.miranda');
+        NOT EXISTS (SELECT "LOGIN" FROM "SYSTEM_USER" "SU" WHERE "SU"."LOGIN" = 'mauro.miranda');

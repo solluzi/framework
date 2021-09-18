@@ -21,8 +21,8 @@ use Model\Model;
 
 class SystemUser extends Model
 {
-    protected $table      = "system_user";
-    protected $primaryKey = "id";
+    protected $table      = '"SYSTEM_USER"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; // {max, serial, auto, uuid}
 
      /**

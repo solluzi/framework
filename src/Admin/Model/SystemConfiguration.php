@@ -21,7 +21,7 @@ use Model\Model;
 
 class SystemConfiguration extends Model
 {
-    protected $table      = "system_configuration";
-    protected $primaryKey = "id";
+    protected $table      = '"SYSTEM_CONFIGURATION"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; // {max, serial, auto, uuid}
 }

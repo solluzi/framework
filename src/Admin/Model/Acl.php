@@ -21,7 +21,7 @@ use Model\Model;
 
 class Acl extends Model
 {
-    protected $table      = "vw_permissao_acesso";
-    protected $primaryKey = "id";
+    protected $table      = '"VW_ACCESS_PERMISSION"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; //{max,serial,auto,uuid}
 }

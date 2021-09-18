@@ -1,9 +1,9 @@
-INSERT INTO system_program_section (name) 
+INSERT INTO "SYSTEM_PROGRAM_SECTION" ("NAME") 
     SELECT 'Administração'
     WHERE
-        NOT EXISTS (SELECT name FROM system_program_section WHERE name = 'Administração');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM_SECTION" WHERE "NAME" = 'Administração');
 
-INSERT INTO system_program_section (name) 
+INSERT INTO "SYSTEM_PROGRAM_SECTION" ("NAME") 
     SELECT 'Logs'
     WHERE
-        NOT EXISTS (SELECT name FROM system_program_section WHERE name = 'Logs');
+        NOT EXISTS (SELECT "NAME" FROM "SYSTEM_PROGRAM_SECTION" WHERE "NAME" = 'Logs');

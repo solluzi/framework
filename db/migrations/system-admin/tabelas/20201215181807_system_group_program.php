@@ -9,16 +9,16 @@ final class SystemGroupProgram extends AbstractMigration
     public function change(): void
     {
         
-        $table = $this->table('system_group_program', ['id' => false]);
+        $table = $this->table('SYSTEM_GROUP_PROGRAM', ['id' => false]);
         $table
-            ->addColumn('id'                , 'uuid', [
+            ->addColumn('ID'                , 'uuid', [
                 'default' => Literal::from('uuid_generate_v4()'), 'null' => false
             ])
-            ->addColumn('group_id'     , 'uuid')
-            ->addColumn('program_id'   , 'uuid')
-            ->changePrimaryKey(['id'])
-            ->addForeignKey('group_id'     , 'system_group'   , 'id', ["delete" => "CASCADE", "update" => "NO_ACTION"])
-            ->addForeignKey('program_id'   , 'system_program' , 'id', ["delete" => "CASCADE", "update" => "NO_ACTION"])
+            ->addColumn('GROUP_ID'     , 'uuid')
+            ->addColumn('PROGRAM_ID'   , 'uuid')
+            ->changePrimaryKey(['ID'])
+            ->addForeignKey('GROUP_ID'     , 'SYSTEM_GROUP'   , 'ID', ["delete" => "CASCADE", "update" => "NO_ACTION"])
+            ->addForeignKey('PROGRAM_ID'   , 'SYSTEM_PROGRAM' , 'ID', ["delete" => "CASCADE", "update" => "NO_ACTION"])
             ->create();
         
     }

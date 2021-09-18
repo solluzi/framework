@@ -18,7 +18,7 @@ trait Request
         $data       = json_decode(file_get_contents("php://input"));
         $formResult = ($data) ? (array)$data : $_POST;
         
-        if((getenv('DADOS_ENCRIPTADOS') === 'Y')){
+        if((getenv('DATA_ENCRIPTION') === 'Y')){
             if(isset($formResult['data'])){
                 $result     = $this->decrypt($formResult['data']);
                 return (array)$result;

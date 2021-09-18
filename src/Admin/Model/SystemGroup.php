@@ -21,8 +21,8 @@ use Model\Model;
 
 class SystemGroup extends Model
 {
-    protected $table      = "system_group";
-    protected $primaryKey = "id";
+    protected $table      = '"SYSTEM_GROUP"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; // {max, serial, auto, uuid}
 
     public function adicionarGrupoAoPrograma($programas, $grupo)

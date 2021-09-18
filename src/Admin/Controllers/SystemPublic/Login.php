@@ -81,21 +81,21 @@ class Login implements Middleware
                 ->instruction("SELECT")
                 ->instructionValues($dados)
                 ->get();
-
+            
             // variaveis que serão informadas ao client
             $httpResponse  = HttpStatusCode::OK;
 
-            $function    = json_decode($selectResult->fn_login);
+            $function    = json_decode($selectResult->login);
             $loginResult = (array)$function;
 
-            if ($loginResult['logado']) {
+            if ($loginResult['logged']) {
                 $payload = $this->encrypt($loginResult);
                 return Response::json(['data' => $payload], $httpResponse);
             } else {
                 return Response::json([], HttpStatusCode::UNAUTHORIZED);
             }
         } catch (\Exception $e) {
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
         }
     }
 }

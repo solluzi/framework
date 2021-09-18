@@ -1,8 +1,8 @@
-CREATE OR REPLACE VIEW view_program AS
+CREATE OR REPLACE VIEW "VW_PROGRAM" AS
     SELECT
-        sps.id AS section_id,
-        sps.name AS section,
-        sp.id AS program_id,
-        sp.description AS description
-    FROM system_program_section sps
-    INNER JOIN system_program sp ON sp.section = sps.id;
+        "SPS"."ID"         AS "SECTION_ID",
+        "SPS"."NAME"       AS "SECTION",
+        "SP"."ID"          AS "PROGRAM_ID",
+        "SP"."DESCRIPTION" AS "DESCRITPTION"
+    FROM "SYSTEM_PROGRAM_SECTION" "SPS"
+    JOIN "SYSTEM_PROGRAM" "SP" ON "SP"."SECTION" = "SPS"."ID";

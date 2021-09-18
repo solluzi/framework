@@ -49,15 +49,15 @@ class Read implements Middleware
             #######################################################
             // Total de registros
             $totalRegistros = $grupoModel->start('system')
-                ->select('', ['COUNT(*)'])
-                ->where('nome', $nome, 'LIKE')
+                ->select('"SG"', ['COUNT(*) as total'])
+                ->where('"SG"."NAME"', $nome, 'LIKE')
                 ->get();
 
             // Registro por página
             $limit = (int)$uriParams['by_page'];
 
             // Quantas paginas terá na tabela?
-            $paginas = ceil($totalRegistros->count / $limit);
+            $paginas = ceil($totalRegistros->total / $limit);
 
             // Calcula o offset para a página
             $offset = ($uriParams['page'] - 1) * $limit;
@@ -66,8 +66,8 @@ class Read implements Middleware
             #######################################################
 
             $resultados = $grupoModel->start('system')
-                ->select('', ['*'])
-                ->where('nome', $nome, 'LIKE')
+                ->select('SG', ['*'])
+                ->where('"SG"."NAME"', $nome, 'LIKE')
                 ->limit($limit, $offset)
                 ->getAll();
 
@@ -75,7 +75,7 @@ class Read implements Middleware
             $resposta['data'] = [
                 'registros'       => $resultados,
                 'paginas'         => $paginas,
-                'total_registros' => $totalRegistros->count
+                'total_registros' => $totalRegistros->total
             ];
 
             $payload = $this->encrypt($resposta);

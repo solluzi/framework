@@ -1,25 +1,50 @@
 <?php
-// retorna as conexões
+/*
+|--------------------------------------------------------------------------
+|                            databases credentials
+|--------------------------------------------------------------------------
+|
+| here we format all credentials to access differents databases
+|
+*/
+
 
 return [
-    // DATABASE: SISTEMA
+    /*
+    |--------------------------------------------------------------------------
+    |                          system database
+    |--------------------------------------------------------------------------
+    |
+    | 
+    |
+    */
+    
     'system' => [
-        'type'      => getenv('DEV_BASE_DB_ADAPTER'),
-        'host'      => getenv('DEV_BASE_DB_HOST'),
-        'user'      => getenv('DEV_BASE_DB_USER'),
-        'pass'      => getenv('DEV_BASE_DB_PASS'),
-        'port'      => getenv('DEV_BASE_DB_PORT'),
-        'name'      => getenv('DEV_BASE_DB_NAME'),
-        'charset'   => getenv('DEV_BASE_DB_CHAR'),
+        'type'      => getenv('PERMISSION_DB_TYPE'),
+        'host'      => getenv('PERMISSION_DB_HOST'),
+        'user'      => getenv('PERMISSION_DB_USER'),
+        'pass'      => getenv('PERMISSION_DB_PASS'),
+        'port'      => getenv('PERMISSION_DB_PORT'),
+        'name'      => getenv('PERMISSION_DB_NAME'),
+        'charset'   => getenv('PERMISSION_DB_CHAR'),
     ],
-    // DATABASE: EAD
+    
+    /*
+    |--------------------------------------------------------------------------
+    |                         system log database
+    |--------------------------------------------------------------------------
+    |
+    | 
+    |
+    */
+    
     'log'     => [
-        'type'      => getenv('DB_LOG_ADAPTER'),
-        'host'      => getenv('DB_LOG_HOST'),
-        'user'      => getenv('DB_LOG_USER'),
-        'pass'      => getenv('DB_LOG_PASS'),
-        'port'      => getenv('DB_LOG_PORT'),
-        'name'      => getenv('DB_LOG_NAME'),
-        'charset'   => getenv('DB_LOG_CHAR')
+        'type'      => getenv('LOG_DB_TYPE'),
+        'host'      => getenv('LOG_DB_HOST'),
+        'user'      => getenv('LOG_DB_USER'),
+        'pass'      => getenv('LOG_DB_PASS'),
+        'port'      => getenv('LOG_DB_PORT'),
+        'name'      => getenv('LOG_DB_NAME'),
+        'charset'   => getenv('LOG_DB_CHAR')
     ]
 ];

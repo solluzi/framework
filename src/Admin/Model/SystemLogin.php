@@ -21,7 +21,7 @@ use Model\Model;
 
 class SystemLogin extends Model
 {
-    protected $table           = "fn_login(?)";
-    protected $primaryKey      = "id";
+    protected $table           = '"FN_LOGIN"(?) as login';
+    protected $primaryKey      = '"ID"';
     protected $idPolicy        = "uuid"; // {max, serial, auto, uuid}
 }

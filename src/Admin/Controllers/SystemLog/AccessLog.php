@@ -34,34 +34,56 @@ class AccessLog implements Middleware
     public function process(Request $request)
     {
         try {
-            // Parametros recebidos do formulário
+            /*
+            |--------------------------------------------------------------------------
+            |                                  getBody
+            |--------------------------------------------------------------------------
+            |
+            | Gets all forms inputs parameters from request
+            |
+            */
+            
             $data      = $request->getBody();
 
-            // parametros recebidos da url
+            /*
+            |--------------------------------------------------------------------------
+            |                                  getQueryParams
+            |--------------------------------------------------------------------------
+            |
+            | Gets All uri parameters
+            |
+            */
+            
             $uriParams = $request->getQueryParams();
 
-            // Model
-            $logAcessoModel = new SystemAccessLog();
+            /*
+            |--------------------------------------------------------------------------
+            |                                  
+            |--------------------------------------------------------------------------
+            |
+            | 
+            |
+            */
+            
+            $accessLogModel = new SystemAccessLog();
 
             // $campos para filtro
             $login       = (isset($data['login'])       && !empty($data['login']))      ? $data['login']        : null;
-            $data_inicio = (isset($data['data_inicio']) && !empty($data['data_inicio'])) ? $data['data_inicio']  : null;
+            $data_inicio = (isset($data['data_inicio']) && !empty($data['data_inicio'])) ? $data['data_inicio'] : null;
             $data_fim    = (isset($data['data_fim'])    && !empty($data['data_fim']))   ? $data['data_fim']     : null;
-            #######################################################
-            ################# INICIO da PAGINAÇÃO #################
-            #######################################################
+            
             // Total de registros
-            $totalRegistros = $logAcessoModel->start('log')
-                ->select('', ['COUNT(*)'])
-                ->where('login', $login)
-                ->between('DATE(acessou)', [$data_inicio, $data_fim])
+            $totalRecords = $accessLogModel->start('log')
+                ->select('al', ['COUNT(*) as total'])
+                ->where('"LOGIN"', $login)
+                ->between('DATE(LOGGED_IN)', [$data_inicio, $data_fim])
                 ->get();
 
             // Registro por página
             $limit = (int)$uriParams['by_page'];
 
             // Quantas paginas terá na tabela?
-            $paginas = ceil($totalRegistros->count / $limit);
+            $pages = ceil($totalRecords->total / $limit);
 
             // Calcula o offset para a página
             $offset = ($uriParams['page'] - 1) * $limit;
@@ -69,21 +91,27 @@ class AccessLog implements Middleware
             ################## FIM PAGINAÇÃO ######################
             #######################################################
 
-            $logAcessoQuery = $logAcessoModel->start('log');
-            $result         = $logAcessoQuery->select('', ['login', 'fn_data2br(acessou) as acessou','fn_data2br(saiu) as saiu' ])
-                ->where('login', $login)
-                ->between('DATE(acessou)', [$data_inicio, $data_fim])
+            $accessLogQuery = $accessLogModel->start('log');
+            $result         = $accessLogQuery->select(
+                                    'al', 
+                                    [
+                                        '"LOGIN"', 
+                                        'fn_data2br("LOGGED_IN") as acessou',
+                                        'fn_data2br("LOGGED_OUT") as saiu' 
+                                    ])
+                ->where('"LOGIN"', $login)
+                ->between('DATE("LOGGED_IN")', [$data_inicio, $data_fim])
                 ->limit($limit, $offset)
                 ->getAll();
 
             // Fomatação de registros
-            $resposta['data'] = [
+            $response['data'] = [
                 'registros'       => $result,
-                'paginas'         => $paginas,
-                'total_registros' => $totalRegistros->count
+                'paginas'         => $pages,
+                'total_registros' => $totalRecords->total
             ];
 
-            $payload = $this->encrypt($resposta);
+            $payload = $this->encrypt($response);
 
             return Response::json(['data' => $payload], HttpStatusCode::OK);
         } catch (\Exception $e) {

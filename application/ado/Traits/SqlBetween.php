@@ -42,7 +42,7 @@ trait SqlBetween
         | then stores in a array the where clause and the values that satisfies the request
         |
         */
-        if(count($value) == 2){
+        if(isset($value[0]) && isset($value[1])){
             $this->query->between = ($this->query->where) ? " AND $field BETWEEN ? AND ?" : " WHERE $field BETWEEN ? AND ?";
             $this->values[] = $value[0];
             $this->values[] = $value[1];

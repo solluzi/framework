@@ -8,22 +8,22 @@ class InsertGroupProgram extends AbstractSeed
     public function run()
     {
         // Busca o Grupo
-        $sqlGrupo = $this->query("SELECT id FROM system_group WHERE name='Webmaster' LIMIT 1");
+        $sqlGrupo = $this->query('SELECT "ID" FROM "SYSTEM_GROUP" WHERE "NAME"=\'Webmaster\' LIMIT 1');
         $lnGrupo  = $sqlGrupo->fetch(PDO::FETCH_OBJ);
 
         // Busca Programas
-        $sqlPrograma  = $this->query("SELECT id FROM system_program");
+        $sqlPrograma  = $this->query('SELECT "ID" FROM "SYSTEM_PROGRAM"');
         $lnsProgramas = $sqlPrograma->fetchAll(PDO::FETCH_OBJ);
         
         if(($lnGrupo) && ($lnsProgramas)){
             
             foreach($lnsProgramas as $value){
-                $sql = "INSERT INTO system_group_program (group_id, program_id) 
+                $sql = "INSERT INTO \"SYSTEM_GROUP_PROGRAM\" (\"GROUP_ID\", \"PROGRAM_ID\") 
                             SELECT
-                                '{$lnGrupo->id}', 
-                                '{$value->id}'
+                                '{$lnGrupo->ID}', 
+                                '{$value->ID}'
                             WHERE
-                                NOT EXISTS(SELECT * FROM system_group_program WHERE group_id = '$lnGrupo->id' AND program_id = '$value->id')";
+                                NOT EXISTS(SELECT * FROM \"SYSTEM_GROUP_PROGRAM\" WHERE \"GROUP_ID\" = '$lnGrupo->ID' AND \"PROGRAM_ID\" = '$value->ID')";
                 $stmt = $this->query($sql);
                 $stmt->execute();
             }

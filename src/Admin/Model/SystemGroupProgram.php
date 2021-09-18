@@ -21,7 +21,7 @@ use Model\Model;
 
 class SystemGroupProgram extends Model
 {
-    protected $table      = "system_group_program";
-    protected $primaryKey = "id";
+    protected $table      = '"SYSTEM_GROUP_PROGRAM"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; // {max, serial, auto, uuid}
 }

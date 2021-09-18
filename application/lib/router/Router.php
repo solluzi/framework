@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Router;
 
-use Administracao\Model\Programa;
+use Admin\Model\SystemProgram;
 use AltoRouter;
 use Controller\HttpStatusCode;
 use Traits\IsLoggedinTrait;
@@ -35,7 +35,7 @@ class Router
      */
     public function __construct()
     {
-        $this->controlador = new Programa();
+        $this->controlador = new SystemProgram();
         $routeArray        = include dirname(__DIR__,3) . '/config/routes.php';
         
         $this->routes = new AltoRouter();
@@ -61,17 +61,16 @@ class Router
             $request = new Request;
             
             // Verifica se o controlador é publico ou privado
-            $nome = $this->match['name'] ?? ' ';
+            $name = $this->match['name'] ?? ' ';
             
             $controladorQuery        = $this->controlador->start('system');
             $this->controladorSelect = $controladorQuery
-                ->select('p', ['p.programa', 'p.privado'])
-                ->where('nome', $nome)
+                ->select('"P"', ['"P"."PROGRAM"', '"P"."PRIVATE"'])
+                ->where('"P"."NAME"', $name)
                 ->get();
-                
+            
             // Faz tratativa da classe
             $this->class = $this->dbClass($this->controladorSelect);
-            
             
             $areas = [
                 self::AREA_PRIVADA,
@@ -94,7 +93,7 @@ class Router
 
     public function dbClass($controlador)
     {
-        return isset($controlador->programa) ? str_replace('::class', '', $controlador->programa) :null;
+        return isset($controlador->PROGRAM) ? str_replace('::class', '', $controlador->PROGRAM) :null;
     }
 
     /**

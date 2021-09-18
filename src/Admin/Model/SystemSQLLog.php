@@ -21,7 +21,7 @@ use Model\Model;
 
 class SystemSQLLog extends Model
 {
-    protected $table      = "system_sql_log";
-    protected $primaryKey = "id";
+    protected $table      = '"SYSTEM_SQL_LOG"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; // {max, serial, auto, uuid}
 }

@@ -21,7 +21,7 @@ use Model\Model;
 
 class SystemUserGroup extends Model
 {
-    protected $table      = "system_user_group";
-    protected $primaryKey = "id";
+    protected $table      = '"SYSTEM_USER_GROUP"';
+    protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; // {max, auto, serial, uuid}
 }

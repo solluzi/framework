@@ -1,12 +1,12 @@
-CREATE OR REPLACE FUNCTION FormatCPFCNPJ( AlphaText VARCHAR(50) )
+CREATE OR REPLACE FUNCTION fn_formata_CPF_CNPJ( AlphaText VARCHAR(50) )
    RETURNS VARCHAR(50) AS $$
 DECLARE
   FormattedText VARCHAR(50) = '';
-  NumChar INTEGER;
-  NumericChar CHAR;
+  NumChar       INTEGER;
+  NumericChar   CHAR;
 BEGIN
   AlphaText := regexp_replace(AlphaText, '[^0-9]', '', 'g');
-  NumChar := LENGTH( AlphaText );
+  NumChar   := LENGTH( AlphaText );
   if (NumChar > 14) OR (NumChar < 11) THEN
     RETURN NULL;
   elsif NumChar = 11 THEN
