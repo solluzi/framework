@@ -18,7 +18,7 @@ trait SqlLastId
         | query to get max id from given table
         |
         */
-        $sql = "SELECT MAX(".$primaryKey.") FROM " . $this->table.';';
+        $sql = "SELECT MAX(".$primaryKey.") AS max FROM " . $this->table.';';
         /*
         |----------------------------------------------------------------------------------------------
         | connect

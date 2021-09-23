@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\SystemPublic;
 
-use Administracao\Model\Acl as ModelAcl;
+use Admin\Model\Acl as ModelAcl;
 use Application\Interface\Middleware as InterfaceMiddleware;
 use Controller\HttpStatusCode;
 use Controller\Response;
@@ -35,10 +35,10 @@ class Acl implements InterfaceMiddleware
             // Pesquisa usuario e permissão
             $permissaoQuery = new ModelAcl();
             $permissaoSelect = $permissaoQuery->start('system')
-                ->select('', ['1 as id'])
-                ->where('nome', $uriParams['controller'])
-                ->and('usuario', Session::getValue('user'))
-                ->and('grupo', Session::getValue('grupo'))
+                ->select('a', ['1 as id'])
+                ->where('nome'      , $uriParams['controller'])
+                ->where('usuario'   , Session::getValue('user'))
+                ->where('grupo'     , Session::getValue('grupo'))
                 ->get();
 
             $permitido = (isset($permissaoSelect->id)) ? true : false;

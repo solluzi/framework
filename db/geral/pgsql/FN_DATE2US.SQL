@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION fn_date2us (  "p_data" timestamptz, "p_type" boolean)  
+CREATE OR REPLACE FUNCTION "FN_DATE2US" (  "p_data" timestamptz, "p_type" boolean)  
     RETURNS varchar AS  
 $body$  
 DECLARE  

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION FN_DATE2BR (  "p_data" timestamptz, "p_type" BOOLEAN)  
+CREATE OR REPLACE FUNCTION "FN_DATE2BR" (  "p_data" timestamptz, "p_type" BOOLEAN)  
     RETURNS VARCHAR AS  
 $body$  
 DECLARE  

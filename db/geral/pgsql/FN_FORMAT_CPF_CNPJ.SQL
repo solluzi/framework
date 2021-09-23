@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION fn_formata_CPF_CNPJ( AlphaText VARCHAR(50) )
+CREATE OR REPLACE FUNCTION "FN_FORMAT_CPF_CNPJ"( AlphaText VARCHAR(50) )
    RETURNS VARCHAR(50) AS $$
 DECLARE
   FormattedText VARCHAR(50) = '';
@@ -20,6 +20,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Exemplo de uso
-select p_cpfcnpj Original, FormatCPFCNPJ( p_cpfcnpj ) Formatado * from tabela;
+-- select p_cpfcnpj Original, FormatCPFCNPJ( p_cpfcnpj ) Formatado * from tabela;
 -- Exemplo de update
-update tabela set p_cpfcnpj = FormatCPFCNPJ( p_cpfcnpj )
+-- update tabela set p_cpfcnpj = FormatCPFCNPJ( p_cpfcnpj )
