@@ -10,10 +10,10 @@ trait JWTPayloadTrait
     {
         $tokenId      = base64_encode(openssl_random_pseudo_bytes(32));
         $tokenPayload = [
-            'iss'            => $_ENV['ISS'],
-            'sub'            => $_ENV['SUB'],
-            'aud'            => $_ENV['AUD'],
-            'expiration_sec' => $_ENV['EXPIRATION_SEC'],
+            'iss'            => getenv('ISS'),
+            'sub'            => getenv('SUB'),
+            'aud'            => getenv('AUD'),
+            'expiration_sec' => getenv('EXPIRATION_SEC'),
             'jti'            => $tokenId,
             'userdata'       =>  [
                'uid' => $id

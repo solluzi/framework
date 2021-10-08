@@ -2,6 +2,7 @@
 declare (strict_types = 1);
 namespace Session;
 
+use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use stdClass;
 
@@ -14,19 +15,18 @@ class JWTWrapper
      */
     public static function encode(array $options)
     {
-        $issuedAt = time();
-        $expire = $issuedAt + $options['expiration_sec']; // tempo de expiração
+        $issuedAt   = new DateTimeImmutable();
+        $expire     = $issuedAt->modify('+60 minutes')->getTimestamp();
+
         $tokenParam = [
-            'iss'  => $options['iss'],      // pode ser usado para descartar tokens de outros dominios
-            'sub'  => $options['sub'],
-            'aud'  => $options['aud'],
-            'exp'  => $expire,              // expiração do token
-            'nbf'  => $issuedAt - 1,        // Token não é valido antes de
-            'iat'  => $issuedAt,            // timestamp de geração do token
+            'iat'  => $issuedAt->getTimestamp(),
+            'iss'  => $options['iss'],            // pode ser usado para descartar tokens de outros dominios
+            'nbf'  => $issuedAt->getTimestamp(),  // Token não é valido antes de
+            'exp'  => $expire,
             'data' => $options['userdata']
         ];
        
-        return JWT::encode($tokenParam, $_ENV['JWT_ENCDEC_KEY']);
+        return JWT::encode($tokenParam, getenv('JWT_ENCDEC_KEY'));
     }
 
     /**
@@ -35,7 +35,7 @@ class JWTWrapper
     public static function decode($jwt)
     {
         try {
-            return JWT::decode($jwt, $_ENV['JWT_ENCDEC_KEY'], ['HS256']);
+            return JWT::decode($jwt, getenv('JWT_ENCDEC_KEY'), ['HS256']);
         } catch (\Exception $e) {
             $obj = new stdClass;
             $obj->iss = null;

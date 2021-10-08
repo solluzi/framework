@@ -9,6 +9,7 @@ use Admin\Model\SystemUser;
 use Admin\Model\SystemUserGroup;
 use Controller\HttpStatusCode;
 use DateTime;
+use DateTimeImmutable;
 use Session\JWTWrapper;
 use Session\Session;
 
@@ -29,8 +30,9 @@ trait IsLoggedinTrait
             (isset($authorization['Authorization'])) ? list($this->jwt) = sscanf($authorization['Authorization'], 'Bearer %s') : null;
 
             $decriptToken = (!empty(JWTWrapper::decode($this->jwt))) ? JWTWrapper::decode($this->jwt) : false;
-            $tokenTime    = new DateTime();
-            $agora        = new DateTime('now');
+           
+            $now = new DateTimeImmutable();
+
             
              // Pesquisa a sessão salva no banco de dados
              $uid = ($decriptToken->data->uid) ?? ' ';
@@ -66,8 +68,10 @@ trait IsLoggedinTrait
                 && ($decriptToken->aud) 
                 && ($decriptToken->exp) 
                 && !empty($usuarioResult)
-                && ($tokenTime->setTimestamp($decriptToken->exp))
-                && ($tokenTime->format('Y-m-d H:i:s') > $agora->format('Y-m-d H:i:s'))
+                && (($decriptToken->nbf < $now->getTimestamp()))
+                && (($decriptToken->exp > $now->getTimestamp()))
+                //&& ($tokenTime->setTimestamp($decriptToken->exp))
+                //&& ($tokenTime->format('Y-m-d H:i:s') > $agora->format('Y-m-d H:i:s'))
             ) 
             {
                 
