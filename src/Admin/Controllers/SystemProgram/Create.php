@@ -64,7 +64,7 @@ class Create implements Middleware
 
 
             $programaModel  = new SystemProgram();
-            $programaInsert = $programaModel->start('system');
+            $programaInsert = $programaModel->database('system');
             $programaInsert
                 ->insert($info)
                 ->execute();

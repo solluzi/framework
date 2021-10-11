@@ -48,11 +48,11 @@ class CreateOrUpdate implements Middleware
             |                          Configuration Model
             |--------------------------------------------------------------------------
             |
-            | This value is the way we call a table model. This value is used when we 
+            | This value is the way we call a table model. This value is used when we
             | want to call a table in from te database
             |
             */
-            
+
             $configurationModel = new SystemConfiguration();
 
             /*
@@ -60,22 +60,22 @@ class CreateOrUpdate implements Middleware
             |                        Configuration Model Start
             |--------------------------------------------------------------------------
             |
-            | This way you make a connection to the table, chosing the wright 
+            | This way you make a connection to the table, chosing the wright
             | credentials for that
             |
             */
-            
-            $configurationQueryDelete = $configurationModel->start('system');
+
+            $configurationQueryDelete = $configurationModel->database('system');
 
             /*
             |--------------------------------------------------------------------------
-            |                         Delete Query Statment    
+            |                         Delete Query Statment
             |--------------------------------------------------------------------------
             |
             | It builds a query that runs delete instruction with given parameters
             |
             */
-            
+
             $configurationQueryDelete
                 ->delete()
                 ->where('chave', $formData['chave'])
@@ -90,7 +90,7 @@ class CreateOrUpdate implements Middleware
             | to be inserted in the table
             |
             */
-            
+
             if (count((array)$formData['data']) > 0) {
                 /*
                 |--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ class CreateOrUpdate implements Middleware
                 | validates the required input from the frontend or request
                 |
                 */
-                
+
                 $this->form->validate(
                     [
                         'chave'  => ['required' => true],
@@ -116,7 +116,7 @@ class CreateOrUpdate implements Middleware
                 | Here we format all informations to be inserted e the table
                 |
                 */
-                
+
                 $active = $formData['ativo'] ? 'S' : 'N';
                 $data  = [
                     'chave'      => $formData['chave'],
@@ -135,8 +135,8 @@ class CreateOrUpdate implements Middleware
                 | We start the table connection into the database
                 |
                 */
-                
-                $configurationModelInsert = $configurationModel->start('system');
+
+                $configurationModelInsert = $configurationModel->database('system');
 
                 /*
                 |--------------------------------------------------------------------------
@@ -146,7 +146,7 @@ class CreateOrUpdate implements Middleware
                 | Insert all formated information into the configuration table
                 |
                 */
-                
+
                 $configurationModelInsert
                     ->insert($data)
                     ->execute();
@@ -159,7 +159,7 @@ class CreateOrUpdate implements Middleware
                 | After the information been inserted, the query retuns te inserted id
                 |
                 */
-                
+
                 $id = $configurationModelInsert->getId();
             }
             $result['id'] = $id;

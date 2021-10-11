@@ -47,7 +47,7 @@ class Read implements Middleware
             ################# INICIO da PAGINAÇÃO #################
             #######################################################
             // Total de registros
-            $totalRegistros = $usuariosModel->start('system')
+            $totalRegistros = $usuariosModel->database('system')
                 ->select('', ['COUNT(*)'])
                 ->where('login', $login, 'LIKE')
                 ->get();
@@ -65,7 +65,7 @@ class Read implements Middleware
             #######################################################
 
 
-            $lista    = $usuariosModel->start('system')
+            $lista    = $usuariosModel->database('system')
                 ->select('', ['*'])
                 ->where('login', $login, 'LIKE')
                 ->limit($limit, $offset)

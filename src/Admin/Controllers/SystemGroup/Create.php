@@ -57,7 +57,7 @@ class Create implements Middleware
             ];
 
             $grupoModel = new SystemGroup();
-            $grupoModelInsert = $grupoModel->start('system');
+            $grupoModelInsert = $grupoModel->database('system');
             $grupoModelInsert
                 ->insert($data)
                 ->execute();

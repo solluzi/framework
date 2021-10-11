@@ -40,7 +40,7 @@ class Edit implements Middleware
                 'id' ,
             ];
 
-            $resultados = $perfilModel->start('system')
+            $resultados = $perfilModel->database('system')
                 ->select('', $colunas)
                 ->where('usuario', Session::getValue('user'))
                 ->get();

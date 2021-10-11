@@ -32,7 +32,7 @@ class Delete implements Middleware
             $uriParams = $request->getQueryParams();
 
             $programaModel = new SystemProgram();
-            $programaModel->start('system')
+            $programaModel->database('system')
                 ->delete()
                 ->where('id', $uriParams['id'])
                 ->execute();

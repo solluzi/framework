@@ -8,7 +8,6 @@ namespace Application\Ado\Traits;
  */
 trait SqlGetAll
 {
-    use SqlRollback;
     use DbConnection;
     /**
      * Undocumented function
@@ -218,7 +217,7 @@ trait SqlGetAll
                 | As the name sugests, it begins a database transaction
                 |
                 */
-                $this->conn->beginTransaction();
+                $this->beginTransaction();
                 /*
                 |-------------------------------------------------------------------------------------
                 | prepare && execute
@@ -238,6 +237,17 @@ trait SqlGetAll
                 |
                 */
                 $result      = $instruction->fetchAll(\PDO::FETCH_OBJ);
+
+                /*
+                |--------------------------------------------------------------------------
+                |                                  commits
+                |--------------------------------------------------------------------------
+                |
+                | Confirms all databases selects
+                |
+                */
+                $this->commit();
+
                 /*
                 |-------------------------------------------------------------------------------------
                 | dbClose
@@ -246,7 +256,7 @@ trait SqlGetAll
                 | closes database connection
                 |
                 */
-                $this->dbClose();
+                $this->close();
                 /*
                 |-------------------------------------------------------------------------------------
                 | return
@@ -265,7 +275,7 @@ trait SqlGetAll
                 | if ocurs any error, all request are undone
                 |
                 */
-                $this->conn->rollback();
+                $this->rollback();
                 /*
                 |-------------------------------------------------------------------------------------
                 | Exception

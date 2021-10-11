@@ -24,7 +24,7 @@ class SystemProgram extends Model
     public $table      = '"SYSTEM_PROGRAM"';
     public $primaryKey = '"ID"';
     public $idPolicy   = "uuid";         //{max,serial,auto,uuid}
-    
+
 
     public function adicionarProgramaAoGrupo($grupos, $controlador)
     {

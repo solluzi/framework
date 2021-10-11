@@ -41,7 +41,7 @@ class Read implements Middleware
             | get all parameters in the setted in the url
             |
             */
-            
+
             $uriParams = $request->getQueryParams();
 
             /*
@@ -52,7 +52,7 @@ class Read implements Middleware
             | call the specified table or function
             |
             */
-            
+
             $configuracaoModel = new SystemConfiguration();
 
             /*
@@ -60,10 +60,10 @@ class Read implements Middleware
             |                                    Filter
             |--------------------------------------------------------------------------
             |
-            | we build a filter for our select statement 
+            | we build a filter for our select statement
             |
             */
-            
+
             $chave = (isset($uriParams['chave']) && !empty($uriParams['chave'])) ? $uriParams['chave'] : null;
 
             /*
@@ -75,8 +75,8 @@ class Read implements Middleware
             | limits it in one result
             |
             */
-            
-            $resultados  = $configuracaoModel->start('system')
+
+            $resultados  = $configuracaoModel->database('system')
                 ->select('', ['valor'])
                 ->where('chave', $chave)
                 ->limit(1)
@@ -90,7 +90,7 @@ class Read implements Middleware
            | formats the data to be returned in the frontend
            |
            */
-           
+
             $resposta['data'] = [
                 'registros' => $resultados,
             ];
@@ -104,7 +104,7 @@ class Read implements Middleware
             | and others requests
             |
             */
-            
+
             $payload = $this->encrypt($resposta);
 
             /*
@@ -115,7 +115,7 @@ class Read implements Middleware
             | returns the data with encrypted payload and and http status code
             |
             */
-            
+
             return Response::json(['data' => $payload], HttpStatusCode::OK);
         } catch (\Exception $e) {
             /*
@@ -126,7 +126,7 @@ class Read implements Middleware
             | returns the error raised in the database exception
             |
             */
-            
+
             return Response::json([], HttpStatusCode::BAD_REQUEST);
         }
     }

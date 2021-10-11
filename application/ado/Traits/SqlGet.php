@@ -9,7 +9,6 @@ namespace Application\Ado\Traits;
  */
 trait SqlGet
 {
-    use SqlRollback;
     use DbConnection;
     /**
      * get method
@@ -221,7 +220,7 @@ trait SqlGet
                 | As the name sugests, it begins a database transaction
                 |
                 */
-                $this->conn->beginTransaction();
+                $this->beginTransaction();
                 /*
                 |-------------------------------------------------------------------------------------
                 | prepare && execute
@@ -241,6 +240,17 @@ trait SqlGet
                 |
                 */
                 $result      = $instruction->fetchObject();
+
+                /*
+                |--------------------------------------------------------------------------
+                |                                  commit
+                |--------------------------------------------------------------------------
+                |
+                | confirms all sql selects
+                |
+                */
+                $this->commit();
+
                 /*
                 |-------------------------------------------------------------------------------------
                 | dbClose
@@ -249,7 +259,7 @@ trait SqlGet
                 | closes database connection
                 |
                 */
-                $this->dbClose();
+                $this->close();
                 
                 /*
                 |-------------------------------------------------------------------------------------
@@ -269,7 +279,7 @@ trait SqlGet
                 | if ocurs any error, all request are undone
                 |
                 */
-                $this->conn->rollback();
+                $this->rollback();
                 /*
                 |-------------------------------------------------------------------------------------
                 | Exception

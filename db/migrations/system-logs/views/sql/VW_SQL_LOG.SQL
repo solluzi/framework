@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW vw_sql_log AS
+CREATE OR REPLACE VIEW "VW_SQL_LOG" AS
     SELECT 
         auditoria.comando,
         auditoria.created_at,

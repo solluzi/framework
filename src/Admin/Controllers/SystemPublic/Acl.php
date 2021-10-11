@@ -34,11 +34,11 @@ class Acl implements InterfaceMiddleware
 
             // Pesquisa usuario e permissão
             $permissaoQuery = new ModelAcl();
-            $permissaoSelect = $permissaoQuery->start('system')
+            $permissaoSelect = $permissaoQuery->database('system')
                 ->select('a', ['1 as id'])
-                ->where('nome'      , $uriParams['controller'])
-                ->where('usuario'   , Session::getValue('user'))
-                ->where('grupo'     , Session::getValue('grupo'))
+                ->where('nome', $uriParams['controller'])
+                ->where('usuario', Session::getValue('user'))
+                ->where('grupo', Session::getValue('grupo'))
                 ->get();
 
             $permitido = (isset($permissaoSelect->id)) ? true : false;

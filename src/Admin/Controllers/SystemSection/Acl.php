@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\SystemSection;
 
-use Administracao\Model\MenuAcl;
+use Admin\Model\MenuAcl;
 use Application\Interface\Middleware;
 use Controller\HttpStatusCode;
 use Controller\Response;
@@ -43,7 +43,7 @@ class Acl implements Middleware
                 return HttpStatusCode::FORBIDDEN;
             }
 
-            $listarSecao = $secaoModel->start('system')
+            $listarSecao = $secaoModel->database('system')
                 ->select('', ['*'])
                 ->where('login', $usuario, '=')
                 ->where('grupo', $grupo, '=')

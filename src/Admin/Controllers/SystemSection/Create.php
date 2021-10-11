@@ -54,7 +54,7 @@ class Create implements Middleware
             ];
 
             $secaoModel  = new SystemProgramSection();
-            $secaoInsert = $secaoModel->start('system');
+            $secaoInsert = $secaoModel->database('system');
             $secaoInsert
                 ->insert($info)
                 ->execute();

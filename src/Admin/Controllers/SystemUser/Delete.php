@@ -34,7 +34,7 @@ class Delete implements Middleware
 
             // Remove o usuário
             $usuarioModel = new SystemUser();
-            $usuarioModel->start('system')
+            $usuarioModel->database('system')
                 ->delete()
                 ->where('id', $uriParams['id'])
                 ->execute();

@@ -7,7 +7,7 @@ use Application\Ado\PostgresQueryBuilder;
 
 abstract class Model
 {
-    public function start($database)
+    public function database($database)
     {
         
         $dbConfig = require_once dirname(__DIR__,3) . '/config/config.php';

@@ -8,7 +8,7 @@ final class Date2Br extends AbstractMigration
     public function up(): void
     {
         
-        $formataData = dirname(__DIR__,3) . '/geral/'.getenv('PERMISSION_DB_TYPE').'/fn_date2br.sql';
+        $formataData = dirname(__DIR__,3) . '/geral/'.getenv('PERMISSION_DB_TYPE').'/FN_DATE2BR.SQL';
         $this->execute(file_get_contents($formataData));
     }
 

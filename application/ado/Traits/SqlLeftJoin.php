@@ -40,7 +40,7 @@ trait SqlLeftJoin
         | adds to array the join reqired
         |
         */
-        $this->query->leftJoin[] = "LEFT JOIN $table $alias ON $field1 $operator $field2";
+        $this->query->leftJoin[] = " LEFT JOIN $table $alias ON $field1 $operator $field2 ";
 
         /*
         |----------------------------------------------------------------------------------------------

@@ -47,9 +47,4 @@ class JWTWrapper
             return $obj;
         }
     }
-
-    public static function invalidate($token)
-    {
-        
-    }
 }

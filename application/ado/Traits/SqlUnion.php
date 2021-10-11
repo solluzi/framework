@@ -47,7 +47,7 @@ trait SqlUnion
         | create a union query
         |
         */
-        $this->query->union = "UNION SELECT $field FROM $table->table";
+        $this->query->union = " UNION SELECT $field FROM $table->table";
         /*
         |----------------------------------------------------------------------------------------------
         | this

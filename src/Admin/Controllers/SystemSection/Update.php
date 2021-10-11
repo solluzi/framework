@@ -58,7 +58,7 @@ class Update implements Middleware
             ];
 
             $secaoModel     = new SystemProgramSection();
-            $secaoModel->start('system')
+            $secaoModel->database('system')
                 ->update($info)
                 ->where('id', $uriParams['id'])
                 ->execute();

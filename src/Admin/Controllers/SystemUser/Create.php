@@ -66,7 +66,7 @@ class Create implements Middleware
 
             // Cadastra a informação
             $usuarioModel  = new SystemUser();
-            $usuarioInsert = $usuarioModel->start('system');
+            $usuarioInsert = $usuarioModel->database('system');
             $usuarioInsert->insert($info)->execute();
 
 

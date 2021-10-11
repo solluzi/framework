@@ -49,7 +49,7 @@ class Read implements Middleware
             ################# INICIO da PAGINAÇÃO #################
             #######################################################
             // Total de registros
-            $totalRegistros = $secaoModel->start('system')
+            $totalRegistros = $secaoModel->database('system')
                 ->select('', ['COUNT(*)'])
                 ->where('nome', $filtroNome, 'LIKE')
                 ->where('programa', $programa, 'LIKE')
@@ -67,7 +67,7 @@ class Read implements Middleware
             ################## FIM PAGINAÇÃO ######################
             #######################################################
 
-            $listaDeSecao = $secaoModel->start('system')
+            $listaDeSecao = $secaoModel->database('system')
                 ->select('', ['*'])
                 ->where('nome', $filtroNome, 'LIKE')
                 ->orderBy('nome', 'asc')

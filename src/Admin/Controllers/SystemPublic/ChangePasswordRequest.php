@@ -45,7 +45,7 @@ class ChangePasswordRequest implements Middleware
 
             // Pesquisa o e-mail do usuário
             $usuarioEmailView = new SystemUser();
-            $usuarioEmailQuery = $usuarioEmailView->start('system');
+            $usuarioEmailQuery = $usuarioEmailView->database('system');
             $usuarioEmailResult = $usuarioEmailQuery
                 ->select('', ['info', 'id', 'login'])
                 ->where('login', $formData['login'])
@@ -62,7 +62,7 @@ class ChangePasswordRequest implements Middleware
                 if (isset($usuarioEmailResult->id)) {
                     $info = ['token_reset' => $token];
                     $usuarioModel = new SystemUser();
-                    $usuarioModel->start('system')
+                    $usuarioModel->database('system')
                         ->update($info)
                         ->where('id', $usuarioEmailResult->id)
                         ->execute();

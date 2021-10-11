@@ -2,17 +2,18 @@
 declare(strict_types=1);
 namespace Application\Ado\Traits;
 
-/**
- * 
- */
+/*
+|--------------------------------------------------------------------------
+|                                  debug
+|--------------------------------------------------------------------------
+|
+| this class is used when is needed to debug an sql Query
+|
+*/
+
 trait SqlDebug
 {
     
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
     public function debug()
     {
         $query = $this->query;

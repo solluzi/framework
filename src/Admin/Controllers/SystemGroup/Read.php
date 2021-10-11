@@ -48,7 +48,7 @@ class Read implements Middleware
             ################# INICIO da PAGINAÇÃO #################
             #######################################################
             // Total de registros
-            $totalRegistros = $grupoModel->start('system')
+            $totalRegistros = $grupoModel->database('system')
                 ->select('"SG"', ['COUNT(*) as total'])
                 ->where('"SG"."NAME"', $nome, 'LIKE')
                 ->get();
@@ -65,7 +65,7 @@ class Read implements Middleware
             ################## FIM PAGINAÇÃO ######################
             #######################################################
 
-            $resultados = $grupoModel->start('system')
+            $resultados = $grupoModel->database('system')
                 ->select('SG', ['*'])
                 ->where('"SG"."NAME"', $nome, 'LIKE')
                 ->limit($limit, $offset)

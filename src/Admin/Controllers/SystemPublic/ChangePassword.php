@@ -56,7 +56,7 @@ class ChangePassword implements Middleware
 
             // Pesquisa a existência do token
             $loginModel = new SystemUser();
-            $result     = $loginModel->start('system')
+            $result     = $loginModel->database('system')
                 ->select('', ['id'])
                 ->where('token_reset', $uriParams['token'])
                 ->get();

@@ -76,12 +76,12 @@ class Login implements Middleware
                 'sessao'  => $sessao
             ]);
 
-            $usuarioResult = $this->loginQuery->start('system');
-            $selectResult = $usuarioResult
+            $usuarioResult = $this->loginQuery->database('system');
+            $selectResult  = $usuarioResult
                 ->instruction("SELECT")
                 ->instructionValues($dados)
                 ->get();
-            
+
             // variaveis que serão informadas ao client
             $httpResponse  = HttpStatusCode::OK;
 

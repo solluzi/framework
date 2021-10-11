@@ -51,7 +51,7 @@ class SqlLog implements Middleware
             ################# INICIO da PAGINAÇÃO #################
             #######################################################
             // Total de registros
-            $totalRegistros = $sqlLogModel->start('system')
+            $totalRegistros = $sqlLogModel->database('log')
                 ->select('', ['COUNT(*)'])
                 ->where('login', $login)
                 ->between('DATE(created_at)', [$data_ini, $data_fim])
@@ -69,7 +69,7 @@ class SqlLog implements Middleware
             ################## FIM PAGINAÇÃO ######################
             #######################################################
 
-            $sqlLogResult = $sqlLogModel->start('system')
+            $sqlLogResult = $sqlLogModel->database('log')
                 ->select('', ['*'])
                 ->where('login', $login)
                 ->between('DATE(created_at)', [$data_ini, $data_fim])
@@ -87,7 +87,7 @@ class SqlLog implements Middleware
 
             return Response::json(['data' => $payload], HttpStatusCode::OK);
         } catch (\Exception $e) {
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
         }
     }
 }

@@ -50,7 +50,7 @@ trait SqlLastId
                 | begin the sql transaction in the table
                 |
                 */
-                $this->conn->beginTransaction();
+                $this->beginTransaction();
                 /*
                 |----------------------------------------------------------------------------------------------
                 | prepare & execute
@@ -78,7 +78,7 @@ trait SqlLastId
                 | close database connection
                 |
                 */
-                $this->dbClose();
+                $this->close();
                 /*
                 |----------------------------------------------------------------------------------------------
                 | return
@@ -97,7 +97,7 @@ trait SqlLastId
                 | if ocurs any error, all request are undone
                 |
                 */
-                $this->conn->rollback();
+                $this->rollback();
                 /*
                 |-------------------------------------------------------------------------------------
                 | Exception

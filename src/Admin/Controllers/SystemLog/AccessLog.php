@@ -42,7 +42,7 @@ class AccessLog implements Middleware
             | Gets all forms inputs parameters from request
             |
             */
-            
+
             $data      = $request->getBody();
 
             /*
@@ -53,27 +53,27 @@ class AccessLog implements Middleware
             | Gets All uri parameters
             |
             */
-            
+
             $uriParams = $request->getQueryParams();
 
             /*
             |--------------------------------------------------------------------------
-            |                                  
+            |
             |--------------------------------------------------------------------------
             |
-            | 
+            |
             |
             */
-            
+
             $accessLogModel = new SystemAccessLog();
 
             // $campos para filtro
             $login       = (isset($data['login'])       && !empty($data['login']))      ? $data['login']        : null;
             $data_inicio = (isset($data['data_inicio']) && !empty($data['data_inicio'])) ? $data['data_inicio'] : null;
             $data_fim    = (isset($data['data_fim'])    && !empty($data['data_fim']))   ? $data['data_fim']     : null;
-            
+
             // Total de registros
-            $totalRecords = $accessLogModel->start('log')
+            $totalRecords = $accessLogModel->database('log')
                 ->select('al', ['COUNT(*) as total'])
                 ->where('"LOGIN"', $login)
                 ->between('DATE(LOGGED_IN)', [$data_inicio, $data_fim])
@@ -91,14 +91,15 @@ class AccessLog implements Middleware
             ################## FIM PAGINAÇÃO ######################
             #######################################################
 
-            $accessLogQuery = $accessLogModel->start('log');
+            $accessLogQuery = $accessLogModel->database('log');
             $result         = $accessLogQuery->select(
-                                    'al', 
-                                    [
-                                        '"LOGIN"', 
-                                        'fn_data2br("LOGGED_IN") as acessou',
-                                        'fn_data2br("LOGGED_OUT") as saiu' 
-                                    ])
+                'al',
+                [
+                                        '"LOGIN"',
+                                        '"FN_DATE2BR"("LOGGED_IN", true) as acessou',
+                                        '"FN_DATE2BR"("LOGGED_OUT", true) as saiu'
+                ]
+            )
                 ->where('"LOGIN"', $login)
                 ->between('DATE("LOGGED_IN")', [$data_inicio, $data_fim])
                 ->limit($limit, $offset)

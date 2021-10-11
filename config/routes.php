@@ -70,7 +70,7 @@ return [
         */
         ['POST'     , '/program'                                , Admin\Controllers\SystemProgram\Create::class                 , 'program.create'          ],
         ['POST'     , '/program/[i:page]/[i:by_page]'           , Admin\Controllers\SystemProgram\Read::class                   , 'program.list'            ],
-        ['POST'     , '/program/[h:id]/update'                  , Admin\Controllers\SystemProgram\Edit::class                   , 'program.edit'            ],
+        ['POST'     , '/program/[h:id]/edit'                    , Admin\Controllers\SystemProgram\Edit::class                   , 'program.edit'            ],
         ['PUT'      , '/program/[h:id]/update'                  , Admin\Controllers\SystemProgram\Update::class                 , 'program.update'          ],
         ['DELETE'   , '/program/[h:id]/delete'                  , Admin\Controllers\SystemProgram\Delete::class                 , 'program.delete'          ],
         /*

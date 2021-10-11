@@ -35,7 +35,7 @@ class Logout implements Middleware
             $decriptToken   = (!empty(JWTWrapper::decode($this->jwt))) ? JWTWrapper::decode($this->jwt) : false;
 
             $logAcessoModel = new SystemAccessLog();
-            $logAcessoQuery = $logAcessoModel->start('log');
+            $logAcessoQuery = $logAcessoModel->database('log');
             $log = $logAcessoQuery
                         ->select('', ['login'])
                         ->where('sessao', $this->jwt)
@@ -49,7 +49,7 @@ class Logout implements Middleware
                     'saiu'  => date('Y-m-d H:i:s'),
                     'login' => $log->login
                 ];
-                $logoutQuery = $logAcessoModel->start('log');
+                $logoutQuery = $logAcessoModel->database('log');
                 $logoutQuery
                     ->update($info)
                     ->where('login', $log->login)

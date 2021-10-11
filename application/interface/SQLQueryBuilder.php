@@ -66,4 +66,5 @@ interface SQLQueryBuilder
     public function getId();
 
     public function debug();
+    
 }

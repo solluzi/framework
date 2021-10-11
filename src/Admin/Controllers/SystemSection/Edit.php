@@ -40,7 +40,7 @@ class Edit implements Middleware
             // Campo para filtro
             $nome       = (isset($formData['id']) && !empty($formData['id'])) ? "{$formData['id']}" : null;
 
-            $resultados = $secaoModel->start('system')
+            $resultados = $secaoModel->database('system')
                 ->select('', ['*'])
                 ->where('id', $nome, '=')
                 ->get();

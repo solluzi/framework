@@ -7,7 +7,7 @@ final class FnLoginMigration extends AbstractMigration
 {
     public function up(): void
     {
-        $caminho = __DIR__ . '/sql/'.getenv('PERMISSION_DB_TYPE').'/SP_LOGIN.sql';
+        $caminho = __DIR__ . '/sql/'.getenv('PERMISSION_DB_TYPE').'/FN_LOGIN.sql';
         $sql     = file_get_contents($caminho);
 
         $this->execute($sql);

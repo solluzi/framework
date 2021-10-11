@@ -47,7 +47,7 @@ class Edit implements Middleware
             ###########################################################################
             ################ BUSCA INFORMAÇÃO DE DADO USUÁRIO PELA ID #################
             ###########################################################################
-            $resultados = $usuarioModel->start('system')
+            $resultados = $usuarioModel->database('system')
                 ->select('', ['*'])
                 ->where('id', $id)
                 ->get();
@@ -56,7 +56,7 @@ class Edit implements Middleware
             ###########################################################################
             ################### BUSCA GRUPOS DE DADO USUÁRIO PELA ID ##################
             ###########################################################################
-            $resultadoGrupo = $usuarioGrupoModel->start('system')
+            $resultadoGrupo = $usuarioGrupoModel->database('system')
                 ->select('', ['grupo AS id'])
                 ->where('usuario', $id)
                 ->getAll();

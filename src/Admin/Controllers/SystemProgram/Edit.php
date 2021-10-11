@@ -43,13 +43,13 @@ class Edit implements Middleware
             // Campo para filtro
             $id       = (isset($formData['id']) && !empty($formData['id'])) ? "{$formData['id']}" : null;
 
-            $resultados = $programaModel->start('system')
+            $resultados = $programaModel->database('system')
                 ->select('', ['*'])
                 ->where('id', $id, '=')
                 ->get();
 
             // Busca Grupos
-            $resultadoGrupos = $grupoModel->start('system')
+            $resultadoGrupos = $grupoModel->database('system')
                 ->select('', ['grupo as id'])
                 ->where('programa', $id, '=')
                 ->getAll();

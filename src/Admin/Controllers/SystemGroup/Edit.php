@@ -46,13 +46,13 @@ class Edit implements Middleware
             // Campo para filtro
             $id       = (isset($formData['id']) && !empty($formData['id'])) ? "{$formData['id']}" : null;
 
-            $resultados = $grupoModel->start('system')
+            $resultados = $grupoModel->database('system')
                 ->select('', ['*'])
                 ->where('id', $id, '=')
                 ->get();
 
             // Buscar Programas
-            $resultadoProgramas = $programaGrupoModel->start('system')
+            $resultadoProgramas = $programaGrupoModel->database('system')
                 ->select('', ['programa as id'])
                 ->where('grupo', $id, '=')
                 ->getAll();
@@ -63,7 +63,7 @@ class Edit implements Middleware
             }
 
             // Buscar Usuarios
-            $resultadoUsuarios = $usuarioGrupoModel->start('system')
+            $resultadoUsuarios = $usuarioGrupoModel->database('system')
                 ->select('', ['usuario as id'])
                 ->where('grupo', $id, '=')
                 ->getAll();

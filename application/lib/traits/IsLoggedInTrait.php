@@ -32,12 +32,11 @@ trait IsLoggedinTrait
             $decriptToken = (!empty(JWTWrapper::decode($this->jwt))) ? JWTWrapper::decode($this->jwt) : false;
            
             $now = new DateTimeImmutable();
-
             
              // Pesquisa a sessão salva no banco de dados
              $uid = ($decriptToken->data->uid) ?? ' ';
              $accessLogQuery    = new SystemAccessLog();
-             $accessSelect      = $accessLogQuery->start('log');
+             $accessSelect      = $accessLogQuery->database('log');
              $resultLogDeAcesso = $accessSelect
                 ->select('"AL"', ['"AL"."LOGIN"'])
                 ->where('"AL"."SESSION"', $this->jwt)
@@ -48,7 +47,7 @@ trait IsLoggedinTrait
             // Pesquisa o is do usuário para a sessão
             $usuario       = $resultLogDeAcesso->LOGIN ?? ' ';
             $usuarioQuery  = new SystemUser;
-            $usuarioSelect = $usuarioQuery->start('system');
+            $usuarioSelect = $usuarioQuery->database('system');
             $usuarioResult = $usuarioSelect
                 ->select('"SU"', ['"SU"."LOGIN"', '"SU"."ID"'])
                 ->where('"SU"."LOGIN"', $usuario)
@@ -57,21 +56,19 @@ trait IsLoggedinTrait
             // Pesquisa o grupo do usuário
             $userId = ($usuarioResult->ID) ?? ' ';
             $usuarioGrupoQuery  = new SystemUserGroup;
-            $usuarioGrupoSelect = $usuarioGrupoQuery->start('system');
+            $usuarioGrupoSelect = $usuarioGrupoQuery->database('system');
             $usuarioGrupoResult = $usuarioGrupoSelect
                 ->select('"SUG"', ['"SUG"."GROUP_ID"'])
                 ->where('"SUG"."USER_ID"', $userId)
                 ->get();
-                
+            
             if (
                 ($decriptToken->iss) 
-                && ($decriptToken->aud) 
+                && ($decriptToken->data->uid) 
                 && ($decriptToken->exp) 
                 && !empty($usuarioResult)
                 && (($decriptToken->nbf < $now->getTimestamp()))
                 && (($decriptToken->exp > $now->getTimestamp()))
-                //&& ($tokenTime->setTimestamp($decriptToken->exp))
-                //&& ($tokenTime->format('Y-m-d H:i:s') > $agora->format('Y-m-d H:i:s'))
             ) 
             {
                 

@@ -40,7 +40,7 @@ trait SqlRightJoin
         | adds to array the join reqired
         |
         */
-        $this->query->rightJoin = "RIGHT JOIN $table $alias ON $field1 = $field2";
+        $this->query->rightJoin = " RIGHT JOIN $table $alias ON $field1 = $field2 ";
         /*
         |----------------------------------------------------------------------------------------------
         | this

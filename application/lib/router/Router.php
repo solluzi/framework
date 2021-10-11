@@ -63,7 +63,7 @@ class Router
             // Verifica se o controlador é publico ou privado
             $name = $this->match['name'] ?? ' ';
             
-            $controladorQuery        = $this->controlador->start('system');
+            $controladorQuery        = $this->controlador->database('system');
             $this->controladorSelect = $controladorQuery
                 ->select('"P"', ['"P"."PROGRAM"', '"P"."PRIVATE"'])
                 ->where('"P"."NAME"', $name)

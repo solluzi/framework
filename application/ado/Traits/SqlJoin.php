@@ -37,7 +37,7 @@ trait SqlJoin
         | glue all parts to join a sql
         |
         */
-        $this->query->join[] = "JOIN $table $alias ON $field1 $operator $field2";
+        $this->query->join[] = " JOIN $table $alias ON $field1 $operator $field2 ";
 
         /*
         |----------------------------------------------------------------------------------------------

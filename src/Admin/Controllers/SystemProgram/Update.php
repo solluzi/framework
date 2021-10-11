@@ -65,7 +65,7 @@ class Update implements Middleware
 
 
             $programaModel     = new SystemProgram();
-            $programaUpdate = $programaModel->start('system');
+            $programaUpdate = $programaModel->database('system');
             $programaUpdate->update($info)
                 ->where('id', $uriParams['id'])
                 ->execute();

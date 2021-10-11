@@ -7,7 +7,6 @@ namespace Application\Ado\Traits;
  */
 trait SqlExecute
 {
-    use SqlRollback;
     use DbConnection;
      /**
      * execute method
@@ -124,7 +123,7 @@ trait SqlExecute
                 | As the name sugests, it begins a database transaction
                 |
                 */
-                $this->conn->beginTransaction();
+                $this->beginTransaction();
                 /*
                 |-------------------------------------------------------------------------------------
                 | prepare && execute
@@ -144,7 +143,7 @@ trait SqlExecute
                 | commits the sql instruction in database
                 |
                 */
-                $this->conn->commit();
+                $this->commit();
 
                 /*
                 |-------------------------------------------------------------------------------------
@@ -154,7 +153,7 @@ trait SqlExecute
                 | closes database connection
                 |
                 */
-                $this->dbClose();
+                $this->close();
             } catch (\Exception $e) {
                 /*
                 |-------------------------------------------------------------------------------------
@@ -164,7 +163,7 @@ trait SqlExecute
                 | if ocurs any error, all request are undone
                 |
                 */
-                $this->conn->rollback();
+                $this->rollback();
 
                 /*
                 |-------------------------------------------------------------------------------------

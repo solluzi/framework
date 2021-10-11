@@ -65,7 +65,7 @@ class Update implements Middleware
 
 
             $usuarioModel     = new SystemUser();
-            $usuarioUpdate = $usuarioModel->start('system');
+            $usuarioUpdate = $usuarioModel->database('system');
             $usuarioUpdate->update($info)
                 ->where('id', $uriParams['id'])
                 ->execute();

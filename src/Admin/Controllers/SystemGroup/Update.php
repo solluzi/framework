@@ -65,7 +65,7 @@ class Update implements Middleware
             ];
             $id         = $uriParams['id'];
             $grupoModel = new SystemGroup();
-            $grupoModel->start('system')
+            $grupoModel->database('system')
                 ->update($campos)
                 ->where('id', $id)
                 ->execute();

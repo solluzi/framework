@@ -48,7 +48,7 @@ trait SqlUnionAll
         | creates the union sql
         |
         */
-        $this->query->union = "UNION ALL SELECT $field FROM $table->table";
+        $this->query->union = " UNION ALL SELECT $field FROM $table->table";
 
         /*
         |----------------------------------------------------------------------------------------------
