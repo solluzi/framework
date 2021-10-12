@@ -1,0 +1,49 @@
+CREATE OR REPLACE PROCEDURE "SP_IU_PROGRAM"("p_data" JSON, "p_user" UUID)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    VU_SECTION      UUID;
+    VU_CREATED_BY   UUID;
+    VU_UPDATED_BY   UUID;
+    VU_PROGRAM_ID   UUID;
+    VS_PROGRAM      VARCHAR(200);
+    VS_NAME         VARCHAR(100);
+    VB_PRIVATE      BOOLEAN;
+    VT_DESCRIPTION  TEXT;
+    VJ_GROUPS       JSON;
+    VJ_I            JSON;
+BEGIN
+    -- SETS ALL DATAS TO PROPER VARIABLES
+    VU_PROGRAM_ID   = p_user;
+    VU_SECTION      = p_data->>'section';
+    VS_PROGRAM      = p_data->>'program';
+    VS_NAME         = p_data->>'name';
+    VB_PRIVATE      = p_data->>'private';
+    VT_DESCRIPTION  = p_data->>'description';
+    VU_CREATED_BY   = p_user;
+    VU_UPDATED_BY   = p_user;
+
+    -- INSERT OR UPDATE PROGRAM
+    INSERT INTO "SYSTEM_PROGRAM" ("ID", "SECTION", "PROGRAM", "NAME", "PRIVATE", "DESCRIPTION", "CREATED_BY")
+    VALUES(VU_PROGRAM_ID, VU_SECTION, VS_PROGRAM, VS_NAME, VB_PRIVATE, VT_DESCRIPTION, VU_CREATED_BY)
+    ON CONFLICT("ID")
+    DO
+        UPDATE SET "SECTION"    = VU_SECTION,
+                   "PROGRAM"    = VS_PROGRAM,
+                   "NAME"       = VS_NAME,
+                   "PRIVATE"    = VB_PRIVATE,
+                   "DESCRIPTION"= VT_DESCRIPTION,
+                   "UPDATED_BY" = VU_UPDATED_BY;
+
+    -- DELETE ALL GROUPS ATTACHED TO GIVEN PROGRAM
+    DELETE FROM "SYSTEM_GROUP_PROGRAM" WHERE "PROGRAM_ID" = VU_PROGRAM_ID;
+
+    -- LOOP THROUGH JSON GROUPS
+    FOR VJ_I IN SELECT * FROM JSON_ARRAY_ELEMENTS(VJ_GROUPS)
+    LOOP
+        -- INSERT NEW GROUPS TO GIVEN PROGRAM
+        INSERT INTO "SYSTEM_GROUP_PROGRAM" ("GROUP_ID", "PROGRAM_ID") VALUES (VJ_I->>'grupo', VU_PROGRAM_ID);
+    END LOOP;
+
+    COMMIT;
+END;$$
