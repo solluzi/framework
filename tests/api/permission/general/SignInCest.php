@@ -14,5 +14,6 @@ class SignInCest
      */
     public function wrongUrl(ApiTester $I)
     {
+        
     }
 }
