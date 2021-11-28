@@ -78,7 +78,7 @@ return [
         |                                                    ROUTE FOR THE SYSTEM CONFIGURATIONS
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         */
-        ['POST'     , '/configuration'                           , Admin\Controllers\SystemConfiguration\CreateOrUpdate::class   , 'config.create.update'   ],
-        ['GET'      , '/configuration/[h:chave]/read'            , Admin\Controllers\SystemConfiguration\Read::class             , 'config.list'            ],
+        ['POST'     , '/configuration/preference'                , Admin\Controllers\SystemConfiguration\CreateOrUpdate::class   , 'config.create.update'   ],
+        ['GET'      , '/configuration/[a:chave]/read'            , Admin\Controllers\SystemConfiguration\Read::class             , 'config.smtp.list'       ],
     ]    
 ];

@@ -54,16 +54,16 @@ class Login implements Middleware
             // Validação de dados de formulários
             $this->form->validate(
                 [
-                    'usuario' => ['required' => true],
-                    'senha'   => ['required' => true]
+                    'username' => ['required' => true],
+                    'password' => ['required' => true]
                 ],
             );
 
 
             $input   = $request->getBody();
 
-            $usuario = $this->trataInput->input($input['usuario'])->toString();
-            $senha   = $this->trataInput->input($input['senha'])->toString();
+            $usuario = $this->trataInput->input($input['username'])->toString();
+            $senha   = $this->trataInput->input($input['password'])->toString();
 
 
             $chave  = md5(uniqid('solluzi_', true));  // chave unica

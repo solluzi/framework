@@ -77,11 +77,12 @@ class Read implements Middleware
             */
 
             $resultados  = $configuracaoModel->database('system')
-                ->select('', ['valor'])
-                ->where('chave', $chave)
+                ->select('c', ['c."VALUE"'])
+                ->where('c."KEY"', $chave)
                 ->limit(1)
                 ->get();
-
+            
+            
            /*
            |--------------------------------------------------------------------------
            |                                  response

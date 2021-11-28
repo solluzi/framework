@@ -43,6 +43,7 @@ class CreateOrUpdate implements Middleware
         try {
             $formData = $request->getBody();
 
+
             /*
             |--------------------------------------------------------------------------
             |                          Configuration Model
@@ -78,7 +79,7 @@ class CreateOrUpdate implements Middleware
 
             $configurationQueryDelete
                 ->delete()
-                ->where('chave', $formData['chave'])
+                ->where('"KEY"', $formData['key'])
                 ->execute();
 
             /*
@@ -103,8 +104,8 @@ class CreateOrUpdate implements Middleware
 
                 $this->form->validate(
                     [
-                        'chave'  => ['required' => true],
-                        'tipo'   => ['required' => true]
+                        'key'  => ['required' => true],
+                        'type' => ['required' => true]
                     ]
                 );
 
@@ -117,14 +118,14 @@ class CreateOrUpdate implements Middleware
                 |
                 */
 
-                $active = $formData['ativo'] ? 'S' : 'N';
+                $active = $formData['active'] ? 'S' : 'N';
                 $data  = [
-                    'chave'      => $formData['chave'],
-                    'valor'      => json_encode($formData['data']),
-                    'tipo'       => $formData['tipo'],
-                    'ativo'      => $active,
-                    'created_by' => Session::getValue('user'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    '"KEY"'        => $formData['key'],
+                    '"VALUE"'      => json_encode($formData['data']),
+                    '"TYPE"'       => $formData['type'],
+                    '"ACTIVE"'     => $active,
+                    '"CREATED_BY"' => Session::getValue('user'),
+                    '"CREATED_AT"' => date('Y-m-d H:i:s')
                 ];
 
                 /*
