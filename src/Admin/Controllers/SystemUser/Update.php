@@ -54,15 +54,15 @@ class Update implements Middleware
             // Tratamento de Campos
 
             $senha = $formData['senha'] ?? null;
-            $ativo = ($formData['ativo'] == 'false') ? 0 : 1;
+            //$ativo = ($formData['ativo'] == 'false') ? 0 : 1;
 
             $info = [
-                'login'      => $formData['login'],
+                '"LOGIN"'      => $formData['login'],
                 //'senha'      => BCrypt::hash($senha),
-                'ativo'      => $ativo,
-                'pessoa'     => $formData['pessoa'],
-                'entrada'    => $formData['entrada'],
-                'updated_by' => Session::getValue('user')
+                '"ACTIVE"'     => $formData['active'] ?? false,
+                '"NAME"'       => $formData['name'],
+                '"PROGRAM_ID"' => $formData['program'],
+                '"UPDATED_BY"' => Session::getValue('user')
             ];
 
             if (isset($formData['senha']) && empty($formData['senha'])) :
@@ -74,11 +74,11 @@ class Update implements Middleware
             $usuarioModel = new SystemUser();
             $usuarioModel->database('system')
                 ->update($info)
-                ->where('id', $uriParams['id'])
+                ->where('"ID"', $uriParams['id'])
                 ->execute();
 
             // Atualiza os grupos
-            $grupos = (object)$formData['grupos'];
+            $grupos = (object)$formData['groups'];
             $usuarioModel->inserirGrupoAoUsuario($grupos, $uriParams['id']);
 
             $result['id'] = $uriParams['id'];

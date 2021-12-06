@@ -32,22 +32,22 @@ class Edit implements Middleware
     {
         try {
             // Parametros recebidos do formulário
-            $formData  = $request->getBody();
+            $uriParams  = $request->getQueryParams();
 
             // Model
             $secaoModel = new SystemProgramSection();
 
             // Campo para filtro
-            $nome       = (isset($formData['id']) && !empty($formData['id'])) ? "{$formData['id']}" : null;
+            $filterById       = $uriParams['id'] ?? null;
 
             $resultados = $secaoModel->database('system')
-                ->select('', ['*'])
-                ->where('id', $nome, '=')
+                ->select('s', ['s."ID" id', 's."NAME" "name"'])
+                ->where('"ID"', $filterById)
                 ->get();
 
             // Fomatação de registros
             $resposta['data'] = [
-                'registros' => $resultados,
+                'record' => $resultados,
             ];
 
             $payload = $this->encrypt($resposta);

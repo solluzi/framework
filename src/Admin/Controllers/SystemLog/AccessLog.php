@@ -44,6 +44,7 @@ class AccessLog implements Middleware
             */
 
             $data      = $request->getBody();
+//var_dump($data);die;
 
             /*
             |--------------------------------------------------------------------------
@@ -68,15 +69,15 @@ class AccessLog implements Middleware
             $accessLogModel = new SystemAccessLog();
 
             // $campos para filtro
-            $login       = (isset($data['login'])       && !empty($data['login']))      ? $data['login']        : null;
-            $data_inicio = (isset($data['data_inicio']) && !empty($data['data_inicio'])) ? $data['data_inicio'] : null;
-            $data_fim    = (isset($data['data_fim'])    && !empty($data['data_fim']))   ? $data['data_fim']     : null;
+            $login       = $data['login'] ?? null;
+            $loggedin = $data['loggedin'] ?? null;
+            $loggedout    = $data['loggedout'] ?? null;
 
             // Total de registros
             $totalRecords = $accessLogModel->database('log')
                 ->select('al', ['COUNT(*) as total'])
                 ->where('"LOGIN"', $login)
-                ->between('DATE(LOGGED_IN)', [$data_inicio, $data_fim])
+                ->between('DATE("LOGGED_IN")', [$loggedin, $loggedout])
                 ->get();
 
             // Registro por página
@@ -95,21 +96,22 @@ class AccessLog implements Middleware
             $result         = $accessLogQuery->select(
                 'al',
                 [
-                                        '"LOGIN"',
-                                        '"FN_DATE2BR"("LOGGED_IN", true) as acessou',
-                                        '"FN_DATE2BR"("LOGGED_OUT", true) as saiu'
+                                        '"LOGIN" login',
+                                        '"FN_DATE2BR"("LOGGED_IN", true) as loggedin',
+                                        '"FN_DATE2BR"("LOGGED_OUT", true) as loggedout'
                 ]
             )
                 ->where('"LOGIN"', $login)
-                ->between('DATE("LOGGED_IN")', [$data_inicio, $data_fim])
+                ->between('DATE("LOGGED_IN")', [$loggedin, $loggedout])
                 ->limit($limit, $offset)
+                ->orderBy('"LOGGED_OUT"', 'DESC')
                 ->getAll();
 
             // Fomatação de registros
             $response['data'] = [
-                'registros'       => $result,
-                'paginas'         => $pages,
-                'total_registros' => $totalRecords->total
+                'records'      => $result,
+                'pages'        => $pages,
+                'totalRecords' => $totalRecords->total
             ];
 
             $payload = $this->encrypt($response);

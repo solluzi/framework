@@ -35,7 +35,7 @@ class Edit implements Middleware
     {
         try {
             // Parametros recebidos do formulário
-            $formData  = $request->getBody();
+            $uriParams  = $request->getQueryParams();
 
             // Model
             $grupoModel         = new SystemGroup();
@@ -44,17 +44,17 @@ class Edit implements Middleware
 
 
             // Campo para filtro
-            $id       = (isset($formData['id']) && !empty($formData['id'])) ? "{$formData['id']}" : null;
+            $filterById       = $uriParams['id'] ?? null;
 
             $resultados = $grupoModel->database('system')
-                ->select('', ['*'])
-                ->where('id', $id, '=')
+                ->select('g', ['g."ID" id', 'g."NAME" "name"'])
+                ->where('"ID"', $filterById, '=')
                 ->get();
 
             // Buscar Programas
             $resultadoProgramas = $programaGrupoModel->database('system')
-                ->select('', ['programa as id'])
-                ->where('grupo', $id, '=')
+                ->select('gp', ['gp."PROGRAM_ID" id'])
+                ->where('"GROUP_ID"', $filterById)
                 ->getAll();
 
             $trataProgramas = [];
@@ -64,8 +64,8 @@ class Edit implements Middleware
 
             // Buscar Usuarios
             $resultadoUsuarios = $usuarioGrupoModel->database('system')
-                ->select('', ['usuario as id'])
-                ->where('grupo', $id, '=')
+                ->select('ug', ['ug."USER_ID" id'])
+                ->where('ug."GROUP_ID"', $filterById)
                 ->getAll();
 
             $trataUsuarios = [];
@@ -76,9 +76,9 @@ class Edit implements Middleware
 
             // Fomatação de registros
             $resposta['data'] = [
-                'registros' => $resultados,
-                'programas' => $trataProgramas,
-                'usuarios'  => $trataUsuarios
+                'records'  => $resultados,
+                'programs' => $trataProgramas,
+                'users'    => $trataUsuarios
             ];
 
             $payload = $this->encrypt($resposta);

@@ -42,7 +42,7 @@ class Read implements Middleware
             $grupoModel = new SystemGroup();
 
             // Campo para filtro
-            $nome       = (isset($formData['nome']) && !empty($formData['nome'])) ? "%{$formData['nome']}%" : null;
+            $filterByName       = (isset($formData['name']) && !empty($formData['name'])) ? "%{$formData['name']}%" : null;
 
             #######################################################
             ################# INICIO da PAGINAÇÃO #################
@@ -50,7 +50,7 @@ class Read implements Middleware
             // Total de registros
             $totalRegistros = $grupoModel->database('system')
                 ->select('"SG"', ['COUNT(*) as total'])
-                ->where('"SG"."NAME"', $nome, 'LIKE')
+                ->where('"SG"."NAME"', $filterByName, 'LIKE')
                 ->get();
 
             // Registro por página
@@ -66,16 +66,16 @@ class Read implements Middleware
             #######################################################
 
             $resultados = $grupoModel->database('system')
-                ->select('SG', ['*'])
-                ->where('"SG"."NAME"', $nome, 'LIKE')
+                ->select('sg', ['sg."ID" id', 'sg."NAME" "name"'])
+                ->where('sg."NAME"', $filterByName, 'LIKE')
                 ->limit($limit, $offset)
                 ->getAll();
 
             // Fomatação de registros
             $resposta['data'] = [
-                'registros'       => $resultados,
-                'paginas'         => $paginas,
-                'total_registros' => $totalRegistros->total
+                'records'       => $resultados,
+                'pages'         => $paginas,
+                'totalRecords' => $totalRegistros->total
             ];
 
             $payload = $this->encrypt($resposta);

@@ -39,11 +39,11 @@ class SystemUser extends Model
         if ($dados) {
             foreach ($dados as $dado) {
                 $info = [
-                    'usuario' => $usuario,
-                    'grupo'  => $dado
+                    '"USER_ID"'  => $usuario,
+                    '"GROUP_ID"' => $dado
                 ];
                 $usuarioGrupoQuery  = new SystemUserGroup();
-                $usuarioGrupoInsert = $usuarioGrupoQuery->start('system');
+                $usuarioGrupoInsert = $usuarioGrupoQuery->database('system');
                 $usuarioGrupoInsert->insert($info)->execute();
             }
         }
@@ -58,10 +58,10 @@ class SystemUser extends Model
     public function excluirUsuarioDoGrupo(string $usuario): void
     {
         $usuarioGrupoQuery  = new SystemUserGroup();
-        $usuarioGrupoDelete = $usuarioGrupoQuery->start('system');
+        $usuarioGrupoDelete = $usuarioGrupoQuery->database('system');
         $usuarioGrupoDelete
             ->delete()
-            ->where('usuario', $usuario)
+            ->where('"USER_ID"', $usuario)
             ->execute();
     }
 }

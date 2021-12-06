@@ -31,9 +31,9 @@ class SystemGroup extends Model
 
         if ($programas) {
             foreach ($programas as $programa) {
-                $info = ['grupo' => $grupo, 'programa' => $programa];
+                $info = ['"GROUP_ID"' => $grupo, '"PROGRAM_ID"' => $programa];
                 $programaGrupoModel = new SystemGroupProgram();
-                $programaGrupoModel->start('system')
+                $programaGrupoModel->database('system')
                     ->insert($info)
                     ->execute();
             }
@@ -45,9 +45,9 @@ class SystemGroup extends Model
     {
 
         $programaGrupoModel = new SystemGroupProgram();
-        $programaGrupoModel->start('system')
+        $programaGrupoModel->database('system')
             ->delete()
-            ->where('grupo', $grupo)
+            ->where('"GROUP_ID"', $grupo)
             ->execute();
     }
 
@@ -58,9 +58,9 @@ class SystemGroup extends Model
 
         if ($usuarios) {
             foreach ($usuarios as $usuario) {
-                $info = ['grupo' => $grupo, 'usuario' => $usuario];
-                $programaGrupoModel = new SystemGroupProgram();
-                $programaGrupoModel->start('system')
+                $info = ['"GROUP_ID"' => $grupo, '"USER_ID"' => $usuario];
+                $programaGrupoModel = new SystemUserGroup();
+                $programaGrupoModel->database('system')
                     ->insert($info)
                     ->execute();
             }
@@ -72,9 +72,9 @@ class SystemGroup extends Model
     {
 
         $programaGrupoModel = new SystemUserGroup();
-        $programaGrupoModel->start('system')
+        $programaGrupoModel->database('system')
             ->delete()
-            ->where('grupo', $grupo)
+            ->where('"GROUP_ID"', $grupo)
             ->execute();
     }
 }

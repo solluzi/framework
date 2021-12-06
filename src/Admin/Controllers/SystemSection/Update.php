@@ -43,7 +43,7 @@ class Update implements Middleware
         try {
             $this->form->validate(
                 [
-                    'nome' => ['required' => true]
+                    'name' => ['required' => true]
                 ]
             );
 
@@ -52,15 +52,15 @@ class Update implements Middleware
 
             // Dados de informação
             $info = [
-                'nome'       => $formData['nome'],
-                'updated_by'  => Session::getValue('user'),
-                'updated_at'  => date('Y-m-d H:i:s')
+                '"NAME"'       => $formData['name'],
+                '"UPDATED_BY"'  => Session::getValue('user'),
+                '"UPDATED_AT"'  => date('Y-m-d H:i:s')
             ];
 
             $secaoModel     = new SystemProgramSection();
             $secaoModel->database('system')
                 ->update($info)
-                ->where('id', $uriParams['id'])
+                ->where('"ID"', $uriParams['id'])
                 ->execute();
 
                 // Insere novos grupos

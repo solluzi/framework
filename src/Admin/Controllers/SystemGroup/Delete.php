@@ -34,7 +34,7 @@ class Delete implements Middleware
             $grupoModel = new SystemGroup();
             $grupoModel->database('system')
                 ->delete()
-                ->where('id', $uriParams['id'])
+                ->where('"ID"', $uriParams['id'])
                 ->execute();
 
             return Response::json([], HttpStatusCode::RESET_CONTENT);

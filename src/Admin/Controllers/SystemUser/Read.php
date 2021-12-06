@@ -42,14 +42,18 @@ class Read implements Middleware
             $usuariosModel = new SystemUser();
 
             // $parametros de pequisa
-            $login = (isset($formData['login']) && !empty($formData['login'])) ? "%{$formData['login']}%" : null;
+            $filterByLogin  = (isset($formData['login']) && !empty($formData['login'])) ? "%{$formData['login']}%" : null;
+            $filterByName   = (isset($formData['name'])  && !empty($formData['name']))  ? "%{$formData['name']}%"  : null;
+            $filterByStatus = $formData['active'] ?? false;
             #######################################################
             ################# INICIO da PAGINAÇÃO #################
             #######################################################
             // Total de registros
             $totalRegistros = $usuariosModel->database('system')
-                ->select('', ['COUNT(*)'])
-                ->where('login', $login, 'LIKE')
+                ->select('u', ['COUNT(*)'])
+                ->where('u."LOGIN"', $filterByLogin, 'LIKE')
+                ->where('u."NAME"', $filterByName, 'LIKE')
+                ->where('u."ACTIVE"', $filterByStatus)
                 ->get();
 
             // Registro por página
@@ -66,16 +70,26 @@ class Read implements Middleware
 
 
             $lista    = $usuariosModel->database('system')
-                ->select('', ['*'])
-                ->where('login', $login, 'LIKE')
+                ->select('u', 
+                    [
+                        'u."ID" id',
+                        'u."NAME" "name"', 
+                        'u."LOGIN" login', 
+                        'u."LOGIN" email',
+                        'u."ACTIVE" status'
+                    ]
+                )
+                ->where('u."LOGIN"', $filterByLogin, 'LIKE')
+                ->where('u."NAME"', $filterByName, 'LIKE')
+                ->where('u."ACTIVE"', $filterByStatus)
                 ->limit($limit, $offset)
                 ->getAll();
 
             // Fomatação de registros
             $resposta['data'] = [
-                'registros'       => $lista,
-                'paginas'         => $paginas,
-                'total_registros' => $totalRegistros->count
+                'records'      => $lista,
+                'pages'        => $paginas,
+                'totalRecords' => $totalRegistros->count
             ];
 
             $payload = $this->encrypt($resposta);

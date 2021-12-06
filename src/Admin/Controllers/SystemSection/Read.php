@@ -42,8 +42,7 @@ class Read implements Middleware
             $secaoModel = new SystemProgramSection();
 
             // Campos para filtro
-            $filtroNome = (isset($formData['nome']) && !empty($formData['nome'])) ? "%{$formData['nome']}%" : null;
-            $programa = (isset($formData['classe']) && !empty($formData['classe'])) ? "%{$formData['classe']}%" : null;
+            $filterByName = (isset($formData['name']) && !empty($formData['name'])) ? "%{$formData['name']}%" : null;
 
             #######################################################
             ################# INICIO da PAGINAÇÃO #################
@@ -51,8 +50,7 @@ class Read implements Middleware
             // Total de registros
             $totalRegistros = $secaoModel->database('system')
                 ->select('', ['COUNT(*)'])
-                ->where('nome', $filtroNome, 'LIKE')
-                ->where('programa', $programa, 'LIKE')
+                ->where('"NAME"', $filterByName, 'LIKE')
                 ->get();
 
             // Registro por página
@@ -68,17 +66,17 @@ class Read implements Middleware
             #######################################################
 
             $listaDeSecao = $secaoModel->database('system')
-                ->select('', ['*'])
-                ->where('nome', $filtroNome, 'LIKE')
-                ->orderBy('nome', 'asc')
+                ->select('s', ['s."ID" id', 's."NAME" "name"'])
+                ->where('"NAME"', $filterByName, 'LIKE')
+                ->orderBy('"NAME"', 'ASC')
                 ->limit($limit, $offset)
                 ->getAll();
 
             // Fomatação de registros
             $resposta['data'] = [
-                'registros'       => $listaDeSecao,
-                'paginas'         => $paginas,
-                'total_registros' => $totalRegistros->count
+                'records'      => $listaDeSecao,
+                'pages'        => $paginas,
+                'totalRecords' => $totalRegistros->count
             ];
 
             $payload = $this->encrypt($resposta);

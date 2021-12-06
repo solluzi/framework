@@ -43,9 +43,9 @@ class SqlLog implements Middleware
             $sqlLogModel = new SystemSQLLog();
 
             // Campo para filtro
-            $login    = (isset($formData['login'])       && !empty($formData['login']))       ? $formData['login']       : null;
-            $data_ini = (isset($formData['data_inicio']) && !empty($formData['data_inicio'])) ? $formData['data_inicio'] : null;
-            $data_fim = (isset($formData['data_fim'])    && !empty($formData['data_fim']))    ? $formData['data_fim']    : null;
+            $filterByLogin = $formData['login'] ?? null;
+            $date_start    = $formData['start'] ?? null;
+            $date_end      = $formData['end'] ?? null;
 
             #######################################################
             ################# INICIO da PAGINAÇÃO #################
@@ -53,8 +53,8 @@ class SqlLog implements Middleware
             // Total de registros
             $totalRegistros = $sqlLogModel->database('log')
                 ->select('', ['COUNT(*)'])
-                ->where('login', $login)
-                ->between('DATE(created_at)', [$data_ini, $data_fim])
+                ->where('"USER_ID"', $filterByLogin)
+                ->between('DATE("CREATED_AT")', [$date_start, $date_end])
                 ->get();
 
             // Registro por página
@@ -70,17 +70,17 @@ class SqlLog implements Middleware
             #######################################################
 
             $sqlLogResult = $sqlLogModel->database('log')
-                ->select('', ['*'])
-                ->where('login', $login)
-                ->between('DATE(created_at)', [$data_ini, $data_fim])
+                ->select('ssl', ['ssl."COMMAND" command', '"FN_DATE2BR"(ssl."CREATED_AT") created_at'])
+                ->where('"USER_ID"', $filterByLogin)
+                ->between('DATE("CREATED_AT")', [$date_start, $date_end])
                 ->limit($limit, $offset)
                 ->getAll();
 
             // Fomatação de registros
             $resposta['data'] = [
-                'registros'       => $sqlLogResult,
-                'paginas'         => $paginas,
-                'total_registros' => $totalRegistros->count
+                'records'      => $sqlLogResult,
+                'pages'        => $paginas,
+                'totalRecords' => $totalRegistros->count
             ];
 
             $payload = $this->encrypt($resposta);

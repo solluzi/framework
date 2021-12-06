@@ -45,15 +45,16 @@ class Create implements Middleware
     {
         try {
             $this->form->validate([
-                'nome' => ['required' => true, 'max' => '100']
+                'name' => ['required' => true]
             ]);
 
             $formData  = $request->getBody();
-
+            
+            
             $data = [
-                'nome'       => $formData['nome'],
-                'created_by' => Session::getValue('user'),
-                'created_at' => date('Y-m-d H:i:s')
+                '"NAME"'       => $formData['name'],
+                '"CREATED_BY"' => Session::getValue('user'),
+                '"CREATED_AT"' => date('Y-m-d H:i:s')
             ];
 
             $grupoModel = new SystemGroup();
@@ -66,11 +67,14 @@ class Create implements Middleware
 
             $result['id'] = $id;
 
+            $grupoModel->adicionarGrupoAoPrograma($formData['programs'], $id);
+            $grupoModel->adicionarUsuarioAoGrupo($formData['users'], $id);
+
             $payload = $this->encrypt($result);
 
             return Response::json(['data' => $payload], HttpStatusCode::CREATED);
         } catch (\Exception $e) {
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
         }
     }
 }

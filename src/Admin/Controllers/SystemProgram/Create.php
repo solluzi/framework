@@ -45,21 +45,18 @@ class Create implements Middleware
     {
         try {
             $this->form->validate([
-                'nome' => ['required' => true, 'max' => '100']
+                'name' => ['required' => true]
             ]);
 
             $formData = $request->getBody();
 
             $info = [
-                'secao'      => $formData['secao'],
-                'icone'      => $formData['icone'],
-                'url'        => $formData['url'],
-                'programa'   => $formData['namespace'],
-                'nome'       => $formData['nome'],
-                'privado'    => $formData['nivel_acesso'],
-                'descricao'  => $formData['descricao'],
-                'created_by' => Session::getValue('user'),
-                'created_at' => date('Y-m-d H:i:s')
+                '"SECTION"'     => $formData['section'],
+                '"PROGRAM"'     => $formData['program'],
+                '"NAME"'        => $formData['name'],
+                '"PRIVATE"'     => $formData['private'] == 1 ? 1 : 0,
+                '"DESCRIPTION"' => $formData['description'],
+                '"CREATED_BY"'    => Session::getValue('user'),
             ];
 
 
@@ -71,7 +68,7 @@ class Create implements Middleware
 
             $id = $programaInsert->getId();
 
-            $programaModel->adicionarProgramaAoGrupo($formData['grupos'], $id);
+            $programaModel->adicionarProgramaAoGrupo($formData['groups'], $id);
 
             $result['id'] = $id;
 

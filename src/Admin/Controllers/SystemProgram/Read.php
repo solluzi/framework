@@ -39,20 +39,21 @@ class Read implements Middleware
             $uriParams = $request->getQueryParams();
 
             // Model
-            $programaModel = new SystemProgram();
-
+            $filterByProgramModel = new SystemProgram();
+            
+            
             // Campos para filtro
-            $filtroNome = (isset($formData['nome']) && !empty($formData['nome'])) ? "%{$formData['nome']}%" : null;
-            $programa = (isset($formData['classe']) && !empty($formData['classe'])) ? "%{$formData['classe']}%" : null;
+            $filterByName        = (isset($formData['name'])        && !empty($formData['name']))       ? "%{$formData['name']}%"       : null;
+            $filterByDescription = (isset($formData['description']) && !empty($formData['description']))? "%{$formData['description']}%": null;
 
             #######################################################
             ################# INICIO da PAGINAÇÃO #################
             #######################################################
             // Total de registros
-            $totalRegistros = $programaModel->database('system')
+            $totalRegistros = $filterByProgramModel->database('system')
                 ->select('', ['COUNT(*)'])
-                ->where('nome', $filtroNome, 'LIKE')
-                ->where('programa', $programa, 'LIKE')
+                ->where('"NAME"', $filterByName, 'LIKE')
+                ->where('"DESCRIPTION"', $filterByDescription, 'LIKE')
                 ->get();
 
             // Registro por página
@@ -67,26 +68,27 @@ class Read implements Middleware
             ################## FIM PAGINAÇÃO ######################
             #######################################################
 
-            $listaDePrograma = $programaModel->database('system')
-                ->select('', ['*'])
-                ->where('nome', $filtroNome, 'LIKE')
-                ->where('programa', $programa, 'LIKE')
-                ->orderBy('secao', 'asc')
+            $listaDefilterByProgram = $filterByProgramModel->database('system')
+                ->select('p', ['p."ID" id', 'p."SECTION" section', 'p."DESCRIPTION" description', 'p."NAME" uname', 'p."PRIVATE" status'])
+                ->where('"NAME"', $filterByName, 'LIKE')
+                ->where('"DESCRIPTION"', $filterByDescription, 'LIKE')
+                ->orderBy('"PRIVATE"', 'DESC')
                 ->limit($limit, $offset)
                 ->getAll();
-
+            
+            
             // Fomatação de registros
             $resposta['data'] = [
-                'registros'       => $listaDePrograma,
-                'paginas'         => $paginas,
-                'total_registros' => $totalRegistros->count
+                'records'       => $listaDefilterByProgram,
+                'pages'         => $paginas,
+                'totalRecords' => $totalRegistros->count
             ];
 
             $payload = $this->encrypt($resposta);
 
             return Response::json(['data' => $payload], HttpStatusCode::OK);
         } catch (\Exception $e) {
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
         }
     }
 }

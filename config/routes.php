@@ -29,10 +29,10 @@ return [
         */
         ['POST'     , '/user'                                   , Admin\Controllers\SystemUser\Create::class                    , 'user.create'             ],
         ['POST'     , '/user/[i:page]/[i:by_page]'              , Admin\Controllers\SystemUser\Read::class                      , 'user.list'               ],
-        ['GET'      , '/user/[h:id]/edit'                       , Admin\Controllers\SystemUser\Edit::class                      , 'edit.user'               ],
-        ['PUT'      , '/user/[h:id]/update'                     , Admin\Controllers\SystemUser\Update::class                    , 'user.update'             ],
+        ['GET'      , '/user/[*:id]/edit'                       , Admin\Controllers\SystemUser\Edit::class                      , 'edit.user'               ],
+        ['PUT'      , '/user/[*:id]/update'                     , Admin\Controllers\SystemUser\Update::class                    , 'user.update'             ],
         ['DELETE'   , '/user/[h:id]/delete'                     , Admin\Controllers\SystemUser\Delete::class                    , 'user.delete'             ],
-        ['GET'      , '/user/[h:id]/status'                     , Admin\Controllers\SystemUser\ChangeStatus::class              , 'user.status.change'      ],
+        ['GET'      , '/user/[*:id]/status'                     , Admin\Controllers\SystemUser\ChangeStatus::class              , 'user.status.change'      ],
 
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -49,9 +49,9 @@ return [
         */
         ['POST'     , '/group'                                  , Admin\Controllers\SystemGroup\Create::class                   , 'group.create'            ],
         ['POST'     , '/group/[i:page]/[i:by_page]'             , Admin\Controllers\SystemGroup\Read::class                     , 'group.list'              ],
-        ['GET'      , '/group/[h:id]/edit'                      , Admin\Controllers\SystemGroup\Edit::class                     , 'group.edit'              ],
-        ['PUT'      , '/group/[h:id]/update'                    , Admin\Controllers\SystemGroup\Update::class                   , 'group.update'            ],
-        ['DELETE'   , '/group/[h:id]/delete'                    , Admin\Controllers\SystemGroup\Delete::class                   , 'group.delete'            ],
+        ['GET'      , '/group/[*:id]/edit'                      , Admin\Controllers\SystemGroup\Edit::class                     , 'group.edit'              ],
+        ['PUT'      , '/group/[*:id]/update'                    , Admin\Controllers\SystemGroup\Update::class                   , 'group.update'            ],
+        ['DELETE'   , '/group/[*:id]/delete'                    , Admin\Controllers\SystemGroup\Delete::class                   , 'group.delete'            ],
         ['POST'     , '/group/programa'                         , Admin\Controllers\SystemGroup\GrupoEPrograma::class           , 'group.program'           ],
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -60,9 +60,9 @@ return [
         */
         ['POST'     , '/section'                                , Admin\Controllers\SystemSection\Create::class                 , 'section.create'          ],
         ['POST'     , '/section/[i:page]/[i:by_page]'           , Admin\Controllers\SystemSection\Read::class                   , 'section.list'            ],
-        ['POST'     , '/section/[h:id]/edit'                    , Admin\Controllers\SystemSection\Edit::class                   , 'section.edit'            ],
-        ['PUT'      , '/section/[h:id]/update'                  , Admin\Controllers\SystemSection\Update::class                 , 'section.update'          ],
-        ['DELETE'   , '/section/[h:id]/delete'                  , Admin\Controllers\SystemSection\Delete::class                 , 'section.delete'          ],
+        ['GET'      , '/section/[*:id]/edit'                    , Admin\Controllers\SystemSection\Edit::class                   , 'section.edit'            ],
+        ['PUT'      , '/section/[*:id]/update'                  , Admin\Controllers\SystemSection\Update::class                 , 'section.update'          ],
+        ['DELETE'   , '/section/[*:id]/delete'                  , Admin\Controllers\SystemSection\Delete::class                 , 'section.delete'          ],
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                      ROUTE FOR THE SYSTEM PROGRAM
@@ -70,9 +70,9 @@ return [
         */
         ['POST'     , '/program'                                , Admin\Controllers\SystemProgram\Create::class                 , 'program.create'          ],
         ['POST'     , '/program/[i:page]/[i:by_page]'           , Admin\Controllers\SystemProgram\Read::class                   , 'program.list'            ],
-        ['POST'     , '/program/[h:id]/edit'                    , Admin\Controllers\SystemProgram\Edit::class                   , 'program.edit'            ],
-        ['PUT'      , '/program/[h:id]/update'                  , Admin\Controllers\SystemProgram\Update::class                 , 'program.update'          ],
-        ['DELETE'   , '/program/[h:id]/delete'                  , Admin\Controllers\SystemProgram\Delete::class                 , 'program.delete'          ],
+        ['GET'      , '/program/[*:id]/edit'                    , Admin\Controllers\SystemProgram\Edit::class                   , 'program.edit'            ],
+        ['PUT'      , '/program/[*:id]/update'                  , Admin\Controllers\SystemProgram\Update::class                 , 'program.update'          ],
+        ['DELETE'   , '/program/[*:id]/delete'                  , Admin\Controllers\SystemProgram\Delete::class                 , 'program.delete'          ],
         /*
         |-----------------------------------------------------------------------------------------------------------------------------------------------------
         |                                                    ROUTE FOR THE SYSTEM CONFIGURATIONS

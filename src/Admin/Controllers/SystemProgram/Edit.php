@@ -34,24 +34,31 @@ class Edit implements Middleware
     {
         try {
             // Parametros recebidos do formulário
-            $formData  = $request->getBody();
+            $uriParams  = $request->getQueryParams();
 
             // Model
             $programaModel = new SystemProgram();
             $grupoModel    = new SystemGroupProgram();
 
             // Campo para filtro
-            $id       = (isset($formData['id']) && !empty($formData['id'])) ? "{$formData['id']}" : null;
+            $id       = (isset($uriParams['id']) && !empty($uriParams['id'])) ? "{$uriParams['id']}" : null;
 
             $resultados = $programaModel->database('system')
-                ->select('', ['*'])
-                ->where('id', $id, '=')
+                ->select('p', [
+                    'p."ID" id',
+                    'p."SECTION" section',
+                    'p."NAME" "name"',
+                    'p."PROGRAM" "program"',
+                    'p."PRIVATE" status',
+                    'p."DESCRIPTION" description'
+                    ])
+                ->where('"ID"', $id, '=')
                 ->get();
 
             // Busca Grupos
             $resultadoGrupos = $grupoModel->database('system')
-                ->select('', ['grupo as id'])
-                ->where('programa', $id, '=')
+                ->select('gp', ['gp."GROUP_ID" as id'])
+                ->where('gp."PROGRAM_ID"', $id, '=')
                 ->getAll();
 
             $trataGrupo = [];
@@ -61,8 +68,8 @@ class Edit implements Middleware
 
             // Fomatação de registros
             $resposta['data'] = [
-                'registros' => $resultados,
-                'grupos'    => $trataGrupo
+                'records' => $resultados,
+                'groups'    => $trataGrupo
             ];
 
             $payload = $this->encrypt($resposta);

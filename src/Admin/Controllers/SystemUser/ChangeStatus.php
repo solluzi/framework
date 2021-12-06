@@ -34,19 +34,19 @@ class ChangeStatus implements Middleware
 
             // Tratamento de dados
             $conn = Connection::open('system');
-            $sql = "UPDATE system_user
-                    SET active = (
+            $sql = 'UPDATE "SYSTEM_USER"
+                    SET "ACTIVE" = (
                         CASE 
-                            WHEN active IS true THEN false 
+                            WHEN "ACTIVE" IS true THEN false 
                             ELSE true 
                         END)
-                    WHERE id = ?;";
+                    WHERE "ID" = ?;';
             $stmt = $conn->prepare($sql);
             $stmt->execute([$uriParams['id']]);
 
             return Response::json([], HttpStatusCode::ACCEPTED);
         } catch (\Exception $e) {
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
         }
     }
 }

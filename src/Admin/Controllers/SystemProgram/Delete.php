@@ -34,7 +34,7 @@ class Delete implements Middleware
             $programaModel = new SystemProgram();
             $programaModel->database('system')
                 ->delete()
-                ->where('id', $uriParams['id'])
+                ->where('"ID"', $uriParams['id'])
                 ->execute();
 
             return Response::json([], HttpStatusCode::RESET_CONTENT);

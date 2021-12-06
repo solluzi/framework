@@ -42,15 +42,15 @@ class Create implements Middleware
     {
         try {
             $this->form->validate([
-                'nome' => ['required' => true, 'max' => '100']
+                'name' => ['required' => true, 'max' => '100']
             ]);
 
             $formData = $request->getBody();
 
             $info = [
-                'nome'       => $formData['nome'],
-                'created_by' => Session::getValue('user'),
-                'created_at' => date('Y-m-d H:i:s')
+                '"NAME"'       => $formData['name'],
+                '"CREATED_BY"' => Session::getValue('user'),
+                '"CREATED_AT"' => date('Y-m-d H:i:s')
             ];
 
             $secaoModel  = new SystemProgramSection();

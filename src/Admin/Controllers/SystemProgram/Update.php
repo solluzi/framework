@@ -43,41 +43,40 @@ class Update implements Middleware
         try {
             $this->form->validate(
                 [
-                    'nome' => ['required' => true]
+                    'name' => ['required' => true]
                 ]
             );
 
             $formData  = $request->getBody();
             $uriParams = $request->getQueryParams();
+//print_r($formData);die;
 
             // Dados de informação
             $info = [
-                'secao'      => $formData['secao'],
-                'icone'      => $formData['icone'],
-                'url'        => $formData['url'],
-                'programa'   => $formData['namespace'],
-                'nome'       => $formData['nome'],
-                'privado'    => $formData['nivel_acesso'],
-                'descricao'  => $formData['descricao'],
-                'updated_by' => Session::getValue('user'),
-                'updated_at' => date('Y-m-d H:i:s')
+                '"SECTION"'     => $formData['section'],
+                '"PROGRAM"'     => $formData['program'],
+                '"NAME"'        => $formData['name'],
+                '"PRIVATE"'     => $formData['private'] ?? 0,
+                '"DESCRIPTION"' => $formData['description'],
+                '"UPDATED_BY"'  => Session::getValue('user'),
+                '"UPDATED_AT"'  => date('Y-m-d H:i:s')
             ];
 
 
             $programaModel     = new SystemProgram();
             $programaUpdate = $programaModel->database('system');
             $programaUpdate->update($info)
-                ->where('id', $uriParams['id'])
+                ->where('"ID"', $uriParams['id'])
                 ->execute();
-
+            
                 // Insere novos grupos
-            $programaModel->adicionarProgramaAoGrupo($formData['grupos'], $uriParams['id']);
+            $programaModel->adicionarProgramaAoGrupo($formData['groups'], $uriParams['id']);
 
             $result['id'] = $uriParams['id'];
 
             Response::json($result, HttpStatusCode::CREATED);
         } catch (\Exception $e) {
-            Response::json([], HttpStatusCode::NOT_ACCEPTABLE);
+            Response::json([$e->getMessage()], HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

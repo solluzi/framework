@@ -32,9 +32,9 @@ class SystemProgram extends Model
 
         if ($grupos) {
             foreach ($grupos as $grupo) {
-                $info = ['grupo' => $grupo, 'programa' => $controlador];
+                $info = ['"GROUP_ID"' => $grupo, '"PROGRAM_ID"' => $controlador];
                 $programaGrupoModel = new SystemGroupProgram();
-                $programaGrupoModel->start('system')
+                $programaGrupoModel->database('system')
                     ->insert($info)
                     ->execute();
             }
@@ -46,9 +46,9 @@ class SystemProgram extends Model
     {
 
         $programaGrupoModel = new SystemGroupProgram();
-        $programaGrupoModel->start('system')
+        $programaGrupoModel->database('system')
             ->delete()
-            ->where('programa', $controlador)
+            ->where('"PROGRAM_ID"', $controlador)
             ->execute();
     }
 }

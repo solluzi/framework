@@ -45,35 +45,36 @@ class Update implements Middleware
     public function process(Request $request)
     {
         try {
-            /* $this->form->validate(
+            $this->form->validate(
                 [
-                    'nome' => ['required' => true]
+                    'name' => ['required' => true]
                 ]
-            ); */
+            ); 
 
             $formData  = $request->getBody();
 
             $uriParams = $request->getQueryParams();
-
+            
             #######################################################################
             ######################## ATUALIZAR NOME DO GRUPO ######################
             #######################################################################
             $campos = [
-                'nome'       => $formData['nome'],
-                'updated_by' => Session::getValue('user'),
-                'updated_at' => date('Y-m-d H:i:s')
+                '"NAME"'       => $formData['name'],
+                '"UPDATED_BY"' => Session::getValue('user'),
+                '"UPDATED_AT"' => date('Y-m-d H:i:s')
             ];
             $id         = $uriParams['id'];
             $grupoModel = new SystemGroup();
             $grupoModel->database('system')
                 ->update($campos)
-                ->where('id', $id)
+                ->where('"ID"', $id)
                 ->execute();
+
 
             #######################################################################
             ######################## ATUALIZAR PERMISSÕES #########################
             #######################################################################
-            $grupoModel->adicionarGrupoAoPrograma($formData['programas'], $id);
+            $grupoModel->adicionarGrupoAoPrograma($formData['programs'], $id);
 
 
 
@@ -81,7 +82,7 @@ class Update implements Middleware
             #################### ATUALIZAR USUÁRIOS & GRUPOS ######################
             #######################################################################
 
-            $grupoModel->adicionarUsuarioAoGrupo($formData['usuarios'], $id);
+            $grupoModel->adicionarUsuarioAoGrupo($formData['users'], $id);
 
             $payload = $this->encrypt($id);
 
