@@ -25,7 +25,8 @@
         "fpdf/fpdf"                    : "^1.81",
         "robmorgan/phinx"              : "^0.12.4",
         "psr/http-server-middleware"   : "^1.0",
-        "brainfoolong/cryptojs-aes-php": "^2.1"
+        "brainfoolong/cryptojs-aes-php": "^2.1",
+        "nikic/fast-route": "^1.3"
     },
     "autoload": {
         "psr-4": {
@@ -63,6 +64,12 @@
     "autoload-dev": {
         "psr-4": {
             "Test\\": "tests"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "codeception/c3": true
         }
     }
 }

@@ -25,7 +25,6 @@ use Controller\Response;
 
 class Status implements Middleware
 {
-
     public function process($request)
     {
         return Response::json('OK', HttpStatusCode::OK);
