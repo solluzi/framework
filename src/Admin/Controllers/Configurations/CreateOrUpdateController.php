@@ -19,15 +19,13 @@ declare(strict_types=1);
 namespace Admin\Controllers\SystemConfiguration;
 
 use Admin\Model\SystemConfiguration;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
 use Form\Form;
-use Router\Request;
 use Session\Session;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Request;
 use Traits\PayloadEncryptTrait;
 
-class CreateOrUpdate implements Middleware
+class CreateOrUpdateController extends AbstractController
 {
     use PayloadEncryptTrait;
 
@@ -41,7 +39,7 @@ class CreateOrUpdate implements Middleware
     public function process(Request $request)
     {
         try {
-            $formData = $request->getBody();
+            $formData = $request->getPosts();
 
 
             /*
@@ -166,7 +164,8 @@ class CreateOrUpdate implements Middleware
             $result['id'] = $id;
             $payload = $this->encrypt($result);
 
-            return Response::json(['data' => $payload], HttpStatusCode::OK);
+            $this->response(HttpStatusCode::OK, ['data' => $payload]);
+
         } catch (\Exception $e) {
             return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
         }

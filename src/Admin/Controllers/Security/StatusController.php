@@ -23,7 +23,7 @@ use Solluzi\Controller\AbstractController;
 use Solluzi\Controller\Request;
 use Solluzi\Psr\Logger\FileLogger;
 
-class Status extends AbstractController
+class StatusController extends AbstractController
 {
     private $logger;
 

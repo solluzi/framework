@@ -37,7 +37,7 @@ class Request
     *
     *
     */
-    private function getPosts()
+    public function getPosts()
     {
         return $this->post;
     }
@@ -50,7 +50,7 @@ class Request
     *
     *
     */
-    private function getPost($key): self
+    public function getPost($key): self
     {
         $this->post[$key];
         return $this;

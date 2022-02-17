@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Router;
 
-use Traits\IsLoggedinTrait;
+use Solluzi\Lib\Traits\IsLoggedinTrait;
 
 /**
  * 
