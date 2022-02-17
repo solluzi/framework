@@ -16,14 +16,14 @@ declare(strict_types=1);
 namespace Admin\Controllers\SystemPublic;
 
 use Admin\Model\SystemLogin;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Controller\TrataFormInput;
-use Form\Form;
 use Router\Request;
-use Traits\JWTPayloadTrait;
-use Traits\PayloadEncryptTrait;
+use Solluzi\Interfaces\Middleware;
+use Solluzi\Lib\Controller\HttpStatusCode;
+use Solluzi\Lib\Controller\Response;
+use Solluzi\Lib\Controller\TrataFormInput;
+use Solluzi\Lib\Form\Form;
+use Solluzi\Lib\Traits\JWTPayloadTrait;
+use Solluzi\Lib\Traits\PayloadEncryptTrait;
 
 /**
  * SystemSignIn
@@ -52,7 +52,7 @@ class Login implements Middleware
     {
         try {
             // Validação de dados de formulários
-            $this->form->validate(
+            $this->form->isValid(
                 [
                     'username' => ['required' => true],
                     'password' => ['required' => true]

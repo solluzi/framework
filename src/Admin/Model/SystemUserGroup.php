@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace Admin\Model;
 
-use Model\Model;
+use Solluzi\Database\Model\Model;
 
 class SystemUserGroup extends Model
 {

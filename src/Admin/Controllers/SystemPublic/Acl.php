@@ -19,12 +19,12 @@ declare(strict_types=1);
 namespace Admin\Controllers\SystemPublic;
 
 use Admin\Model\Acl as ModelAcl;
-use Application\Interface\Middleware as InterfaceMiddleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Session\Session;
+use Solluzi\Interfaces\Middleware;
+use Solluzi\Lib\Controller\HttpStatusCode;
+use Solluzi\Lib\Controller\Response;
+use Solluzi\Lib\Util\Session\Session;
 
-class Acl implements InterfaceMiddleware
+class Acl implements Middleware
 {
 
     public function process($request)

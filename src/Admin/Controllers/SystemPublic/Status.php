@@ -19,14 +19,20 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\SystemPublic;
 
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Request;
+use Solluzi\Psr\Logger\FileLogger;
 
-class Status implements Middleware
+class Status extends AbstractController
 {
-    public function process($request)
+    private $logger;
+
+    public function __construct()
     {
-        return Response::json('OK', HttpStatusCode::OK);
+        $this->logger = new FileLogger;
+    }
+    public function process(Request $request)
+    {
+        $this->response(200, ['time' => time()]);
     }
 }

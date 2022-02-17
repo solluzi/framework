@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @version     1.0.0
  * @author      Name <email@email.com>
@@ -16,11 +15,11 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\SystemPublic;
 
-use Application\Interface\Middleware as InterfaceMiddleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
+use Solluzi\Interfaces\Middleware;
+use Solluzi\Lib\Controller\HttpStatusCode;
+use Solluzi\Lib\Controller\Response;
 
-class Home implements InterfaceMiddleware
+class Home implements Middleware
 {
 
     public function process($request)

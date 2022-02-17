@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace Admin\Controllers\SystemPublic;
 
 use Admin\Model\SystemAccessLog;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Session\JWTWrapper;
+use Solluzi\Interfaces\Middleware;
+use Solluzi\Lib\Controller\HttpStatusCode;
+use Solluzi\Lib\Controller\Response;
+use Solluzi\Lib\Util\Session\JWTWrapper;
 
 class Logout implements Middleware
 {

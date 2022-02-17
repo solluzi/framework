@@ -19,10 +19,10 @@ namespace Admin\Controllers\SystemPublic;
 
 use Admin\Model\SystemUser;
 use App\Helper\SolicitaResetDeNotification;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Traits\JWTPayloadTrait;
+use Solluzi\Interfaces\Middleware;
+use Solluzi\Lib\Controller\HttpStatusCode;
+use Solluzi\Lib\Controller\Response;
+use Solluzi\Lib\Traits\JWTPayloadTrait;
 
 class ChangePasswordRequest implements Middleware
 {

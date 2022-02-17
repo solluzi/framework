@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b8d9667934b74c87ee7ae4f5aae761d",
+    "content-hash": "ebe30cec381fa27ddcaae304bb06eb0c",
     "packages": [
         {
             "name": "brainfoolong/cryptojs-aes-php",

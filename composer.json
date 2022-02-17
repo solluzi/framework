@@ -26,15 +26,16 @@
         "robmorgan/phinx"              : "^0.12.4",
         "psr/http-server-middleware"   : "^1.0",
         "brainfoolong/cryptojs-aes-php": "^2.1",
-        "nikic/fast-route": "^1.3"
+        "nikic/fast-route": "^1.3",
+        "psr/log": "*"
     },
     "autoload": {
         "psr-4": {
             "Admin\\": "src/Admin"
         },
         "classmap": [
-            "application",
-            "console"
+            "solluzi",
+            "command"
         ]
     },
     "scripts": {
