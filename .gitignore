@@ -2,4 +2,4 @@ vendor
 tests/api/data
 !tests/api/data/.gitkeep
 public/assets/img/user
-!storage/.gitkeep
+storage/*.log
