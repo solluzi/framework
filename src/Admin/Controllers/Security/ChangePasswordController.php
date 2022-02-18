@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemPublic;
+namespace Admin\Controllers\Security;
 
 use Admin\Model\SystemUser;
 use DateTime;
@@ -29,7 +29,7 @@ use Solluzi\Lib\Form\Form;
 use Solluzi\Lib\Traits\IsLoggedinTrait;
 use Solluzi\Lib\Util\Session\JWTWrapper;
 
-class ChangePassword implements Middleware
+class ChangePasswordController implements Middleware
 {
     use IsLoggedinTrait;
 

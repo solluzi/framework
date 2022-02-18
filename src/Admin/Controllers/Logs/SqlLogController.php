@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemLog;
+namespace Admin\Controllers\Logs;
 
 use Admin\Model\SystemSQLLog;
 use Application\Interface\Middleware;
@@ -26,7 +26,7 @@ use Traits\PayloadEncryptTrait;
  * Get and filters all sql log of executed instructions
  */
 
-class SqlLog implements Middleware
+class SqlLogController implements Middleware
 {
     use PayloadEncryptTrait;
 

@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 namespace Solluzi\Controller;
+
+use Solluzi\Controller\Traits\FormDecript;
+
 /**
 * @version		1.1.1
 * @category		Psr
@@ -19,6 +22,8 @@ class Request
     private $post;
     private $get;
     private $variables;
+    private $input;
+    use FormDecript;
 
     public function __construct($headers = [], $post = [], $get = [], $variables = [], $files = [])
     {
@@ -39,7 +44,7 @@ class Request
     */
     public function getPosts()
     {
-        return $this->post;
+        return $this->dataVerification();
     }
 
     /**
@@ -52,7 +57,7 @@ class Request
     */
     public function getPost($key): self
     {
-        $this->post[$key];
+        $this->input = $this->dataVerification()[$key];
         return $this;
     }
 
@@ -130,6 +135,52 @@ class Request
     *
     */
     public function getHeaders()
+    {
+
+    }
+
+    /**
+    *--------------------------------------------------------------------------
+    *								
+    *--------------------------------------------------------------------------
+    *
+    *
+    *
+    */
+    public function getString()
+    {
+        return $this->input;
+    }
+
+    /**
+    *--------------------------------------------------------------------------
+    *								
+    *--------------------------------------------------------------------------
+    *
+    *
+    *
+    */
+    public function getInt()
+    {
+
+    }
+
+    public function getDecimal()
+    {
+
+    }
+
+    public function getDate2Us()
+    {
+
+    }
+
+    public function getDate2Br()
+    {
+
+    }
+
+    public function getFloat()
     {
 
     }

@@ -19,7 +19,7 @@ namespace Admin\Model;
 
 use Solluzi\Database\Model\Model;
 
-class SystemConfiguration extends Model
+class Configuration extends Model
 {
     protected $table      = '"SYSTEM_CONFIGURATION"';
     protected $primaryKey = 'id';

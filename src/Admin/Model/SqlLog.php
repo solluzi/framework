@@ -19,7 +19,7 @@ namespace Admin\Model;
 
 use Solluzi\Database\Model\Model;
 
-class SystemSQLLog extends Model
+class SqlLog extends Model
 {
     protected $table      = '"SYSTEM_SQL_LOG"';
     protected $primaryKey = '"ID"';

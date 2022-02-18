@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemProgram;
+namespace Admin\Controllers\Programs;
 
 use Admin\Model\SystemProgram;
 use Application\Interface\Middleware;
@@ -26,7 +26,7 @@ use Router\Request;
 use Session\Session;
 use Traits\PayloadEncryptTrait;
 
-class Create implements Middleware
+class CreateController implements Middleware
 {
     use PayloadEncryptTrait;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Solluzi\Lib\Form;
+namespace Solluzi\Controller\Traits;
 
 use Solluzi\Lib\Traits\PayloadDecryptTrait;
 
@@ -10,21 +10,21 @@ use Solluzi\Lib\Traits\PayloadDecryptTrait;
  * SqlGet Trait
  *  Gets oly one result on table select
  */
-trait Request
+trait FormDecript
 {
     use PayloadDecryptTrait;
     public function dataVerification()
     {
-        $data       = json_decode(file_get_contents("php://input"));
-        $formResult = ($data) ? (array)$data : $_POST;
+        /* $data       = json_decode(file_get_contents("php://input"));
+        $formResult = ($data) ? (array)$data : $_POST; */
         
         if((getenv('DATA_ENCRIPTION') === 'Y')){
-            if(isset($formResult['data'])){
-                $result     = $this->decrypt($formResult['data']);
+            if(isset($this->post['data'])){
+                $result     = $this->decrypt($this->post['data']);
                 return (array)$result;
             }
             throw new \Exception('O formato dos dados enviados, estão errados!');
         }
-        return $formResult;
+        return $this->post;
     }
 }

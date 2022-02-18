@@ -15,7 +15,7 @@ interface SQLQueryBuilder
 
     public function leftJoin(string $table, string $alias, string $field1, string $operator, string $field2): SQLQueryBuilder;
 
-    public function rightJoin(string $table, string $alias, string $field1, string $field2): SQLQueryBuilder;
+    public function rightJoin(string $table, string $alias, string $field1, string $operator, string $field2): SQLQueryBuilder;
 
     public function union(object $table, array $fields ): SQLQueryBuilder;
 

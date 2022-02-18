@@ -17,7 +17,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemPublic;
+namespace Admin\Controllers\Security;
 
 use Solluzi\Controller\AbstractController;
 use Solluzi\Controller\Request;

@@ -25,7 +25,7 @@ class FileLogger extends LogLevel implements LoggerInterface
 
     public function __construct()
     {
-        $this->handle = fopen(dirname($_SERVER['DOCUMENT_ROOT'],1).'/storage/solluzi.log', 'a+');
+        $this->handle = fopen(dirname($_SERVER['DOCUMENT_ROOT'],1).'/storage/'.date('Y-m-d').'.log', 'a+');
     }
 
     public function __destruct()

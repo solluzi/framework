@@ -25,7 +25,7 @@ use Form\Form;
 use Router\Request;
 use Session\Session;
 
-class Update implements Middleware
+class UpdateController implements Middleware
 {
     private $form;
 

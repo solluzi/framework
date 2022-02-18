@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use FastRoute\RouteCollector;
-use Router\Router;
 use Solluzi\Controller\Request;
 
 
@@ -116,43 +115,42 @@ require_once dirname(__DIR__,1) . '/solluzi/lib/util/general/Header.php';
 require dirname(__DIR__,1) . '/vendor/autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    // ADMIN
+    // MAIN
     $r->addGroup('/main', function (RouteCollector $r) {
-        $r->addRoute('GET'      , '/home'                               , Admin\Controllers\SystemPublic\Home::class);
-        $r->addRoute('GET'      , '/status'                             , Admin\Controllers\SystemPublic\Status::class);
-        $r->addRoute('POST'     , '/signin'                             , Admin\Controllers\SystemPublic\Login::class);
-        $r->addRoute('GET'      , '/signout'                            , Admin\Controllers\SystemPublic\Logout::class);
-        $r->addRoute('POST'     , '/password/reset'                     , Admin\Controllers\SystemPublic\ChangePasswordRequest::class);
-        $r->addRoute('POST'     , '/password/{token}/change'            , Admin\Controllers\SystemPublic\ChangePassword::class);
-        $r->addRoute('GET'      , '/acl/{controller}'                   , Admin\Controllers\SystemPublic\Acl::class);
-        $r->addRoute('POST'     , '/access-log/{page:\d+}/{by_page:\d+}', Admin\Controllers\SystemLog\AccessLog::class);
-        $r->addRoute('POST'     , '/audit/{page:\d+}/{by_page:\d+}'     , Admin\Controllers\SystemLog\SqlLog::class);
-        $r->addRoute('POST'     , '/user'                               , Admin\Controllers\SystemUser\Create::class);
-        $r->addRoute('POST'     , '/user/{page:\d+}/{by_page:\d+}'      , Admin\Controllers\SystemUser\Read::class);
-        $r->addRoute('GET'      , '/user/{id}/edit'                     , Admin\Controllers\SystemUser\Edit::class);
-        $r->addRoute('PUT'      , '/user/{id}/update'                   , Admin\Controllers\SystemUser\Update::class);
-        $r->addRoute('DELETE'   , '/user/{id}/delete'                   , Admin\Controllers\SystemUser\Delete::class);
-        $r->addRoute('GET'      , '/user/{id}/status'                   , Admin\Controllers\SystemUser\ChangeStatus::class);
-        $r->addRoute('GET'      , '/profile'                            , Admin\Controllers\UserProfile\Edit::class);
-        $r->addRoute('POST'     , '/profile'                            , Admin\Controllers\UserProfile\Update::class);
-        $r->addRoute('POST'     , '/group'                              , Admin\Controllers\SystemGroup\Create::class);
-        $r->addRoute('POST'     , '/group/{page:\d+}/{by_page:\d+}'     , Admin\Controllers\SystemGroup\Read::class);
-        $r->addRoute('GET'      , '/group/{id}/edit'                    , Admin\Controllers\SystemGroup\Edit::class);
-        $r->addRoute('PUT'      , '/group/{id}/update'                  , Admin\Controllers\SystemGroup\Update::class);
-        $r->addRoute('DELETE'   , '/group/{id}/delete'                  , Admin\Controllers\SystemGroup\Delete::class);
-        $r->addRoute('POST'     , '/group/programa'                     , Admin\Controllers\SystemGroup\GrupoEPrograma::class);
-        $r->addRoute('POST'     , '/section'                            , Admin\Controllers\SystemSection\Create::class);
-        $r->addRoute('POST'     , '/section/{page:\d+}/{by_page:\d+}'   , Admin\Controllers\SystemSection\Read::class);
-        $r->addRoute('GET'      , '/section/{id}/edit'                  , Admin\Controllers\SystemSection\Edit::class);
-        $r->addRoute('PUT'      , '/section/{id}/update'                , Admin\Controllers\SystemSection\Update::class);
-        $r->addRoute('DELETE'   , '/section/{id}/delete'                , Admin\Controllers\SystemSection\Delete::class);
-        $r->addRoute('POST'     , '/program'                            , Admin\Controllers\SystemProgram\Create::class);
-        $r->addRoute('POST'     , '/program/{page:\d+}/{by_page:\d+}'   , Admin\Controllers\SystemProgram\Read::class);
-        $r->addRoute('GET'      , '/program/{id}/edit'                  , Admin\Controllers\SystemProgram\Edit::class);
-        $r->addRoute('PUT'      , '/program/{id}/update'                , Admin\Controllers\SystemProgram\Update::class);
-        $r->addRoute('DELETE'   , '/program/{id}/delete'                , Admin\Controllers\SystemProgram\Delete::class);
-        $r->addRoute('POST'     , '/configuration/preference'           , Admin\Controllers\SystemConfiguration\CreateOrUpdate::class);
-        $r->addRoute('GET'      , '/configuration/{chave}/read'         , Admin\Controllers\SystemConfiguration\Read::class);
+        $r->addRoute('GET'      , '/home'                               , Admin\Controllers\Security\HomeController::class);
+        $r->addRoute('GET'      , '/status'                             , Admin\Controllers\Security\StatusController::class);
+        $r->addRoute('POST'     , '/signin'                             , Admin\Controllers\Security\SignInController::class);
+        $r->addRoute('GET'      , '/signout'                            , Admin\Controllers\Security\SignOutController::class);        
+        $r->addRoute('POST'     , '/password/reset'                     , Admin\Controllers\Security\ChangePasswordController::class);
+        $r->addRoute('POST'     , '/password/{token}/change'            , Admin\Controllers\Security\ChangePasswordController::class);
+        $r->addRoute('GET'      , '/acl/{controller}'                   , Admin\Controllers\Security\Acl::class);
+        $r->addRoute('POST'     , '/access-log/{page:\d+}/{by_page:\d+}', Admin\Controllers\Logs\AccessLogController::class);
+        $r->addRoute('POST'     , '/audit/{page:\d+}/{by_page:\d+}'     , Admin\Controllers\Logs\SqlLogController::class);
+        $r->addRoute('POST'     , '/user'                               , Admin\Controllers\User\CreateController::class);
+        $r->addRoute('POST'     , '/user/{page:\d+}/{by_page:\d+}'      , Admin\Controllers\User\ListController::class);
+        $r->addRoute('GET'      , '/user/{id}/edit'                     , Admin\Controllers\User\GetController::class);
+        $r->addRoute('PUT'      , '/user/{id}/update'                   , Admin\Controllers\User\UpdateController::class);
+        $r->addRoute('DELETE'   , '/user/{id}/delete'                   , Admin\Controllers\User\DeleteController::class);
+        $r->addRoute('GET'      , '/user/{id}/status'                   , Admin\Controllers\User\StatusController::class);
+        $r->addRoute('GET'      , '/profile'                            , Admin\Controllers\UserProfile\GetController::class);
+        $r->addRoute('POST'     , '/profile'                            , Admin\Controllers\UserProfile\UpdateController::class);
+        $r->addRoute('POST'     , '/group'                              , Admin\Controllers\UserGroups\CreateController::class);
+        $r->addRoute('POST'     , '/group/{page:\d+}/{by_page:\d+}'     , Admin\Controllers\UserGroups\ListController::class);
+        $r->addRoute('GET'      , '/group/{id}/edit'                    , Admin\Controllers\UserGroups\GetController::class);
+        $r->addRoute('PUT'      , '/group/{id}/update'                  , Admin\Controllers\UserGroups\UpdateController::class);
+        $r->addRoute('DELETE'   , '/group/{id}/delete'                  , Admin\Controllers\UserGroups\DeleteController::class);
+        $r->addRoute('POST'     , '/section'                            , Admin\Controllers\Sections\CreateController::class);
+        $r->addRoute('POST'     , '/section/{page:\d+}/{by_page:\d+}'   , Admin\Controllers\Sections\ListController::class);
+        $r->addRoute('GET'      , '/section/{id}/edit'                  , Admin\Controllers\Sections\GetController::class);
+        $r->addRoute('PUT'      , '/section/{id}/update'                , Admin\Controllers\Sections\UpdateController::class);
+        $r->addRoute('DELETE'   , '/section/{id}/delete'                , Admin\Controllers\Sections\DeleteController::class);
+        $r->addRoute('POST'     , '/program'                            , Admin\Controllers\Programs\CreateController::class);
+        $r->addRoute('POST'     , '/program/{page:\d+}/{by_page:\d+}'   , Admin\Controllers\Programs\ListController::class);
+        $r->addRoute('GET'      , '/program/{id}/edit'                  , Admin\Controllers\Programs\GetController::class);
+        $r->addRoute('PUT'      , '/program/{id}/update'                , Admin\Controllers\Programs\UpdateController::class);
+        $r->addRoute('DELETE'   , '/program/{id}/delete'                , Admin\Controllers\Programs\DeleteController::class);
+        $r->addRoute('POST'     , '/configuration/preference'           , Admin\Controllers\Configurations\CreateOrUpdateController::class);
+        $r->addRoute('GET'      , '/configuration/{chave}/read'         , Admin\Controllers\Configurations\GetController::class);
     });
     // OTHER DEPARTAMENTS
 });
@@ -161,6 +159,10 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri        = $_SERVER['REQUEST_URI'];
 $url        = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
+
+// Verify request Type
+$data       = json_decode(file_get_contents("php://input"));
+$formResult = ($data) ? (array)$data : $_POST;
 
 // Strip query string (?foo=bar) and decode URI
 if(false !== $pos = strpos($uri, '?')){
@@ -185,19 +187,7 @@ switch($routeInfo[0])
         $handler = new $routeInfo[1];
         $vars    = $routeInfo[2];
         // ... call $handler with $vars
-        $serverRequest = new Request($_SERVER, $_POST, $_GET, $vars, $_FILES);
+        $serverRequest = new Request($_SERVER, $formResult, $_GET, $vars, $_FILES);
         $handler->process($serverRequest);
         break;
 }
-
-/*
-|--------------------------------------------------------------------------
-|ROTAS DA API
-|--------------------------------------------------------------------------
-|
-| Chama todas as rotas do sistema
-|
-*/
-//$router = new Router;
-//$router->getRoutes();
-

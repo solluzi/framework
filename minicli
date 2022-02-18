@@ -15,7 +15,7 @@ $app->setSignature("minicli hello name [ user=name ]");
 
 $app->registerCommand("help", function(CommandCall $call) use ($app) {
     $app->printSignature();
-    print_r($call->params);
+    //print_r($call->params);
 });
 
 $app->runCommand($argv);

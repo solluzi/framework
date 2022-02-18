@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Solluzi\Lib\Form;
+namespace Solluzi\Controller;
 
 use Solluzi\Interfaces\IFormValidation;
 use Solluzi\Lib\Controller\HttpStatusCode;
@@ -54,11 +54,15 @@ class Form implements IFormValidation
     ];
 
     protected $errors = [];
-    use Request;
 
     public function __construct()
     {
         
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 
     public function setData($data = [])
@@ -194,7 +198,7 @@ class Form implements IFormValidation
             foreach ($valor as $k => $v) {
                 $this->v = $v;
                 $metodo  = "_" . $k;
-                $data    = $this->input($chave);
+                $data    = isset($this->getData()[$chave]) ? $this->getData()[$chave] : null;
                 $result  = (empty($data)) ? null : $data;
                 if(!$this->$metodo($result)){
                     $this->errors[$chave] = sprintf($this->_validators[$k]['message'], $v);
@@ -209,11 +213,5 @@ class Form implements IFormValidation
             exit;
         }
         return $this->errors;
-    }
-
-    public function input($inputName)
-    {
-        $inputArray = $this->dataVerification();
-        return $inputArray[$inputName];
     }
 }

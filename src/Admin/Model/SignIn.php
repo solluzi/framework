@@ -19,7 +19,7 @@ namespace Admin\Model;
 
 use Solluzi\Database\Model\Model;
 
-class SystemLogin extends Model
+class SignIn extends Model
 {
     protected $table           = '"FN_LOGIN"(?) as login';
     protected $primaryKey      = '"ID"';

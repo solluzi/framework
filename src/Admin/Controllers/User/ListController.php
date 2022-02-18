@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemUser;
+namespace Admin\Controllers\User;
 
 use Admin\Model\SystemUser;
 use Application\Interface\Middleware;
@@ -24,7 +24,7 @@ use Controller\Response;
 use Router\Request;
 use Traits\PayloadEncryptTrait;
 
-class Read implements Middleware
+class ListController implements Middleware
 {
     use PayloadEncryptTrait;
 

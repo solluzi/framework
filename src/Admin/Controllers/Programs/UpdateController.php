@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemProgram;
+namespace Admin\Controllers\Programs;
 
 use Admin\Model\SystemProgram;
 use Application\Interface\Middleware;
@@ -25,7 +25,7 @@ use Form\Form;
 use Router\Request;
 use Session\Session;
 
-class Update implements Middleware
+class UpdateController implements Middleware
 {
     private $form;
 

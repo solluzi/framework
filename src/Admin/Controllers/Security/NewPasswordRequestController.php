@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemPublic;
+namespace Admin\Controllers\Security;
 
 use Admin\Model\SystemUser;
 use App\Helper\SolicitaResetDeNotification;
@@ -24,7 +24,7 @@ use Solluzi\Lib\Controller\HttpStatusCode;
 use Solluzi\Lib\Controller\Response;
 use Solluzi\Lib\Traits\JWTPayloadTrait;
 
-class ChangePasswordRequest implements Middleware
+class NewPasswordRequestController implements Middleware
 {
     use JWTPayloadTrait;
 

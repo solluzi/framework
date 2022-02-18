@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemUser;
+namespace Admin\Controllers\User;
 
 use Admin\Model\SystemUser;
 use Application\Interface\Middleware;
@@ -23,7 +23,7 @@ use Controller\HttpStatusCode;
 use Controller\Response;
 use Router\Request;
 
-class Delete implements Middleware
+class DeleteController implements Middleware
 {
 
 

@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemUser;
+namespace Admin\Controllers\User;
 
 use Application\Interface\Middleware;
 use Controller\HttpStatusCode;
@@ -23,7 +23,7 @@ use Controller\Response;
 use Application\Ado\Connection;
 use Router\Request;
 
-class ChangeStatus implements Middleware
+class StatusController implements Middleware
 {
 
 

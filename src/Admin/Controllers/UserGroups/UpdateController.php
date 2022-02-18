@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemGroup;
+namespace Admin\Controllers\UserGroups;
 
 use Admin\Model\SystemGroup;
 use Application\Interface\Middleware;
@@ -27,7 +27,7 @@ use Router\Request;
 use Session\Session;
 use Traits\PayloadEncryptTrait;
 
-class Update implements Middleware
+class UpdateController implements Middleware
 {
     use PayloadEncryptTrait;
 

@@ -20,7 +20,7 @@ return
     'environments' => [
         'default_migration_table' => 'phinxlog',
         'default_environment'     => 'dev',
-        'prd'              => [
+        'database'              => [
             'adapter' => getenv('PROD_BASE_DB_ADAPTER'),
             'host'    => getenv('PROD_BASE_DB_HOST'),
             'name'    => getenv('PROD_BASE_DB_NAME'),

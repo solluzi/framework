@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemLog;
+namespace Admin\Controllers\Logs;
 
 use Admin\Model\SystemAccessLog;
 use Application\Interface\Middleware;
@@ -26,7 +26,7 @@ use Traits\PayloadEncryptTrait;
  * System Access Log View Class
  * Get all history of access logs from the table
  */
-class AccessLog implements Middleware
+class AccessLogController implements Middleware
 {
     use PayloadEncryptTrait;
 

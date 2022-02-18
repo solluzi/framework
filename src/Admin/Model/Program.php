@@ -19,7 +19,7 @@ namespace Admin\Model;
 
 use Solluzi\Database\Model\Model;
 
-class SystemProgram extends Model
+class Program extends Model
 {
     public $table      = '"SYSTEM_PROGRAM"';
     public $primaryKey = '"ID"';

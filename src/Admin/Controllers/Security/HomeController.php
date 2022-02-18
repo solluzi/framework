@@ -13,13 +13,13 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemPublic;
+namespace Admin\Controllers\Security;
 
 use Solluzi\Interfaces\Middleware;
 use Solluzi\Lib\Controller\HttpStatusCode;
 use Solluzi\Lib\Controller\Response;
 
-class Home implements Middleware
+class HomeController implements Middleware
 {
 
     public function process($request)

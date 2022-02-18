@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemGroup;
+namespace Admin\Controllers\UserGroups;
 
 use Admin\Model\SystemGroup;
 use Admin\Model\SystemGroupProgram;
@@ -26,7 +26,7 @@ use Controller\Response;
 use Router\Request;
 use Traits\PayloadEncryptTrait;
 
-class Edit implements Middleware
+class GetController implements Middleware
 {
     use PayloadEncryptTrait;
 

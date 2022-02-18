@@ -25,7 +25,7 @@ use Router\Request;
 use Session\Session;
 use Traits\PayloadEncryptTrait;
 
-class Edit implements Middleware
+class GetController implements Middleware
 {
     use PayloadEncryptTrait;
 

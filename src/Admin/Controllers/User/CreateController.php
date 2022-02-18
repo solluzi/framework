@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemUser;
+namespace Admin\Controllers\User;
 
 use Admin\Model\SystemUser;
 use Application\Interface\Middleware;
@@ -26,7 +26,7 @@ use General\BCrypt;
 use Router\Request;
 use Session\Session;
 
-class Create implements Middleware
+class CreateController implements Middleware
 {
 
     private $form;

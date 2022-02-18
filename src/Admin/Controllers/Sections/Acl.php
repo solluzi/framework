@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemSection;
+namespace Admin\Controllers\Sections;
 
 use Admin\Model\MenuAcl;
 use Application\Interface\Middleware;

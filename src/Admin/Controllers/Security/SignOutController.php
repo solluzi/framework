@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemPublic;
+namespace Admin\Controllers\Security;
 
 use Admin\Model\SystemAccessLog;
 use Solluzi\Interfaces\Middleware;
@@ -23,7 +23,7 @@ use Solluzi\Lib\Controller\HttpStatusCode;
 use Solluzi\Lib\Controller\Response;
 use Solluzi\Lib\Util\Session\JWTWrapper;
 
-class Logout implements Middleware
+class SignOutController implements Middleware
 {
 
     public function process($request)

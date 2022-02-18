@@ -15,18 +15,15 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemGroup;
+namespace Admin\Controllers\UserGroups;
 
 use Admin\Model\SystemGroup;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Form\Form;
-use Router\Request;
-use Session\Session;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Request;
+use Solluzi\Lib\Util\Session\Session;
 use Traits\PayloadEncryptTrait;
 
-class Create implements Middleware
+class CreateController extends AbstractController
 {
     use PayloadEncryptTrait;
 
@@ -48,7 +45,7 @@ class Create implements Middleware
                 'name' => ['required' => true]
             ]);
 
-            $formData  = $request->getBody();
+            $formData  = $request->getPosts();
             
             
             $data = [

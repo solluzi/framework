@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemConfiguration;
+namespace Admin\Controllers\Configurations;
 
 use Admin\Model\SystemConfiguration;
 use Form\Form;

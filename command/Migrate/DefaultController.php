@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
-namespace Command\Setup;
+namespace Command\Migrate;
 
 use Solluzi\Minicli\CommandController;
 
-class MainController extends CommandController
+class DefaultController extends CommandController
 {
     public function handle()
     {

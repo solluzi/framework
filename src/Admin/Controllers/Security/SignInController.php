@@ -13,38 +13,37 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemPublic;
+namespace Admin\Controllers\Security;
 
-use Admin\Model\SystemLogin;
-use Router\Request;
-use Solluzi\Interfaces\Middleware;
+use Admin\Model\SignIn;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
 use Solluzi\Lib\Controller\HttpStatusCode;
-use Solluzi\Lib\Controller\Response;
-use Solluzi\Lib\Controller\TrataFormInput;
-use Solluzi\Lib\Form\Form;
 use Solluzi\Lib\Traits\JWTPayloadTrait;
 use Solluzi\Lib\Traits\PayloadEncryptTrait;
+use Solluzi\Psr\Logger\FileLogger;
 
 /**
  * SystemSignIn
  * executes tasks to allow a certain user to signin
  *
  */
-class Login implements Middleware
+class SignInController extends AbstractController
 {
     use JWTPayloadTrait;
     use PayloadEncryptTrait;
 
     private $form;
-    private $loginQuery;
-    private $trataInput;
+    private $model;
+    private $logger;
 
 
     public function __construct()
     {
-        $this->form           = new Form();
-        $this->loginQuery     = new SystemLogin();
-        $this->trataInput     = new TrataFormInput();
+        $this->form   = new Form();
+        $this->model  = new SignIn();
+        $this->logger = new FileLogger();
     }
 
 
@@ -52,6 +51,7 @@ class Login implements Middleware
     {
         try {
             // Validação de dados de formulários
+            $this->form->setData($request->getPosts());
             $this->form->isValid(
                 [
                     'username' => ['required' => true],
@@ -59,24 +59,17 @@ class Login implements Middleware
                 ],
             );
 
-
-            $input   = $request->getBody();
-
-            $usuario = $this->trataInput->input($input['username'])->toString();
-            $senha   = $this->trataInput->input($input['password'])->toString();
-
-
             $chave  = md5(uniqid('solluzi_', true));  // chave unica
             $sessao = $this->payload($chave);
 
             $dados = json_encode([
-                'usuario' => $usuario,
-                'senha'   => $senha,
+                'usuario' => $request->getPost('username')->getString(),
+                'senha'   => $request->getPost('password')->getString(),
                 'chave'   => $chave,
                 'sessao'  => $sessao
             ]);
 
-            $usuarioResult = $this->loginQuery->database('system');
+            $usuarioResult = $this->model->database('system');
             $selectResult  = $usuarioResult
                 ->instruction("SELECT")
                 ->instructionValues($dados)
@@ -90,12 +83,13 @@ class Login implements Middleware
 
             if ($loginResult['logged']) {
                 $payload = $this->encrypt($loginResult);
-                return Response::json(['data' => $payload], $httpResponse);
+                $this->response($httpResponse, ['data' => $payload]);
             } else {
-                return Response::json([], HttpStatusCode::UNAUTHORIZED);
+                $this->response(HttpStatusCode::NO_CONTENT, []);
             }
         } catch (\Exception $e) {
-            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

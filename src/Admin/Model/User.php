@@ -19,7 +19,7 @@ namespace Admin\Model;
 
 use Solluzi\Database\Model\Model;
 
-class SystemUser extends Model
+class User extends Model
 {
     protected $table      = '"SYSTEM_USER"';
     protected $primaryKey = '"ID"';

@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\SystemProgram;
+namespace Admin\Controllers\Programs;
 
 use Admin\Model\SystemProgram;
 use Application\Interface\Middleware;
@@ -23,7 +23,7 @@ use Controller\HttpStatusCode;
 use Controller\Response;
 use Router\Request;
 
-class Delete implements Middleware
+class DeleteController implements Middleware
 {
 
     public function process(Request $request)

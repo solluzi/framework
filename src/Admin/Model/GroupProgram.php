@@ -19,7 +19,7 @@ namespace Admin\Model;
 
 use Solluzi\Database\Model\Model;
 
-class SystemGroupProgram extends Model
+class GroupProgram extends Model
 {
     protected $table      = '"SYSTEM_GROUP_PROGRAM"';
     protected $primaryKey = '"ID"';
