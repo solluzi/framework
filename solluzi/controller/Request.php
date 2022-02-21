@@ -171,7 +171,8 @@ class Request
 
     public function toDate2Us($timestamp = false)
     {
-        return $this->date2us($this->input, $timestamp);
+        $this->input = $this->date2us($this->input, $timestamp);
+        return $this->input ?? null;
     }
 
     public function toDate2Br()

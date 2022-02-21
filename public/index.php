@@ -124,9 +124,6 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
         $r->addRoute('GET'      , '/status'                             , Admin\Controllers\Security\StatusController::class);
         $r->addRoute('POST'     , '/signin'                             , Admin\Controllers\Security\SignInController::class);
         $r->addRoute('GET'      , '/signout'                            , Admin\Controllers\Security\SignOutController::class);        
-        $r->addRoute('POST'     , '/password/reset'                     , Admin\Controllers\Security\ChangePasswordController::class);
-        $r->addRoute('POST'     , '/password/{token}/change'            , Admin\Controllers\Security\ChangePasswordController::class);
-        $r->addRoute('GET'      , '/acl/{controller}'                   , Admin\Controllers\Security\Acl::class);
         /*******************************************************************************************************************************/
         /*                                                          LOGS
         /*******************************************************************************************************************************/
@@ -146,6 +143,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
         /*******************************************************************************************************************************/
         $r->addRoute('GET'      , '/profile'                            , Admin\Controllers\UserProfile\GetController::class);
         $r->addRoute('POST'     , '/profile'                            , Admin\Controllers\UserProfile\UpdateController::class);
+        $r->addRoute('POST'     , '/profile/passrequest'                , Admin\Controllers\UserProfile\ChangePasswordController::class);
+        $r->addRoute('POST'     , '/profile/{token}/newpass'            , Admin\Controllers\UserProfile\ChangePasswordController::class);
         /*******************************************************************************************************************************/
         /*                                                        USER GROUPS
         /*******************************************************************************************************************************/
@@ -200,7 +199,7 @@ switch($routeInfo[0])
 {
     case FastRoute\Dispatcher::NOT_FOUND:
         // ... 404 Not Found
-        echo 'NOT FOUND';
+        http_response_code(404);
         break;
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
         $allowedMethods = $routeInfo[1];

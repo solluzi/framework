@@ -21,16 +21,20 @@ trait ReturnDate2UsTrait
      * @param [type] $value
      * @return string
      */
-    public function date2us($value, $datetime = false): string
+    public function date2us($value, $datetime = false)
     {
-        $date = str_replace('/', '-', $value);
-        $data = new \DateTime($date);
-        if ($datetime) {
-            $result = $data->format('Y-m-d H:i:s');
+        if($value){
+            
+            $date = str_replace('/', '-', $value);
+            $data = new \DateTime($date);
+            if ($datetime) {
+                $result = $data->format('Y-m-d H:i:s');
+                return $result;
+            }
+
+            $result = $data->format('Y-m-d');
             return $result;
         }
-
-        $result = $data->format('Y-m-d');
-        return $result;
+        return null;
     }
 }

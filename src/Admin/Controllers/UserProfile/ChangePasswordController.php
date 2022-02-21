@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\Security;
+namespace Admin\Controllers\UserProfile;
 
 use Admin\Model\SystemUser;
 use DateTime;
