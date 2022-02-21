@@ -77,32 +77,6 @@ if(file_exists(dirname(__DIR__,1).'/c3.php')){
 
 /*
 *--------------------------------------------------------------------------
-*           DOMINIOS AUTORIZADOS A ACESSAR O SISTEMA
-*--------------------------------------------------------------------------
-*
-* Deve-se fornecer via variaveis de ambiente os dominios que têm permissão
-* para acessar esta api, todos os dominios devem estar seperados por (;)
-* ponto e virgula
-*
-*/
-
-$allowedEndpoints = explode(';', getenv('FRONTEND_URL'));
-
-/**
-*--------------------------------------------------------------------------
-*                               CORS
-*--------------------------------------------------------------------------
-*
-* quando um software externo acessa a api, o mesmo fornece uma serie de
-* de regras para que o dito software tenha acesso aos dados fornecidos
-* pela aplicação
-*
-*/
-
-require_once dirname(__DIR__,1) . '/solluzi/lib/util/general/Header.php'; 
-
-/*
-*--------------------------------------------------------------------------
 *                       REGISTRA O AUTOLOADER
 *--------------------------------------------------------------------------
 *

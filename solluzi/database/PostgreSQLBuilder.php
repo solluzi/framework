@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Solluzi\Database;
 
-use Solluzi\Interfaces\Database\SQLQueryBuilder;
+use Solluzi\Interfaces\SQLQueryBuilder;
 
 /**
  * Este Builder é compativel com o PostgreSQL. Ainda que seja similiar com

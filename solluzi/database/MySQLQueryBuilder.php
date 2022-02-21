@@ -31,7 +31,7 @@ use Solluzi\Database\Traits\SqlWhereIn;
 use Solluzi\Database\Traits\SqlWhereNotIn;
 use Solluzi\Database\Traits\SqlWhereNotNull;
 use Solluzi\Database\Traits\SqlWhereNull;
-use Solluzi\Interfaces\Database\SQLQueryBuilder;
+use Solluzi\Interfaces\SQLQueryBuilder;
 
 class MySQLQueryBuilder implements SQLQueryBuilder
 {

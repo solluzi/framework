@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Helper;
 
-use Application\Interface\Notification;
+use Solluzi\Interfaces\Notification;
 
 /**
  * O Adaptador é uma classe que vincula a interface Target e a classe Adaptee.

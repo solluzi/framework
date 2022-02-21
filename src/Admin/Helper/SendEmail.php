@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
-namespace App\Helper;
+namespace Admin\Helper;
 
+use Admin\Model\Configuration;
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Solluzi\Interfaces\Notification;
@@ -15,7 +16,7 @@ use Solluzi\Interfaces\Notification;
  * SlackNotification não parece uma subclasse de EmailNotification), então
  * extrair uma interface deve ser o primeiro passo.
  */
-class SolicitaResetDeNotification implements Notification
+class SendEmail implements Notification
 {
 
 
@@ -24,8 +25,8 @@ class SolicitaResetDeNotification implements Notification
         $phpMailer = new PHPMailer();
 
         try{
-            $configuracoesModel = new Configuracao;
-            $infos = $configuracoesModel->start('system')
+            $configuracoesModel = new Configuration();
+            $infos = $configuracoesModel->database('system')
                 ->select('', ['valor'])
                 ->where('chave', 'smtp')
                 ->get();

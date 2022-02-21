@@ -1,6 +1,6 @@
 <?php
 declare (strict_types = 1);
-namespace Solluzi\Lib\Util\Report;
+namespace Solluzi\Report\Tables;
 
 /**
  * Define uma interface para escrita de tabelas

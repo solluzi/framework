@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Solluzi\Rest;
+namespace Solluzi\Controller;
 
 use Solluzi\Interfaces\SocialNetworkConnector;
 

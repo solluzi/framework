@@ -1,6 +1,6 @@
 <?php
 declare (strict_types = 1);
-namespace Solluzi\Lib\Util\HTML;
+namespace Solluzi\Reports\Html;
 
 /**
  * Classe TElement

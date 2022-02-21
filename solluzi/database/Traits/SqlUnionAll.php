@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Solluzi\Database\Traits;
 
-use Solluzi\Interfaces\Database\SQLQueryBuilder;
+use Solluzi\Interfaces\SQLQueryBuilder;
 
 /**
  * SqlUnionAll

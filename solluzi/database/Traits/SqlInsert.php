@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Solluzi\Database\Traits;
 
 use Solluzi\Database\GenerateUUID;
-use Solluzi\Interfaces\Database\SQLQueryBuilder;
+use Solluzi\Interfaces\SQLQueryBuilder;
 
 trait SqlInsert
 {

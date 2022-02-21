@@ -3,8 +3,9 @@ declare(strict_types=1);
 namespace App\Helper;
 
 
-use Application\Abstract\SocialNetworkPoster;
-use Application\Interface\SocialNetworkConnector;
+use Solluzi\Controller\SocialNetworkPoster;
+use Solluzi\Helper\FacebookConnector;
+use Solluzi\Interfaces\SocialNetworkConnector;
 
 /**
  * Este criador suporta o facebook. Lembrando que 

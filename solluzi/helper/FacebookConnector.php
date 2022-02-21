@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-namespace App\Helper;
+namespace Solluzi\Helper;
 
-use Application\Interface\SocialNetworkConnector;
+use Solluzi\Interfaces\SocialNetworkConnector;
 
 /**
  * Está Classe Implementa a API do facebook

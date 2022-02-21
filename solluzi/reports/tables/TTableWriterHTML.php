@@ -1,9 +1,9 @@
 <?php
 declare (strict_types = 1);
-namespace Solluzi\Lib\Util\Report;
+namespace Solluzi\Report\Tables;
 
-use HTML\TTable;
-use HTML\TStyle;
+use Solluzi\Reports\Html\TStyle;
+use Solluzi\Reports\Html\TTable;
 
 /**
  * Escreve tabelas no formato HTML

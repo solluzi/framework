@@ -2,8 +2,8 @@
 declare(strict_types=1);
 namespace App\Helper;
 
-use Application\Abstract\SocialNetworkPoster;
-use Application\Interface\SocialNetworkConnector;
+use Solluzi\Controller\SocialNetworkPoster;
+use Solluzi\Interfaces\SocialNetworkConnector;
 
 /**
  * Este Criador suporta o linkedIn
