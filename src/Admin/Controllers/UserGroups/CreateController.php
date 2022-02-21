@@ -17,61 +17,61 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\UserGroups;
 
-use Admin\Model\SystemGroup;
+use Admin\Model\Group;
+use Admin\Traits\AclTrait;
 use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
 use Solluzi\Controller\Request;
-use Solluzi\Lib\Util\Session\Session;
-use Traits\PayloadEncryptTrait;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Psr\Logger\FileLogger;
+use Solluzi\Security\Session\Session;
 
 class CreateController extends AbstractController
 {
-    use PayloadEncryptTrait;
+    use AclTrait;
 
     private $form;
+    private $logger;
 
-    /**
-     * Class Constructor
-     */
     public function __construct()
     {
-        $this->form = new Form();
+        $this->isProtected(get_class($this));
+
+        $this->form   = new Form();
+        $this->logger = new FileLogger();
     }
 
 
     public function process(Request $request)
     {
         try {
-            $this->form->validate([
+            $this->form->setData($request->getPosts());
+            $this->form->isValid([
                 'name' => ['required' => true]
             ]);
 
             $formData  = $request->getPosts();
-            
-            
+
+
             $data = [
-                '"NAME"'       => $formData['name'],
+                '"NAME"'       => $request->getPost('name')->toString(),
                 '"CREATED_BY"' => Session::getValue('user'),
                 '"CREATED_AT"' => date('Y-m-d H:i:s')
             ];
 
-            $grupoModel = new SystemGroup();
-            $grupoModelInsert = $grupoModel->database('system');
-            $grupoModelInsert
+            $model = new Group();
+            $modelInsert = $model->database('system');
+            $modelInsert
                 ->insert($data)
                 ->execute();
 
-            $id = $grupoModelInsert->getId();
+            //$model->adicionarGrupoAoPrograma($formData['programs'], $id);
+            //$model->adicionarUsuarioAoGrupo($formData['users'], $id);
 
-            $result['id'] = $id;
-
-            $grupoModel->adicionarGrupoAoPrograma($formData['programs'], $id);
-            $grupoModel->adicionarUsuarioAoGrupo($formData['users'], $id);
-
-            $payload = $this->encrypt($result);
-
-            return Response::json(['data' => $payload], HttpStatusCode::CREATED);
+            $this->response(HttpStatusCode::CREATED);
         } catch (\Exception $e) {
-            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Solluzi\Lib\Traits;
+namespace Solluzi\Controller\Traits;
 
 trait AddressTrait
 {

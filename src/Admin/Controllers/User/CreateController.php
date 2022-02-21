@@ -17,68 +17,84 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\User;
 
-use Admin\Model\SystemUser;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Form\Form;
-use General\BCrypt;
-use Router\Request;
-use Session\Session;
+use Admin\Model\User;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Controller\Traits\PayloadEncryptTrait;
+use Solluzi\Helper\BCrypt;
+use Solluzi\Psr\Logger\FileLogger;
+use Solluzi\Security\Session\Session;
 
-class CreateController implements Middleware
+class CreateController extends AbstractController
 {
+    use PayloadEncryptTrait;
+    use AclTrait;
 
     private $form;
+    private $logger;
 
-    /**
-     * Class Constructor
-     */
     public function __construct()
     {
-        $this->form = new Form();
+        $this->isProtected(get_class($this));
+
+        $this->form   = new Form();
+        $this->logger = new FileLogger();
     }
 
 
     public function process(Request $request)
     {
         try {
-            $this->form->validate(
+            $this->form->setData($request->getPosts());
+            $this->form->isValid(
                 [
-                    'login'    => ['required' => true],
-                    //'pass'     => ['required' => true],
-                    'pessoa' => ['required' => true],
+                    'register' => ['required' => true],
+                    'username' => ['required' => true],
+                    'page'     => ['required' => true],
                 ]
             );
 
-            $formData = $request->getBody();
-            $senha    = BCrypt::senha(12, true, true, true, true);
+            $password    = BCrypt::senha(12, true, true, true, true);
 
             // Trata campos do formulários
             $info = [
-                'login'      => $formData['login'],
-                'senha'      => BCrypt::hash($senha),
-                'ativo'      => $formData['ativo'],
-                'pessoa'     => $formData['pessoa'],
-                'entrada'    => $formData['entrada'],
-                'created_by' => Session::getValue('user')
+                '"NAME"'       => 'Ser Teste',
+                '"LOGIN"'      => $request->getPost('username')->toString(),
+                '"PASSWORD"'   => BCrypt::hash($password),
+                '"ACTIVE"'     => $request->getPost('ative')->toBoolean(),
+                //'"REGISTER"'     => $request->getPost('register')->toString(),
+                '"PROGRAM_ID"' => $request->getPost('page')->toString(),
+                '"CREATED_BY"' => Session::getValue('user_id')
             ];
 
             // Cadastra a informação
-            $usuarioModel  = new SystemUser();
-            $usuarioInsert = $usuarioModel->database('system');
-            $usuarioInsert->insert($info)->execute();
+            $userModel  = new User();
+            $userInsert = $userModel->database('system');
+            $userInsert->insert($info)->execute();
+
+            /**
+            *--------------------------------------------------------------------------
+            *                       Send E-mail
+            *--------------------------------------------------------------------------
+            *
+            *
+            *
+            */
 
 
-            $id = $usuarioInsert->getId();
+            /* $id = $userInsert->getId();
             $grupos = (object)$formData['grupos'];
-            $usuarioModel->inserirGrupoAoUsuario($grupos, $id);
+            $userModel->inserirGrupoAoUsuario($grupos, $id);
 
-            $result['id'] = $id;
+            $result['id'] = $id; */
 
-            Response::json(['data' => $result], HttpStatusCode::CREATED);
+            $this->response(HttpStatusCode::CREATED);
         } catch (\Exception $e) {
-            Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

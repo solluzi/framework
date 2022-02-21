@@ -8,7 +8,7 @@ class DefaultController extends CommandController
 {
     public function handle()
     {
-        $output = shell_exec('vendor/bin/phinx status -c db/database/system-admin.php');
+        $output = shell_exec('vendor/bin/phinx status -c db/database/admin.php');
         echo "$output";
     }
    

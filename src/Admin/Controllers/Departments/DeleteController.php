@@ -4,20 +4,20 @@
  * @version     1.0.0
  * @category    Action
  * @package     App
- * @subpackage  User
+ * @subpackage  Group
  * @author      Mauro Joaquim Miranda
  * @copyright   Copyright (c) 2020 Solluzi Tecnologia da Informação LTDA-ME. (https://mauromiranda.dev)
  * @license     https://mauromiranda.dev/framework-license
  *
  * Delete
- *  deletes system user information
+ *  Exclude group information from table
  */
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\User;
+namespace Admin\Controllers\Departments;
 
-use Admin\Model\User;
+use Admin\Model\Department;
 use Admin\Traits\AclTrait;
 use Solluzi\Controller\AbstractController;
 use Solluzi\Controller\Request;
@@ -30,6 +30,9 @@ class DeleteController extends AbstractController
 
     private $logger;
 
+    /**
+     * Class Constructor
+     */
     public function __construct()
     {
         $this->isProtected(get_class($this));
@@ -39,14 +42,13 @@ class DeleteController extends AbstractController
     public function process(Request $request)
     {
         try {
-            // Remove o usuário
-            $usuarioModel = new User();
-            $usuarioModel->database('system')
+            $departmentModel = new Department();
+            $departmentModel->database('system')
                 ->delete()
                 ->where('"ID"', $request->getQueryParam('id'))
                 ->execute();
 
-            $this->response(HttpStatusCode::RESET_CONTENT);
+                $this->response(HttpStatusCode::RESET_CONTENT);
         } catch (\Exception $e) {
             $this->logger->emergency($e->getMessage());
             $this->response(HttpStatusCode::BAD_REQUEST);

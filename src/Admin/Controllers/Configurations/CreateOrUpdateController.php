@@ -18,30 +18,33 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\Configurations;
 
-use Admin\Model\SystemConfiguration;
-use Form\Form;
-use Session\Session;
+use Admin\Model\Configuration;
+use Admin\Traits\AclTrait;
 use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
 use Solluzi\Controller\Request;
-use Traits\PayloadEncryptTrait;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Psr\Logger\FileLogger;
+use Solluzi\Security\Session\Session;
 
 class CreateOrUpdateController extends AbstractController
 {
-    use PayloadEncryptTrait;
+    use AclTrait;
 
     private $form;
+    private $logger;
+
     public function __construct()
     {
-        $this->form = new Form();
+        $this->isProtected(get_class($this));
+        $this->form   = new Form();
+        $this->logger = new FileLogger();
     }
 
 
     public function process(Request $request)
     {
         try {
-            $formData = $request->getPosts();
-
-
             /*
             |--------------------------------------------------------------------------
             |                          Configuration Model
@@ -52,7 +55,7 @@ class CreateOrUpdateController extends AbstractController
             |
             */
 
-            $configurationModel = new SystemConfiguration();
+            $model = new Configuration();
 
             /*
             |--------------------------------------------------------------------------
@@ -64,7 +67,7 @@ class CreateOrUpdateController extends AbstractController
             |
             */
 
-            $configurationQueryDelete = $configurationModel->database('system');
+            $configurationQueryDelete = $model->database('system');
 
             /*
             |--------------------------------------------------------------------------
@@ -74,10 +77,9 @@ class CreateOrUpdateController extends AbstractController
             | It builds a query that runs delete instruction with given parameters
             |
             */
-
             $configurationQueryDelete
                 ->delete()
-                ->where('"KEY"', $formData['key'])
+                ->where('"KEY"', $request->getPost('key')->toString())
                 ->execute();
 
             /*
@@ -90,7 +92,7 @@ class CreateOrUpdateController extends AbstractController
             |
             */
 
-            if (count((array)$formData['data']) > 0) {
+            if (count((array)$request->getPost('data')) > 0) {
                 /*
                 |--------------------------------------------------------------------------
                 |                                  validate
@@ -100,12 +102,11 @@ class CreateOrUpdateController extends AbstractController
                 |
                 */
 
-                $this->form->validate(
-                    [
-                        'key'  => ['required' => true],
-                        'type' => ['required' => true]
-                    ]
-                );
+                $this->form->setData($request->getPosts());
+                $this->form->isValid([
+                    'key'  => ['required' => true],
+                    'type' => ['required' => true ]
+                ]);
 
                 /*
                 |--------------------------------------------------------------------------
@@ -116,13 +117,13 @@ class CreateOrUpdateController extends AbstractController
                 |
                 */
 
-                $active = $formData['active'] ? 'S' : 'N';
+                $active = $request->getPost('active')->toString() ? 'S' : 'N';
                 $data  = [
-                    '"KEY"'        => $formData['key'],
-                    '"VALUE"'      => json_encode($formData['data']),
-                    '"TYPE"'       => $formData['type'],
+                    '"KEY"'        => $request->getPost('key')->toString(),
+                    '"VALUE"'      => json_encode($request->getPost('data')->toArray()),
+                    '"TYPE"'       => $request->getPost('type')->toString(),
                     '"ACTIVE"'     => $active,
-                    '"CREATED_BY"' => Session::getValue('user'),
+                    '"CREATED_BY"' => Session::getValue('user_id'),
                     '"CREATED_AT"' => date('Y-m-d H:i:s')
                 ];
 
@@ -135,7 +136,7 @@ class CreateOrUpdateController extends AbstractController
                 |
                 */
 
-                $configurationModelInsert = $configurationModel->database('system');
+                $configurationModelInsert = $model->database('system');
 
                 /*
                 |--------------------------------------------------------------------------
@@ -149,25 +150,11 @@ class CreateOrUpdateController extends AbstractController
                 $configurationModelInsert
                     ->insert($data)
                     ->execute();
-
-                /*
-                |--------------------------------------------------------------------------
-                |                                  id
-                |--------------------------------------------------------------------------
-                |
-                | After the information been inserted, the query retuns te inserted id
-                |
-                */
-
-                $id = $configurationModelInsert->getId();
             }
-            $result['id'] = $id;
-            $payload = $this->encrypt($result);
-
-            $this->response(HttpStatusCode::OK, ['data' => $payload]);
-
+            $this->response(HttpStatusCode::CREATED);
         } catch (\Exception $e) {
-            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

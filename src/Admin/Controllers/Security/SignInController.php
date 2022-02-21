@@ -19,9 +19,9 @@ use Admin\Model\SignIn;
 use Solluzi\Controller\AbstractController;
 use Solluzi\Controller\Form;
 use Solluzi\Controller\Request;
-use Solluzi\Lib\Controller\HttpStatusCode;
-use Solluzi\Lib\Traits\JWTPayloadTrait;
-use Solluzi\Lib\Traits\PayloadEncryptTrait;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Controller\Traits\JWTPayloadTrait;
+use Solluzi\Controller\Traits\PayloadEncryptTrait;
 use Solluzi\Psr\Logger\FileLogger;
 
 /**
@@ -63,8 +63,8 @@ class SignInController extends AbstractController
             $sessao = $this->payload($chave);
 
             $dados = json_encode([
-                'usuario' => $request->getPost('username')->getString(),
-                'senha'   => $request->getPost('password')->getString(),
+                'usuario' => $request->getPost('username')->toString(),
+                'senha'   => $request->getPost('password')->toString(),
                 'chave'   => $chave,
                 'sessao'  => $sessao
             ]);

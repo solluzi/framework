@@ -15,9 +15,9 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\Programs;
+namespace Admin\Controllers\Departments;
 
-use Admin\Model\Program;
+use Admin\Model\Department;
 use Admin\Traits\AclTrait;
 use Solluzi\Controller\AbstractController;
 use Solluzi\Controller\Form;
@@ -44,36 +44,29 @@ class CreateController extends AbstractController
         $this->logger = new FileLogger();
     }
 
-
     public function process(Request $request)
     {
         try {
             $this->form->setData($request->getPosts());
             $this->form->isValid([
-                'department'        => ['required' => true],
-                'program'           => ['required' => true],
-                'front_identifiyer' => ['required' => true],
-                'description'       => ['required' => true],
+                'name' => ['required' => true, 'max' => '100']
             ]);
 
             $info = [
-                '"SECTION"'     => $request->getPost('department')->toString(),
-                '"PROGRAM"'     => $request->getPost('program')->toString(),
-                '"NAME"'        => $request->getPost('front_identifiyer')->toString(),
-                '"DESCRIPTION"' => $request->getPost('description')->toString(),
-                '"CREATED_BY"'  => Session::getValue('user_id'),
+                '"NAME"'       => $request->getPost('name')->toString(),
+                '"CREATED_BY"' => Session::getValue('user_id'),
+                '"CREATED_AT"' => date('Y-m-d H:i:s')
             ];
 
-
-            $model  = new Program();
-            $programaInsert = $model->database('system');
-            $programaInsert
+            $secaoModel  = new Department();
+            $secaoInsert = $secaoModel->database('system');
+            $secaoInsert
                 ->insert($info)
                 ->execute();
 
-            //$id = $programaInsert->getId();
+            //$id = $secaoInsert->getId();
 
-            //$model->adicionarProgramaAoGrupo($formData['groups'], $id);
+            //$programaModel->adicionarProgramaAoGrupo($formData['grupos'], $id);
 
             $this->response(HttpStatusCode::CREATED);
         } catch (\Exception $e) {

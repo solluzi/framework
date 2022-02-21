@@ -17,30 +17,41 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\UserGroups;
 
-use Admin\Model\SystemGroup;
-use Admin\Model\SystemGroupProgram;
-use Admin\Model\SystemUserGroup;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Router\Request;
-use Traits\PayloadEncryptTrait;
+use Admin\Model\Group;
+use Admin\Model\GroupProgram;
+use Admin\Model\UserGroup;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Controller\Traits\PayloadEncryptTrait;
+use Solluzi\Psr\Logger\FileLogger;
 
-class GetController implements Middleware
+class GetController extends AbstractController
 {
     use PayloadEncryptTrait;
+    use AclTrait;
 
+    private $logger;
+
+    /**
+     * Class Constructor
+     */
+    public function __construct()
+    {
+        $this->isProtected(get_class($this));
+
+        $this->logger = new FileLogger();
+    }
 
     public function process(Request $request)
     {
         try {
-            // Parametros recebidos do formulário
-            $uriParams  = $request->getQueryParams();
-
             // Model
-            $grupoModel         = new SystemGroup();
-            $programaGrupoModel = new SystemGroupProgram();
-            $usuarioGrupoModel  = new SystemUserGroup();
+            $grupoModel        = new Group();
+            $groupProgramModel = new GroupProgram();
+            $userGroupModel    = new UserGroup();
 
 
             // Campo para filtro
@@ -48,13 +59,13 @@ class GetController implements Middleware
 
             $resultados = $grupoModel->database('system')
                 ->select('g', ['g."ID" id', 'g."NAME" "name"'])
-                ->where('"ID"', $filterById, '=')
+                ->where('"ID"', $request->getQueryParam('id'), '=')
                 ->get();
 
             // Buscar Programas
-            $resultadoProgramas = $programaGrupoModel->database('system')
+            $resultadoProgramas = $groupProgramModel->database('system')
                 ->select('gp', ['gp."PROGRAM_ID" id'])
-                ->where('"GROUP_ID"', $filterById)
+                ->where('"GROUP_ID"', $request->getQueryParam('id'))
                 ->getAll();
 
             $trataProgramas = [];
@@ -63,9 +74,9 @@ class GetController implements Middleware
             }
 
             // Buscar Usuarios
-            $resultadoUsuarios = $usuarioGrupoModel->database('system')
+            $resultadoUsuarios = $userGroupModel->database('system')
                 ->select('ug', ['ug."USER_ID" id'])
-                ->where('ug."GROUP_ID"', $filterById)
+                ->where('ug."GROUP_ID"', $request->getQueryParam('id'))
                 ->getAll();
 
             $trataUsuarios = [];
@@ -75,17 +86,18 @@ class GetController implements Middleware
 
 
             // Fomatação de registros
-            $resposta['data'] = [
+            $resposta = [
                 'records'  => $resultados,
                 'programs' => $trataProgramas,
                 'users'    => $trataUsuarios
             ];
 
-            $payload = $this->encrypt($resposta);
+            $payload = ['data' => $this->encrypt($resposta)];
 
-            return Response::json(['data' => $payload], HttpStatusCode::OK);
+            $this->response(HttpStatusCode::OK, $payload);
         } catch (\Exception $e) {
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::BAD_REQUEST);
         }
     }
 }

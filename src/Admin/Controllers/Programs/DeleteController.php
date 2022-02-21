@@ -17,29 +17,39 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\Programs;
 
-use Admin\Model\SystemProgram;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Router\Request;
+use Admin\Model\Program;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Psr\Logger\FileLogger;
 
-class DeleteController implements Middleware
+class DeleteController extends AbstractController
 {
+    use AclTrait;
+
+    private $logger;
+
+    public function __construct()
+    {
+        $this->isProtected(get_class($this));
+        $this->logger = new FileLogger();
+    }
 
     public function process(Request $request)
     {
         try {
-            $uriParams = $request->getQueryParams();
-
-            $programaModel = new SystemProgram();
-            $programaModel->database('system')
+            $model = new Program();
+            $model->database('system')
                 ->delete()
-                ->where('"ID"', $uriParams['id'])
+                ->where('"ID"', $request->getQueryParam('id'))
                 ->execute();
 
-            return Response::json([], HttpStatusCode::RESET_CONTENT);
+            $this->response(HttpStatusCode::RESET_CONTENT);
         } catch (\Exception $e) {
-            return Response::json(['errors' => 'Erro'], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::BAD_REQUEST);
         }
     }
 }

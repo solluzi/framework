@@ -17,21 +17,28 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\User;
 
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Application\Ado\Connection;
-use Router\Request;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Database\Connection;
+use Solluzi\Psr\Logger\FileLogger;
 
-class StatusController implements Middleware
+class StatusController extends AbstractController
 {
+    use AclTrait;
 
+    private $logger;
+
+    public function __construct()
+    {
+        $this->isProtected(get_class($this));
+        $this->logger = new FileLogger();
+    }
 
     public function process(Request $request)
     {
         try {
-            $uriParams = $request->getQueryParams();
-
             // Tratamento de dados
             $conn = Connection::open('system');
             $sql = 'UPDATE "SYSTEM_USER"
@@ -42,11 +49,12 @@ class StatusController implements Middleware
                         END)
                     WHERE "ID" = ?;';
             $stmt = $conn->prepare($sql);
-            $stmt->execute([$uriParams['id']]);
+            $stmt->execute([$request->getQueryParam('id')]);
 
-            return Response::json([], HttpStatusCode::ACCEPTED);
+            $this->response(HttpStatusCode::RESET_CONTENT);
         } catch (\Exception $e) {
-            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::BAD_REQUEST);
         }
     }
 }

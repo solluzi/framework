@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Solluzi\Controller;
 
+use Solluzi\Controller\Traits\HttpStatusCode;
 use Solluzi\Interfaces\IFormValidation;
-use Solluzi\Lib\Controller\HttpStatusCode;
 
 class Form implements IFormValidation
 {

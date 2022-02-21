@@ -17,78 +17,84 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\Programs;
 
-use Admin\Model\SystemProgram;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Router\Request;
-use Traits\PayloadEncryptTrait;
+use Admin\Model\Program;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Controller\Traits\PayloadEncryptTrait;
+use Solluzi\Psr\Logger\FileLogger;
 
-class ReadController implements Middleware
+class ListController extends AbstractController
 {
     use PayloadEncryptTrait;
+    use AclTrait;
 
+    private $logger;
+
+    public function __construct()
+    {
+        $this->isProtected(get_class($this));
+        $this->logger = new FileLogger();
+    }
 
     public function process(Request $request)
     {
         try {
-            // Parametros recebidos do formulário
-            $formData = $request->getBody();
-
-            // parametros recebidos da url
-            $uriParams = $request->getQueryParams();
-
             // Model
-            $filterByProgramModel = new SystemProgram();
-            
-            
+            $programModel = new Program();
+
+
             // Campos para filtro
-            $filterByName        = (isset($formData['name'])        && !empty($formData['name']))       ? "%{$formData['name']}%"       : null;
-            $filterByDescription = (isset($formData['description']) && !empty($formData['description']))? "%{$formData['description']}%": null;
+            $name                = $request->getPost('name')->toString();
+            $description         = $request->getPost('description')->toString();
+            $filterByName        = (isset($name))       ? "%{$name}%"       : null;
+            $filterByDescription = (isset($description)) ? "%{$description}%" : null;
 
             #######################################################
             ################# INICIO da PAGINAÇÃO #################
             #######################################################
             // Total de registros
-            $totalRegistros = $filterByProgramModel->database('system')
+            $totalRegistros = $programModel->database('system')
                 ->select('', ['COUNT(*)'])
                 ->where('"NAME"', $filterByName, 'LIKE')
                 ->where('"DESCRIPTION"', $filterByDescription, 'LIKE')
                 ->get();
 
             // Registro por página
-            $limit = (int)$uriParams['by_page'];
+            $limit = (int)$request->getQueryParam('by_page');
 
             // Quantas paginas terá na tabela?
             $paginas = ceil($totalRegistros->count / $limit);
 
             // Calcula o offset para a página
-            $offset = ($uriParams['page'] - 1) * $limit;
+            $offset = ($request->getQueryParam('page') - 1) * $limit;
             #######################################################
             ################## FIM PAGINAÇÃO ######################
             #######################################################
 
-            $listaDefilterByProgram = $filterByProgramModel->database('system')
+            $listaDefilterByProgram = $programModel->database('system')
                 ->select('p', ['p."ID" id', 'p."SECTION" section', 'p."DESCRIPTION" description', 'p."NAME" uname', 'p."PRIVATE" status'])
                 ->where('"NAME"', $filterByName, 'LIKE')
                 ->where('"DESCRIPTION"', $filterByDescription, 'LIKE')
                 ->orderBy('"PRIVATE"', 'DESC')
                 ->limit($limit, $offset)
                 ->getAll();
-            
-            
+
+
             // Fomatação de registros
-            $resposta['data'] = [
+            $resposta = [
                 'records'       => $listaDefilterByProgram,
                 'pages'         => $paginas,
                 'totalRecords' => $totalRegistros->count
             ];
 
-            $payload = $this->encrypt($resposta);
+            $payload = ['data' => $this->encrypt($resposta)];
 
-            return Response::json(['data' => $payload], HttpStatusCode::OK);
+            $this->response(HttpStatusCode::OK, $payload);
         } catch (\Exception $e) {
-            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

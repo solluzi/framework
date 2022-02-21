@@ -1,6 +1,6 @@
 <?php
 declare (strict_types = 1);
-namespace Solluzi\Lib\Util\Session;
+namespace Solluzi\Security\Jwt;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;

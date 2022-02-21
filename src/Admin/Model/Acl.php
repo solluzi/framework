@@ -21,7 +21,7 @@ use Solluzi\Database\Model\Model;
 
 class Acl extends Model
 {
-    protected $table      = '"VW_ACCESS_PERMISSION"';
+    protected $table      = '"FN_ISLOGGEDIN"(?) AS acl';
     protected $primaryKey = '"ID"';
     protected $idPolicy   = "uuid"; //{max,serial,auto,uuid}
 }

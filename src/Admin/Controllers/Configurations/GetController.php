@@ -18,32 +18,31 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\Configurations;
 
-use Admin\Model\SystemConfiguration;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Router\Request;
-use Traits\PayloadEncryptTrait;
+use Admin\Model\Configuration;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Controller\Traits\PayloadEncryptTrait;
+use Solluzi\Psr\Logger\FileLogger;
 
-class GetController implements Middleware
+class GetController extends AbstractController
 {
     use PayloadEncryptTrait;
+    use AclTrait;
+
+    private $logger;
+
+    public function __construct()
+    {
+        $this->isProtected(get_class($this));
+        $this->logger = new FileLogger();
+    }
 
 
     public function process(Request $request)
     {
         try {
-            /*
-            |--------------------------------------------------------------------------
-            |                                query params
-            |--------------------------------------------------------------------------
-            |
-            | get all parameters in the setted in the url
-            |
-            */
-
-            $uriParams = $request->getQueryParams();
-
             /*
             |--------------------------------------------------------------------------
             |                           System Configuration Model
@@ -53,18 +52,7 @@ class GetController implements Middleware
             |
             */
 
-            $configuracaoModel = new SystemConfiguration();
-
-            /*
-            |--------------------------------------------------------------------------
-            |                                    Filter
-            |--------------------------------------------------------------------------
-            |
-            | we build a filter for our select statement
-            |
-            */
-
-            $chave = (isset($uriParams['chave']) && !empty($uriParams['chave'])) ? $uriParams['chave'] : null;
+            $configuracaoModel = new Configuration();
 
             /*
             |--------------------------------------------------------------------------
@@ -78,11 +66,11 @@ class GetController implements Middleware
 
             $resultados  = $configuracaoModel->database('system')
                 ->select('c', ['c."VALUE"'])
-                ->where('c."KEY"', $chave)
+                ->where('c."KEY"', $request->getQueryParam('key'))
                 ->limit(1)
                 ->get();
-            
-            
+
+
            /*
            |--------------------------------------------------------------------------
            |                                  response
@@ -92,9 +80,7 @@ class GetController implements Middleware
            |
            */
 
-            $resposta['data'] = [
-                'registros' => $resultados,
-            ];
+            //$resposta['data'] = $resultados;
 
             /*
             |--------------------------------------------------------------------------
@@ -106,7 +92,7 @@ class GetController implements Middleware
             |
             */
 
-            $payload = $this->encrypt($resposta);
+            $payload = $this->encrypt($resultados->VALUE);
 
             /*
             |--------------------------------------------------------------------------
@@ -116,8 +102,7 @@ class GetController implements Middleware
             | returns the data with encrypted payload and and http status code
             |
             */
-
-            return Response::json(['data' => $payload], HttpStatusCode::OK);
+            $this->response(HttpStatusCode::CREATED, ['data' => $payload]);
         } catch (\Exception $e) {
             /*
             |--------------------------------------------------------------------------
@@ -127,8 +112,8 @@ class GetController implements Middleware
             | returns the error raised in the database exception
             |
             */
-
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

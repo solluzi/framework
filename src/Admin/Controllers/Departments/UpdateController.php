@@ -15,62 +15,66 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\Sections;
+namespace Admin\Controllers\Departments;
 
-use Admin\Model\SystemProgramSection;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Form\Form;
-use Router\Request;
-use Session\Session;
+use Admin\Model\Department;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Psr\Logger\FileLogger;
+use Solluzi\Security\Session\Session;
 
-class UpdateController implements Middleware
+class UpdateController extends AbstractController
 {
+    use AclTrait;
+
     private $form;
+    private $logger;
 
     /**
      * Class Constructor
      */
     public function __construct()
     {
-        $this->form = new Form();
+        $this->isProtected(get_class($this));
+
+        $this->form   = new Form();
+        $this->logger = new FileLogger();
     }
 
 
     public function process(Request $request)
     {
         try {
-            $this->form->validate(
+            $this->form->setData($request->getPosts());
+            $this->form->isValid(
                 [
                     'name' => ['required' => true]
                 ]
             );
 
-            $formData  = $request->getBody();
-            $uriParams = $request->getQueryParams();
-
             // Dados de informação
             $info = [
-                '"NAME"'       => $formData['name'],
-                '"UPDATED_BY"'  => Session::getValue('user'),
+                '"NAME"'       => $request->getPost('name')->toString(),
+                '"UPDATED_BY"'  => Session::getValue('user_id'),
                 '"UPDATED_AT"'  => date('Y-m-d H:i:s')
             ];
 
-            $secaoModel     = new SystemProgramSection();
+            $secaoModel     = new Department();
             $secaoModel->database('system')
                 ->update($info)
-                ->where('"ID"', $uriParams['id'])
+                ->where('"ID"', $request->getQueryParam('id'))
                 ->execute();
 
                 // Insere novos grupos
             //$programaModel->adicionarProgramaAoGrupo($formData['grupos'], $uriParams['id']);
 
-            $result['id'] = $uriParams['id'];
-
-            Response::json($result, HttpStatusCode::CREATED);
+            $this->response(HttpStatusCode::CREATED);
         } catch (\Exception $e) {
-            Response::json([], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

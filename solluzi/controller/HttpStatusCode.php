@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Solluzi\Lib\Controller;
+namespace Solluzi\Controller\Traits;
 
 /** HTTP status codes */
 class HttpStatusCode 

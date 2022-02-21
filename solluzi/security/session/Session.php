@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Solluzi\Lib\Util\Session;
+namespace Solluzi\Security\Session;
 
 /**
  *
@@ -21,7 +21,7 @@ final class Session
 
     public static function getValue($key)
     {
-        return $_SESSION[$key];
+        return $_SESSION[$key] ?? null;
     }
 
     public static function kill()

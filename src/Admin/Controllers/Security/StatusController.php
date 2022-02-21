@@ -25,11 +25,9 @@ use Solluzi\Psr\Logger\FileLogger;
 
 class StatusController extends AbstractController
 {
-    private $logger;
-
     public function __construct()
     {
-        $this->logger = new FileLogger;
+        $this->logger = new FileLogger();
     }
     public function process(Request $request)
     {

@@ -17,56 +17,56 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\UserGroups;
 
-use Admin\Model\SystemGroup;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Form\Form;
-use Administracao\Model\Grupo;
-use Router\Request;
-use Session\Session;
-use Traits\PayloadEncryptTrait;
+use Admin\Model\Group;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Psr\Logger\FileLogger;
+use Solluzi\Security\Session\Session;
 
-class UpdateController implements Middleware
+class UpdateController extends AbstractController
 {
-    use PayloadEncryptTrait;
+    use AclTrait;
 
     private $form;
+    private $logger;
 
     /**
      * Class Constructor
      */
     public function __construct()
     {
-        $this->form = new Form();
+        $this->isProtected(get_class($this));
+
+        $this->form   = new Form();
+        $this->logger = new FileLogger();
     }
 
 
     public function process(Request $request)
     {
         try {
-            $this->form->validate(
+            $this->form->setData($request->getPosts());
+            $this->form->isValid(
                 [
                     'name' => ['required' => true]
                 ]
-            ); 
+            );
 
-            $formData  = $request->getBody();
-
-            $uriParams = $request->getQueryParams();
-            
             #######################################################################
             ######################## ATUALIZAR NOME DO GRUPO ######################
             #######################################################################
-            $campos = [
-                '"NAME"'       => $formData['name'],
-                '"UPDATED_BY"' => Session::getValue('user'),
+            $fields = [
+                '"NAME"'       => $request->getPost('name')->toString(),
+                '"UPDATED_BY"' => Session::getValue('user_id'),
                 '"UPDATED_AT"' => date('Y-m-d H:i:s')
             ];
-            $id         = $uriParams['id'];
-            $grupoModel = new SystemGroup();
-            $grupoModel->database('system')
-                ->update($campos)
+            $id         = $request->getQueryParam('id');
+            $model = new Group();
+            $model->database('system')
+                ->update($fields)
                 ->where('"ID"', $id)
                 ->execute();
 
@@ -74,7 +74,7 @@ class UpdateController implements Middleware
             #######################################################################
             ######################## ATUALIZAR PERMISSÕES #########################
             #######################################################################
-            $grupoModel->adicionarGrupoAoPrograma($formData['programs'], $id);
+            //$model->adicionarGrupoAoPrograma($formData['programs'], $id);
 
 
 
@@ -82,13 +82,12 @@ class UpdateController implements Middleware
             #################### ATUALIZAR USUÁRIOS & GRUPOS ######################
             #######################################################################
 
-            $grupoModel->adicionarUsuarioAoGrupo($formData['users'], $id);
+            //$model->adicionarUsuarioAoGrupo($formData['users'], $id);
 
-            $payload = $this->encrypt($id);
-
-            return Response::json(['data' => $payload], HttpStatusCode::OK);
+            $this->response(HttpStatusCode::CREATED);
         } catch (\Exception $e) {
-            Response::json([], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

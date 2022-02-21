@@ -17,66 +17,72 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\Programs;
 
-use Admin\Model\SystemProgram;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Form\Form;
-use Router\Request;
-use Session\Session;
+use Admin\Model\Program;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Psr\Logger\FileLogger;
+use Solluzi\Security\Session\Session;
 
-class UpdateController implements Middleware
+class UpdateController extends AbstractController
 {
+    use AclTrait;
+
     private $form;
+    private $logger;
 
     /**
      * Class Constructor
      */
     public function __construct()
     {
+
+        $this->isProtected(get_class($this));
+
         $this->form = new Form();
+        $this->logger = new FileLogger();
     }
 
 
     public function process(Request $request)
     {
         try {
-            $this->form->validate(
+            $this->form->setData($request->getPosts());
+            $this->form->isValid(
                 [
-                    'name' => ['required' => true]
+                    'department'        => ['required' => true],
+                    'program'           => ['required' => true],
+                    'front_identifiyer' => ['required' => true],
+                    'description'       => ['required' => true],
                 ]
             );
 
-            $formData  = $request->getBody();
-            $uriParams = $request->getQueryParams();
-//print_r($formData);die;
-
             // Dados de informação
             $info = [
-                '"SECTION"'     => $formData['section'],
-                '"PROGRAM"'     => $formData['program'],
-                '"NAME"'        => $formData['name'],
-                '"PRIVATE"'     => $formData['private'] ?? 0,
-                '"DESCRIPTION"' => $formData['description'],
-                '"UPDATED_BY"'  => Session::getValue('user'),
+                '"SECTION"'     => $request->getPost('department')->toString(),
+                '"PROGRAM"'     => $request->getPost('program')->toString(),
+                '"NAME"'        => $request->getPost('front_identifiyer')->toString(),
+                '"DESCRIPTION"' => $request->getPost('description')->toString(),
+                '"UPDATED_BY"'  => Session::getValue('user_id'),
                 '"UPDATED_AT"'  => date('Y-m-d H:i:s')
             ];
 
 
-            $programaModel     = new SystemProgram();
-            $programaUpdate = $programaModel->database('system');
-            $programaUpdate->update($info)
-                ->where('"ID"', $uriParams['id'])
+            $programModel = new Program();
+            $update       = $programModel->database('system');
+            $update->update($info)
+                ->where('"ID"', $request->getQueryParam('id'))
                 ->execute();
-            
+
                 // Insere novos grupos
-            $programaModel->adicionarProgramaAoGrupo($formData['groups'], $uriParams['id']);
+            //$programModel->adicionarProgramaAoGrupo($formData['groups'], $uriParams['id']);
 
-            $result['id'] = $uriParams['id'];
-
-            Response::json($result, HttpStatusCode::CREATED);
+            $this->response(HttpStatusCode::ACCEPTED);
         } catch (\Exception $e) {
-            Response::json([$e->getMessage()], HttpStatusCode::NOT_ACCEPTABLE);
+            $this->logger->emergency($e);
+            $this->response(HttpStatusCode::NOT_ACCEPTABLE);
         }
     }
 }

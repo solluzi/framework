@@ -24,31 +24,4 @@ class Program extends Model
     public $table      = '"SYSTEM_PROGRAM"';
     public $primaryKey = '"ID"';
     public $idPolicy   = "uuid";         //{max,serial,auto,uuid}
-
-
-    public function adicionarProgramaAoGrupo($grupos, $controlador)
-    {
-        $this->excluirProgramaDoGrupo($controlador);
-
-        if ($grupos) {
-            foreach ($grupos as $grupo) {
-                $info = ['"GROUP_ID"' => $grupo, '"PROGRAM_ID"' => $controlador];
-                $programaGrupoModel = new SystemGroupProgram();
-                $programaGrupoModel->database('system')
-                    ->insert($info)
-                    ->execute();
-            }
-        }
-    }
-
-
-    public function excluirProgramaDoGrupo($controlador)
-    {
-
-        $programaGrupoModel = new SystemGroupProgram();
-        $programaGrupoModel->database('system')
-            ->delete()
-            ->where('"PROGRAM_ID"', $controlador)
-            ->execute();
-    }
 }

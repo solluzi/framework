@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Solluzi\Controller\Traits;
 
-use Solluzi\Lib\Traits\PayloadDecryptTrait;
 
 /**
  * SqlGet Trait

@@ -17,57 +17,60 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\User;
 
-use Admin\Model\SystemUser;
-use Admin\Model\SystemUserGroup;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Router\Request;
-use Traits\PayloadEncryptTrait;
+use Admin\Model\User;
+use Admin\Model\UserGroup;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Controller\Traits\PayloadEncryptTrait;
+use Solluzi\Psr\Logger\FileLogger;
 
-class GetController implements Middleware
+class GetController extends AbstractController
 {
     use PayloadEncryptTrait;
+    use AclTrait;
 
+    private $logger;
+
+    public function __construct()
+    {
+        $this->isProtected(get_class($this));
+        $this->logger = new FileLogger();
+    }
 
     public function process(Request $request)
     {
         try {
-            // Parametros recebidos do formulário
-            $uriParams  = $request->getQueryParams();
-
             // Model
-            $usuarioModel      = new SystemUser();
-            $usuarioGrupoModel = new SystemUserGroup();
+            $userModel      = new User();
+            $userGroupModel = new UserGroup();
 
-
-            // Campo para filtro
-            $id       = (isset($uriParams['id']) && !empty($uriParams['id'])) ? "{$uriParams['id']}" : null;
-            
             ###########################################################################
             ################ BUSCA INFORMAÇÃO DE DADO USUÁRIO PELA ID #################
             ###########################################################################
-            $resultados = $usuarioModel->database('system')
-                ->select('u', 
+            $resultados = $userModel->database('system')
+                ->select(
+                    'u',
                     [
                         'u."ID" id',
-                        'u."NAME" "name"', 
-                        'u."LOGIN" login', 
-                        'u."ACTIVE" status', 
+                        'u."NAME" "name"',
+                        'u."LOGIN" login',
+                        'u."ACTIVE" status',
                         'u."PROGRAM_ID" "homePage"'
                     ]
                 )
-                ->where('"ID"', $id)
+                ->where('"ID"', $request->getQueryParam('id'))
                 ->get();
 
-            
-            
+
+
             ###########################################################################
             ################### BUSCA GRUPOS DE DADO USUÁRIO PELA ID ##################
             ###########################################################################
-            $resultadoGrupo = $usuarioGrupoModel->database('system')
+            $resultadoGrupo = $userGroupModel->database('system')
                 ->select('', ['"GROUP_ID" AS id'])
-                ->where('"USER_ID"', $id)
+                ->where('"USER_ID"', $request->getQueryParam('id'))
                 ->getAll();
 
             $trataResultadoGrupo = [];
@@ -76,16 +79,17 @@ class GetController implements Middleware
             }
 
             // Fomatação de registros
-            $resposta['data'] = [
+            $resposta = [
                 'records' => $resultados,
                 'groups'    => $trataResultadoGrupo
             ];
 
-            $payload = $this->encrypt($resposta);
+            $payload = ['data' => $this->encrypt($resposta)];
 
-            return Response::json(['data' => $payload], HttpStatusCode::OK);
+            $this->response(HttpStatusCode::OK, $payload);
         } catch (\Exception $e) {
-            return Response::json([$e->getMessage()], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::BAD_REQUEST);
         }
     }
 }

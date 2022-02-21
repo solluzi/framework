@@ -17,72 +17,80 @@ declare(strict_types=1);
 
 namespace Admin\Controllers\UserGroups;
 
-use Admin\Model\SystemGroup;
-use Application\Interface\Middleware;
-use Controller\HttpStatusCode;
-use Controller\Response;
-use Router\Request;
-use Traits\PayloadEncryptTrait;
+use Admin\Model\Group;
+use Admin\Traits\AclTrait;
+use Solluzi\Controller\AbstractController;
+use Solluzi\Controller\Form;
+use Solluzi\Controller\Request;
+use Solluzi\Controller\Traits\HttpStatusCode;
+use Solluzi\Controller\Traits\PayloadEncryptTrait;
+use Solluzi\Psr\Logger\FileLogger;
 
-class ListController implements Middleware
+class ListController extends AbstractController
 {
     use PayloadEncryptTrait;
+    use AclTrait;
 
+    private $form;
+    private $logger;
+
+    public function __construct()
+    {
+        $this->isProtected(get_class($this));
+
+        $this->form   = new Form();
+        $this->logger = new FileLogger();
+    }
 
     public function process(Request $request)
     {
         try {
-            // Parametros recebidos do formulário
-            $formData  = $request->getBody();
-
-            // parametros recebidos da url
-            $uriParams = $request->getQueryParams();
-
             // Model
-            $grupoModel = new SystemGroup();
+            $model = new Group();
 
             // Campo para filtro
-            $filterByName       = (isset($formData['name']) && !empty($formData['name'])) ? "%{$formData['name']}%" : null;
+            $name         = $request->getPost('name')->toString();
+            $filterByName = (isset($name) && !empty($name)) ? "%{$name}%" : null;
 
-            #######################################################
-            ################# INICIO da PAGINAÇÃO #################
-            #######################################################
+            /*************************************************************************/
+            /*                            PAGINATION START
+            /*************************************************************************/
             // Total de registros
-            $totalRegistros = $grupoModel->database('system')
+            $totalRegistros = $model->database('system')
                 ->select('"SG"', ['COUNT(*) as total'])
                 ->where('"SG"."NAME"', $filterByName, 'LIKE')
                 ->get();
 
             // Registro por página
-            $limit = (int)$uriParams['by_page'];
+            $limit = (int)$request->getQueryParam('by_page');
 
             // Quantas paginas terá na tabela?
             $paginas = ceil($totalRegistros->total / $limit);
 
             // Calcula o offset para a página
-            $offset = ($uriParams['page'] - 1) * $limit;
-            #######################################################
-            ################## FIM PAGINAÇÃO ######################
-            #######################################################
+            $offset = ($request->getQueryParam('page') - 1) * $limit;
+            /*************************************************************************/
+            /*                            PAGINATION END
+            /*************************************************************************/
 
-            $resultados = $grupoModel->database('system')
-                ->select('sg', ['sg."ID" id', 'sg."NAME" "name"'])
-                ->where('sg."NAME"', $filterByName, 'LIKE')
-                ->limit($limit, $offset)
-                ->getAll();
+            $resultados = $model->database('system')
+                                ->select('sg', ['sg."ID" id', 'sg."NAME" "name"'])
+                                ->where('sg."NAME"', $filterByName, 'LIKE')
+                                ->limit($limit, $offset)
+                                ->getAll();
 
             // Fomatação de registros
-            $resposta['data'] = [
-                'records'       => $resultados,
-                'pages'         => $paginas,
+            $resposta = [
+                'records'      => $resultados,
+                'pages'        => $paginas,
                 'totalRecords' => $totalRegistros->total
             ];
 
-            $payload = $this->encrypt($resposta);
-
-            return Response::json(['data' => $payload], HttpStatusCode::OK);
+            $payload = ['data' => $this->encrypt($resposta)];
+            $this->response(HttpStatusCode::OK, $payload);
         } catch (\Exception $e) {
-            return Response::json([], HttpStatusCode::BAD_REQUEST);
+            $this->logger->emergency($e->getMessage());
+            $this->response(HttpStatusCode::BAD_REQUEST);
         }
     }
 }

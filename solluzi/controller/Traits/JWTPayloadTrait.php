@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-namespace Solluzi\Lib\Traits;
+namespace Solluzi\Controller\Traits;
 
-use Solluzi\Lib\Util\Session\JWTWrapper;
+use Solluzi\Security\Jwt\JWTWrapper;
 
 trait JWTPayloadTrait
 {

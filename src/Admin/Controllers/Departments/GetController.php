@@ -15,10 +15,9 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controllers\Programs;
+namespace Admin\Controllers\Departments;
 
-use Admin\Model\GroupProgram;
-use Admin\Model\Program;
+use Admin\Model\Department;
 use Admin\Traits\AclTrait;
 use Solluzi\Controller\AbstractController;
 use Solluzi\Controller\Request;
@@ -33,9 +32,13 @@ class GetController extends AbstractController
 
     private $logger;
 
+    /**
+     * Class Constructor
+     */
     public function __construct()
     {
         $this->isProtected(get_class($this));
+
         $this->logger = new FileLogger();
     }
 
@@ -43,39 +46,20 @@ class GetController extends AbstractController
     {
         try {
             // Model
-            $programModel      = new Program();
-            $groupProgramModel = new GroupProgram();
+            $secaoModel = new Department();
 
-            $resultados = $programModel->database('system')
-                ->select('p', [
-                    'p."ID" id',
-                    'p."SECTION" section',
-                    'p."NAME" "name"',
-                    'p."PROGRAM" "program"',
-                    'p."PRIVATE" status',
-                    'p."DESCRIPTION" description'
-                    ])
-                ->where('"ID"', $request->getQueryParam('id'), '=')
+            $resultados = $secaoModel->database('system')
+                ->select('s', ['s."ID" id', 's."NAME" "name"'])
+                ->where('"ID"', $request->getQueryParam('id'))
                 ->get();
-
-            // Busca Grupos
-            $resultadoGrupos = $groupProgramModel->database('system')
-                ->select('gp', ['gp."GROUP_ID" as id'])
-                ->where('gp."PROGRAM_ID"', $request->getQueryParam('id'), '=')
-                ->getAll();
-
-            $trataGrupo = [];
-            foreach ($resultadoGrupos as $grupo) {
-                $trataGrupo[] = $grupo->id;
-            }
 
             // Fomatação de registros
             $resposta = [
-                'records' => $resultados,
-                'groups'  => $trataGrupo
+                'record' => $resultados,
             ];
 
             $payload = ['data' => $this->encrypt($resposta)];
+
             $this->response(HttpStatusCode::OK, $payload);
         } catch (\Exception $e) {
             $this->logger->emergency($e->getMessage());

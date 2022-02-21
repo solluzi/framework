@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Solluzi\Controller;
 
 use Solluzi\Controller\Traits\FormDecript;
+use Solluzi\Controller\Traits\ReturnDate2UsTrait;
 
 /**
 * @version		1.1.1
@@ -14,8 +15,6 @@ use Solluzi\Controller\Traits\FormDecript;
 * @license		https://codesolluzi.com/framework-license
 *	
 *	
-*	
-*	
 */
 class Request
 {
@@ -24,12 +23,12 @@ class Request
     private $variables;
     private $input;
     use FormDecript;
+    use ReturnDate2UsTrait;
 
-    public function __construct($headers = [], $post = [], $get = [], $variables = [], $files = [])
+    public function __construct($headers = [], $post = [], $get = [], $files = [])
     {
         $this->post      = $post;
         $this->get       = $get;
-        $this->variables = $variables;
         $this->files     = $files;
         $this->headers   = $headers;
     }
@@ -57,7 +56,7 @@ class Request
     */
     public function getPost($key): self
     {
-        $this->input = $this->dataVerification()[$key];
+        $this->input = $this->dataVerification()[$key] ?? null;
         return $this;
     }
 
@@ -123,7 +122,7 @@ class Request
     */
     public function getQueryParam($key)
     {
-        return $this->get[$key];
+        return $this->get[$key] ?? null;
     }
 
     /**
@@ -147,7 +146,7 @@ class Request
     *
     *
     */
-    public function getString()
+    public function toString()
     {
         return $this->input;
     }
@@ -160,29 +159,50 @@ class Request
     *
     *
     */
-    public function getInt()
+    public function toInt()
     {
 
     }
 
-    public function getDecimal()
+    public function toDecimal()
     {
 
     }
 
-    public function getDate2Us()
+    public function toDate2Us($timestamp = false)
+    {
+        return $this->date2us($this->input, $timestamp);
+    }
+
+    public function toDate2Br()
     {
 
     }
 
-    public function getDate2Br()
+    public function toFloat()
     {
 
     }
 
-    public function getFloat()
+    public function toBoolean()
     {
+        if(is_int($this->input)){
+            return $this->input;
+        }
+        return $this->input ? 1 : 0;
+    }
 
+    public function toBool()
+    {
+        if(is_int($this->input)){
+            return $this->input === 1 ? true : false;
+        }
+        return $this->input ?? false;
+    }
+
+    public function toArray()
+    {
+        return (array) $this->input;
     }
 
 }

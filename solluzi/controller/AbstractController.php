@@ -45,12 +45,14 @@ abstract class AbstractController
             throw new InvalidArgumentException('Argument 2 only accepts array');
         }
 
-        $responseText = $data;
-        if(is_array($data)){
-            $responseText = json_encode($data);
-        }
+        
         http_response_code($code);
         header('Content-type: application/json');
+
+        $responseText = $data;
+        if(is_array($data)){
+            $responseText = json_encode($data, 1);
+        }
         echo $responseText;
     }
 
