@@ -3,10 +3,10 @@
     "description": "Este projeto \u00e9 de responsabilidade da Solluzi, este projeto se destina ao desenvolvimento de sistemas",
     "authors": [
         {
-            "email": "mauro.miranda@solluzi.com.br",
-            "homepage": "http://solluzi.com.br",
+            "email": "mauro.miranda@codesolluzi.com",
+            "homepage": "http://codesolluzi.com",
             "name": "Mauro Miranda",
-            "role": "Administrator"
+            "role": "CTO"
         }
     ],
     "require-dev": {
@@ -16,25 +16,16 @@
         "codeception/c3"               : "2.*",
         "codeception/module-asserts"   : "^1.0.0",
         "squizlabs/php_codesniffer"    : "3.*",
-        "phpmd/phpmd"                  : "^2.10",
-        "nunomaduro/phpinsights"       : "^2.0"
+        "phpmd/phpmd"                  : "^2.10"        
     },
     "require": {
-        "firebase/php-jwt"             : "^5.0",
-        "phpmailer/phpmailer"          : "~6.0",
-        "fpdf/fpdf"                    : "^1.81",
-        "robmorgan/phinx"              : "^0.12.4",
-        "psr/http-server-middleware"   : "^1.0",
-        "brainfoolong/cryptojs-aes-php": "^2.1",
-        "nikic/fast-route": "^1.3",
-        "psr/log": "*"
+        "robmorgan/phinx": "^0.12.10"
     },
     "autoload": {
         "psr-4": {
             "Admin\\": "src/Admin"
         },
         "classmap": [
-            "solluzi",
             "command"
         ]
     },
@@ -43,24 +34,11 @@
             "@cs-check",
             "@test"
         ],
-        "migrate-admin:dev": "vendor/bin/phinx migrate -c db/database/system-admin.php -e dev",
-        "migrate-admin:qa" : "vendor/bin/phinx migrate -c db/database/system-admin.php -e qa",
-        "migrate-admin:hom": "vendor/bin/phinx migrate -c db/database/system-admin.php -e homolog",
-        "migrate-log:dev"  : "vendor/bin/phinx migrate -c db/database/system-log.php -e dev",
-        "migrate-log:qa"   : "vendor/bin/phinx migrate -c db/database/system-log.php -e qa",
-        "migrate-log:hom"  : "vendor/bin/phinx migrate -c db/database/system-log.php -e homolog",
-        "migrate:prod"     : "vendor/bin/phinx migrate -c db/database/default.php -e production",
-        "seed-admin:dev"   : "vendor/bin/phinx seed:run -s MainSeeder -c db/database/system-admin.php -e dev",
-        "seed-admin:qa"    : "vendor/bin/phinx migrate -s MainSeeder -c db/database/system-admin.php -e qa",
-        "seed-admin:hom"   : "vendor/bin/phinx migrate -s MainSeeder -c db/database/system-admin.php -e homolog",
-        "seed:prod"        : "vendor/bin/phinx migrate -s MainSeeder -c db/database/default.php -e production",
         "autoload"         : "composer dump-autoload -o",
         "cs-check"         : "phpcs",
         "cs-fix"           : "phpcbf",
-        "unit-test"        : "",
         "api-test"         : "vendor/bin/codecept run api",
-        "api-test-steps"   : "vendor/bin/codecept run api --steps",
-        "test-coverage"    : ""
+        "api-test-steps"   : "vendor/bin/codecept run api --steps"
     },
     "autoload-dev": {
         "psr-4": {
